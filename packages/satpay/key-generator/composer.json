@@ -1,0 +1,26 @@
+{
+    "name": "satpay/key-generator",
+    "description": "Generate bitcoin address from wallet extended public keys.",
+    "type": "library",
+    "require": {
+        "bitwasp/bitcoin": "1.0.4"
+    },
+    "license": "proprietary",
+    "authors": [{
+        "name": "Musti132",
+        "email": "44943708+Musti132@users.noreply.github.com"
+    }],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "SatPay\\KeyGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SatPay\\KeyGenerator\\KeyGeneratorServiceProvider"
+            ]
+        }
+    }
+}
