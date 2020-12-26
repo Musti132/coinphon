@@ -38,7 +38,7 @@ class HomeController extends Controller
     public function index()
     {
         $generator = new Generator('xpub6BnAQa7mvbowFhFUdYd8qmtSHnjRaLkvk9YgvLrckus16CSf9S94pHqGHbpLdTd6NhUrodw5AjWebmjasHXDkWv1y2LbMSwLgYcSjSCYXPL');
-        return $generator->path('0/21')->generateAddress();
+        return $generator->receivingPath(21)->generateAddress();
         
         return view('home');
     }

@@ -10,9 +10,6 @@ use BitWasp\Bitcoin\Key\Deterministic\HdPrefix\NetworkConfig;
 use BitWasp\Bitcoin\Network\Slip132\BitcoinRegistry;
 use BitWasp\Bitcoin\Key\Deterministic\Slip132\Slip132;
 use BitWasp\Bitcoin\Key\KeyToScript\KeyToScriptHelper;
-use BitWasp\Bitcoin\Key\Deterministic\HierarchicalKeyFactory;
-use BitWasp\Bitcoin\Key\Deterministic\HierarchicalKeySequence;
-use BitWasp\Bitcoin\Key\Deterministic\MultisigHD;
 use BitWasp\Bitcoin\Network\NetworkFactory;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\Base58ExtendedKeySerializer;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\ExtendedKeySerializer;
@@ -44,9 +41,15 @@ class Generator
         return $this;
     }
 
-    public function path(string $path)
+    public function receivingPath(int $path)
     {
-        $this->path = $path;
+        $this->path = "0/".$path;
+        return $this;
+    }
+
+    public function changePath(int $path)
+    {
+        $this->path = "1/".$path;
         return $this;
     }
 
