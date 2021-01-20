@@ -1,5 +1,5 @@
 <?php
-namespace SatPay\KeyGenerator\Exceptions;
+namespace SatPay\Bitcoin\Exceptions;
 
 use Exception;
 

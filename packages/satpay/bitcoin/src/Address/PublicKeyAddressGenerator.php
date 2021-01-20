@@ -1,8 +1,7 @@
 <?php
 
-namespace SatPay\KeyGenerator;
+namespace SatPay\Bitcoin\Address;
 
-use SatPay\KeyGenerator\Exceptions\PathException;
 use BitWasp\Bitcoin\Bitcoin;
 use BitWasp\Bitcoin\Address\AddressCreator;
 use BitWasp\Bitcoin\Key\Deterministic\HdPrefix\GlobalPrefixConfig;
@@ -14,8 +13,9 @@ use BitWasp\Bitcoin\Network\NetworkFactory;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\Base58ExtendedKeySerializer;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\ExtendedKeySerializer;
 use SatPay\KeyGenerator\Exceptions\PrefixException;
+use SatPay\KeyGenerator\Exceptions\PathException;
 
-class Generator
+class AddressGenerator implements AddressInterface
 {
 
     public $key;
@@ -35,7 +35,7 @@ class Generator
         $this->slip132 = new Slip132(new KeyToScriptHelper($this->adapter));
         $this->prefix = new BitcoinRegistry();
 
-        //Check public format
+        //Check public key format
         $this->key = $this->checkPrefix($key);
 
         return $this;
@@ -80,7 +80,7 @@ class Generator
         return $key;
     }
 
-    public function generateAddress()
+    public function generateAddress(): string
     {
         if (!$this->path) {
             throw new PathException("Path has not been set");
@@ -101,5 +101,9 @@ class Generator
         $child_key = $key->derivePath($this->path);
 
         return $child_key->getAddress(new AddressCreator())->getAddress();
+    }
+
+    public function publicKey(): string{
+        return $this->key;
     }
 }

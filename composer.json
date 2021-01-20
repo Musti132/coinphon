@@ -7,9 +7,9 @@
         "laravel"
     ],
     "repositories": {
-        "key-generator": {
+        "bitcoin": {
             "type": "path",
-            "url": "packages/satpay/key-generator",
+            "url": "packages/satpay/bitcoin",
             "options": {
                 "symlink": true
             }
@@ -19,6 +19,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "aws/aws-sdk-php": "^3.171",
         "bitwasp/bitcoin": "^1.0.4",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -26,7 +27,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
-        "satpay/key-generator": "@dev"
+        "satpay/bitcoin": "@dev"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

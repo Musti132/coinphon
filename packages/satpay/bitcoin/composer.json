@@ -1,6 +1,6 @@
 {
-    "name": "satpay/key-generator",
-    "description": "Generate bitcoin address from wallet extended public keys.",
+    "name": "satpay/bitcoin",
+    "description": "Mutli bitcoin library made by and for SatPay",
     "type": "library",
     "require": {
         "bitwasp/bitcoin": "1.0.4"
@@ -13,13 +13,13 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "SatPay\\KeyGenerator\\": "src/"
+            "SatPay\\Bitcoin\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "SatPay\\KeyGenerator\\KeyGeneratorServiceProvider"
+                "SatPay\\Bitcoin\\BitcoinServiceProvider"
             ]
         }
     }

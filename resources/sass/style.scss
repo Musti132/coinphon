@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Jakarta Display';
+    src: url('https://assets.website-files.com/5f0a234d1293a2f4eb599bb5/5f0a234d667535c5e2a0c9f9_PlusJakartaDisplay-Medium.woff2') format('woff2');
+    font-style: normal;
+    font-display: auto;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Jakarta Display';
+}
+
+body {
+    background-color: $body-bg;
+}
+
+.header {
+    color: white;
+}
