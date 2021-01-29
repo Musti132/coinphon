@@ -15,8 +15,7 @@ use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\ExtendedKeySerializer;
 use SatPay\KeyGenerator\Exceptions\PrefixException;
 use SatPay\KeyGenerator\Exceptions\PathException;
 
-class AddressGenerator implements AddressInterface
-{
+class PublicKeyAddressGenerator implements AddressInterface {
 
     public $key;
     public $path;
@@ -27,8 +26,7 @@ class AddressGenerator implements AddressInterface
     private $pubPrefix;
     private $network;
 
-    public function __construct(string $key)
-    {
+    public function __construct(string $key) {
         //Init network
         $this->network = NetworkFactory::bitcoin();
         $this->adapter = Bitcoin::getEcAdapter();
@@ -41,14 +39,12 @@ class AddressGenerator implements AddressInterface
         return $this;
     }
 
-    public function receivingPath(int $path)
-    {
+    public function receivingPath(int $path) {
         $this->path = "0/".$path;
         return $this;
     }
 
-    public function changePath(int $path)
-    {
+    public function changePath(int $path) {
         $this->path = "1/".$path;
         return $this;
     }
@@ -58,8 +54,7 @@ class AddressGenerator implements AddressInterface
         return $this;
     }
 
-    private function checkPrefix(string $key)
-    {
+    private function checkPrefix(string $key) {
         $ext = substr($key, 0, 1);
 
         switch ($ext) {
@@ -80,8 +75,7 @@ class AddressGenerator implements AddressInterface
         return $key;
     }
 
-    public function generateAddress(): string
-    {
+    public function generateAddress(): string {
         if (!$this->path) {
             throw new PathException("Path has not been set");
         }
@@ -103,7 +97,7 @@ class AddressGenerator implements AddressInterface
         return $child_key->getAddress(new AddressCreator())->getAddress();
     }
 
-    public function publicKey(): string{
+    public function publicKey(): string {
         return $this->key;
     }
 }

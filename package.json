@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
+        "build": "gulp build --production",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
         "watch-poll": "npm run watch -- --watch-poll",
@@ -10,11 +11,18 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^4.14.1",
+        "@typescript-eslint/parser": "^4.14.1",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
+        "eslint": "^7.18.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-vue": "^7.5.0",
+        "import-glob-loader": "^1.1.0",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
+        "laravel-mix-eslint-config": "^0.1.7",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
@@ -24,6 +32,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "babel-loader": "^8.2.2",
         "vue-router": "^3.4.9"
     }
 }

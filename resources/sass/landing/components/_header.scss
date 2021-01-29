@@ -1,0 +1,66 @@
+/* ------------------------------------------------------------ *\
+	Header
+\* ------------------------------------------------------------ */
+
+.header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+	
+	.header__inner {
+		display: flex;
+		justify-content: space-between;
+		padding: 47px 8px 0 0;
+
+		@include breakpoint-down(tablet) {
+			padding: 47px 34px 0 0;
+		}
+
+		@include breakpoint-down(mobile) {
+			padding: 30px 0 0;
+		}
+	}
+
+	.header__aside {
+		display: flex;
+		justify-content: space-between;
+		width: 82.7%;
+
+		@include breakpoint-down(tablet) {
+			opacity: 0;
+			visibility: hidden;
+			position: fixed;
+			top: 0;
+			left: 100%;
+			width: 100%;
+			height: 100%;
+			background-color: #025bca;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			flex-direction: column;
+			z-index: 4;
+			transition: opacity .4s, visibility .4s, transform .4s;
+		}
+	}
+	
+	.header__login-container {
+		@include breakpoint-down(tablet) {
+			width: 100%;
+			text-align: center;
+			margin-top: 15px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+	}
+
+	.header__aside.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-100%);
+		display: block;
+	}
+}

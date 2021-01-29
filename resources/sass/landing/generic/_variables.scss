@@ -1,0 +1,30 @@
+//Variables
+$font-size-base             : 14px;
+$font-weight-base           : 400;
+$line-height-base           : 1.79;
+
+$ff-sans-serif              : "Helvetica Neue", Helvetica, Arial, sans-serif;
+$ff-serif                   : Georgia, "Times New Roman", Times, serif;
+$ff-poppins                 : "Poppins", Helvetica, Arial, sans-serif;
+
+$t-duration                 : 0.4s;
+
+$shell-max-width            : 1100px;
+$shell-gutter               : 15px;
+
+$c-black                    : #000;
+$c-white                    : #fff;
+$c-base-light               : #00c6ff;
+$c-base-dark				: #0271ff;
+
+$responsive-ios             : 812px;
+
+$breakpoints: (
+	mobile-small: 374px,
+	mobile-medium: 575px,
+	mobile: 767px,
+	admin-bar: 782px,
+	tablet: 1023px,
+	small-desktop: 1199px,
+	large-desktop: 1399px
+);

@@ -1,0 +1,38 @@
+/* ------------------------------------------------------------ *\
+	Grid
+\* ------------------------------------------------------------ */
+
+.grid {
+	display: flex;
+	flex-flow: row wrap;
+	margin: 0 -29px;
+
+	@include breakpoint-down(tablet) {
+		margin: 0 -15px;
+	}
+
+	.grid__col {
+		max-width: 100%;
+		flex: 1;
+	}
+
+	/*  Grid col 1of2  */
+	.grid__col--1of2 {
+		max-width: 50%;
+		flex: 0 0 50%;
+	}
+
+	/*  Grid col 1of3  */
+
+	.grid__col--1of3 {
+		max-width: 33.33%;
+		flex: 0 0 33.33%;
+		padding: 0 29px;
+
+		@include breakpoint-down(mobile) {
+			padding: 0 15px;
+			max-width: 50%;
+			flex: 0 0 50%;
+		}
+	}
+}

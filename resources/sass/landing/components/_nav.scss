@@ -1,0 +1,53 @@
+/* ------------------------------------------------------------ *\
+	Nav
+\* ------------------------------------------------------------ */
+
+.nav {
+	padding-left: 59px;
+	padding-top: 7px;
+
+	@include breakpoint-down(tablet) {
+		width: 100%;
+		padding: 100px 0 0;
+		text-align: center;
+		padding: 45px 0 0;
+	}
+
+	@include breakpoint-down(mobile-medium) {
+		padding: 28px 0 0;
+	}
+
+	ul {
+		display: flex;
+
+		@include breakpoint-down(tablet) {
+		 	display: flex;
+		 	flex-direction: column;
+		} 
+	}
+
+	li + li {
+		margin-left: 26px;
+
+		@include breakpoint-down(tablet) {
+			margin-left: 0;
+			margin-top: 15px;  
+		}
+
+		@include breakpoint-down(mobile) {
+			margin-top: 20px; 
+		}
+	}
+
+	a {
+		text-decoration: none;
+		font-size: 20px;
+		font-weight: 400;
+		letter-spacing: 0.05em;
+		transition: color .3s;
+	}
+
+	a:hover {
+		color: $c-base-light;
+	}
+}

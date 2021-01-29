@@ -5,7 +5,7 @@ import router from './router'
 
 window.Vue = require('vue');
 
-Vue.component('App', require('./Layout/App.vue').default);
+Vue.component('App', require('./Layout/Landing/App.vue').default);
 Vue.use(VueRouter)
 
 

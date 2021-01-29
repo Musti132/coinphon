@@ -1,0 +1,43 @@
+/* ------------------------------------------------------------ *\
+	Section alt
+\* ------------------------------------------------------------ */
+
+.section-alt {
+	padding-top: 114px;
+	overflow: hidden; 
+
+	@include breakpoint-down(mobile) {
+	 	padding-top: 60px;
+	}
+
+	.section__background {
+		background-repeat: no-repeat;
+		background-size: 100% auto;
+		position: absolute;
+		top: -116px;
+		left: -125px;
+		right: -91px;
+		bottom: 0;
+
+		@include breakpoint-down(mobile) {
+			background-size: cover;
+		}
+	} 
+
+	.section__head {
+		text-align: center;
+		margin-bottom: 34px;
+		position: relative;
+
+		@include breakpoint-down(mobile) {
+		 	margin-bottom: 0;
+		} 
+	}
+
+	.section__body {
+		max-width: 770px;
+		margin: 0 auto;
+		position: relative;
+		padding-bottom: 45px;
+	}
+}

@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-
+require('laravel-mix-eslint-config');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -12,5 +12,14 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css/style.css');
+    .sass('resources/sass/landing/style.scss', 'public/css/style.css').webpackConfig({
+        module: {
+          rules: [
+            {
+              test: /\.scss/,
+              loader: 'import-glob-loader'
+            }
+          ]
+        }
+      });
 mix.disableNotifications();

@@ -1,0 +1,56 @@
+/* ------------------------------------------------------------ *\
+	Card
+\* ------------------------------------------------------------ */
+
+.card {
+	margin-top: 26px;
+
+	@include breakpoint-down(mobile) {
+		margin-top: 50px; 
+	}
+	 
+	.card__image {
+		max-width: 216px;
+		width: 100%;
+		min-height: 202px;
+		border-radius: 40px;
+		display: flex; 
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 4px;
+
+		@include breakpoint-down(tablet) {
+		}
+
+		@include breakpoint-down(mobile) {
+			max-width: 170px;
+			min-height: 155px;
+			margin: 0 auto 15px;
+		}
+	}
+
+	.card__content {
+		text-align: center;
+	}
+
+	.card__content h4 {
+		margin-bottom: 0px;
+		font-weight: 500;
+
+		@include breakpoint-down(mobile) {
+		 	font-size: 25px;
+		 	line-height: 1.2;
+		 	margin-bottom: 10px;
+		} 
+	}
+
+	.card__content p {
+		font-size: 16px;
+		line-height: 1.25;
+		color: #efefef;
+
+		@include breakpoint-down(mobile) {
+			font-size: 14px;
+		}
+	}
+}

@@ -1,0 +1,21 @@
+/* ------------------------------------------------------------ *\
+	Link
+\* ------------------------------------------------------------ */
+
+.link {
+	text-decoration: none;
+	margin-right: 34px;
+	margin-top: 6px; 
+	font-size: 20px;
+	letter-spacing: 0.05em;
+	transition: color .3s;
+
+	@include breakpoint-down(tablet) {
+		width: 100%;
+		margin: 0 0 15px 0;
+	}
+
+	&:hover {
+		color: $c-base-light;
+	} 
+}
