@@ -37,6 +37,7 @@ class RPClient{
     public $wallet;
     public $method;
     public $server;
+    public $logId;
 
     public function __construct(Server $server, array $config = []){
         $this->config = array_merge($this->config, $config);
@@ -45,10 +46,6 @@ class RPClient{
     }
 
     public function execute() {
-        /*
-        if($this->wallet === null){
-            throw new WalletEmptyException("Wallet name is empty");
-        }*/
 
         if($this->method === null){
             throw new MethodEmptyException("Method name is empty");
@@ -60,11 +57,20 @@ class RPClient{
             'method' => $this->method,
             'params' => $this->params,
         ];
-        
-        $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$this->wallet->label, [
-            'body' => json_encode($body),
-            'http_errors' => false
-        ]);
+
+        $label = ($this->wallet === null) ? null : $this->wallet->label;
+
+        if($label !== null){
+            $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$label, [
+                'body' => json_encode($body),
+                'http_errors' => false
+            ]);
+        } else{
+            $request = $this->client->post($this->server->host.":".$this->server->port, [
+                'body' => json_encode($body),
+                'http_errors' => false
+            ]);
+        }
 
         $response = new RPClientResponse($request);
 
@@ -74,8 +80,10 @@ class RPClient{
             'method' => $this->method,
             'full_command' => $fullCommand,
             'server_id' => $this->server->id,
-            'wallet_id' => $this->wallet->id,
+            'wallet_id' => ($this->wallet === null) ? null : $this->wallet->id,
         ]);
+
+        $this->logId = $log->id;
         
         if($response->isError()){
             $message = new RPCMessages([
@@ -87,7 +95,6 @@ class RPClient{
 
             $log->message()->save($message);
         }
-
 
         return $response;
     }

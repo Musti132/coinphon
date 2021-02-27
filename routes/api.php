@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\WalletController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +19,6 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 Route::group([
     'prefix' => 'v1',
-    'namespace' => 'Api',
 ], function(){
 
     Route::group([
@@ -37,6 +37,10 @@ Route::group([
 
         Route::post('login', [AuthController::class, 'login'])->name('login');
 
+    });
+
+    Route::middleware('api')->group(function (){
+
         /**
          * User details route
          */
@@ -46,7 +50,12 @@ Route::group([
         /**
          * Refresh details route
          */
-        
+
         Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
+
+        /**
+         * Wallet controller
+         */
+        Route::apiResource('wallet', WalletController::class);
     });
 });

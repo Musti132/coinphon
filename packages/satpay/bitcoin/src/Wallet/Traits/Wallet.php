@@ -10,27 +10,14 @@ use App\Models\Wallet as WalletModel;
 
 trait Wallet{
 
-    public function createWallet(Server $server){
+    public function createWallet(Server $server, $label){
 
-        if($this->checkIfWalletExists()){
-            throw new WalletExistException("Can't create wallet because user already has wallet.");
-        }
-        
-        $walletCreator = new WalletCreator($server, $this);
-        $walletCreator->createWallet();
-        
-    }
+        $walletCreator = new WalletCreator($server, $this, $label);
 
-    public function checkIfWalletExists(){
-        return $this->wallet()->exists();
+        return $walletCreator->createWallet();
     }
 
     public function getWallet(){
-
-        if(!$this->checkIfWalletExists()){
-            throw new WalletDontExistException("Wallet doesnt exist");
-        }
-
         return new WalletClient($this);
     }
 }

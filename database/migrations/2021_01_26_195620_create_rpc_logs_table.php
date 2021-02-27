@@ -17,7 +17,7 @@ class CreateRpcLogsTable extends Migration
             $table->id();
             $table->string('method', 14);
             $table->string('full_command');
-            $table->foreignId('wallet_id')->references('id')->on('wallets');
+            $table->foreignId('wallet_id')->nullable()->references('id')->on('wallets');
             $table->foreignId('server_id')->references('id')->on('servers');
             $table->timestamp('created_at', 0)->nullable();
         });

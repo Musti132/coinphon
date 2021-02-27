@@ -34,7 +34,7 @@ class RPClientResponse{
     }
 
     public function isError(){
-        return ($this->error == null) ? false : true;
+        return ($this->error === null) ? false : true;
     }
 
 }

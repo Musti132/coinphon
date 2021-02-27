@@ -15,7 +15,8 @@ class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->string('label', 40);
+            $table->string('label', 64);
+            $table->string('full_label', 64);
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('server_id')->references('id')->on('servers');
             $table->timestamps();
