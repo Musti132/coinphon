@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegisterFormRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -26,10 +26,10 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function login(Request $request) {
+    public function login(LoginRequest $request) {
 
         $credentials = $request->only('email', 'password');
-
+        
         if ($token = auth('api')->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         }
@@ -49,8 +49,6 @@ class AuthController extends Controller
 
     public function user(Request $request) {
 
-        return $request->user();
-
         if(!$request->user()){
             return response()->json([
                 'status' => 'failed',
@@ -58,11 +56,9 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = User::findOrFail(Auth::user()->id);
-
         return response()->json([
             'status' => 'success',
-            'data' => $user
+            'data' => $request->user(),
         ]);
 
     }
@@ -82,12 +78,4 @@ class AuthController extends Controller
         return Auth::guard();
     }
 
-    protected function createNewToken($token){
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth()->user()
-        ]);
-    }
 }

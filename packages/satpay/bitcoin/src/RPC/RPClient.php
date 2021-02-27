@@ -3,13 +3,13 @@
 namespace SatPay\Bitcoin\RPC;
 
 use App\Models\Server;
-use SatPay\Bitcoin\RPC\Exceptions\WalletEmptyException;
 use SatPay\Bitcoin\RPC\Exceptions\MethodEmptyException;
-use SatPay\Bitcoin\RPC\Exceptions\WalletException;
 use SatPay\Bitcoin\RPC\RPClientResponse;
 use Illuminate\Support\Str;
-use GuzzleHttp\Exception;
 use GuzzleHttp\Client;
+use App\Models\RPCLog;
+use App\Models\RPCMessages;
+use App\Models\Wallet;
 
 class RPClient{
 
@@ -60,29 +60,39 @@ class RPClient{
             'method' => $this->method,
             'params' => $this->params,
         ];
-        /*
-        $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$this->wallet, [
+        
+        $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$this->wallet->label, [
             'body' => json_encode($body),
-            //'http_errors' => false
+            'http_errors' => false
         ]);
 
         $response = new RPClientResponse($request);
-        return $response;*/
-        try{
 
-            $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$this->wallet, [
-                'body' => json_encode($body),
-                //'http_errors' => false
+        $fullCommand = "{$this->method} ".implode(" ", $this->params);
+
+        $log = RPCLog::create([
+            'method' => $this->method,
+            'full_command' => $fullCommand,
+            'server_id' => $this->server->id,
+            'wallet_id' => $this->wallet->id,
+        ]);
+        
+        if($response->isError()){
+            $message = new RPCMessages([
+                'log_id' => $log->id,
+                'error_code' => $response->getError()['code'],
+                'status_code' => $response->httpCode,
+                'message' => $response->getError()['message'],
             ]);
-            
-        } catch(Exception\ServerException $ex){
-            throw new WalletException("Wallet does not exist or is not loaded yet");
+
+            $log->message()->save($message);
         }
 
-        return $request;
+
+        return $response;
     }
 
-    public function setWallet(string $wallet){
+    public function setWallet(Wallet $wallet){
         $this->wallet = $wallet;
         
         return $this;

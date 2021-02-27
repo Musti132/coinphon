@@ -5,40 +5,37 @@ use GuzzleHttp\Psr7\Response;
 
 class RPClientResponse{
 
-    private $response;
-
-    public $errorCode;
+    public $response;
+    public $error;
     public $statusCode;
     public $body;
 
     public function __construct(\GuzzleHttp\Psr7\Response $response) {
-        return $response->getBody();
-        $this->handleHttpCode($response->getStatusCode());
-        $this->handleBody($response);
-        $this->setErrorCode($response);
+        $this->response = $response;
+        $this->httpCode = $response->getStatusCode();
+        $this->handleHttpCode();
+        $this->handleBody();
     }
 
-    public function handleHttpCode($httpCode){
-
+    public function handleHttpCode(){
+        return ($this->httpCode != 200) ? $this->setError($this->response) : $this->statusCode = $this->httpCode;
     }
 
-    public function setErrorCode($response){
-        $this->errorCode = json_decode($response->getBody(), true)['error_code'];
-    }
-    
-    public function handleBody($response){
-        $this->body = json_decode($response->getBody());
-        /*
-        if($this->body[]){
-
-        }*/
-    }
-
-    public function getBody(){
-        return "Tessst";
+    public function setError($response){
+        $this->error = json_decode($response->getBody(), true)['error'];
     }
     
+    public function handleBody(){
+        $this->body = json_decode($this->response->getBody(), true)['result'];
+    }
 
+    public function getError(){
+        return $this->error;
+    }
+
+    public function isError(){
+        return ($this->error == null) ? false : true;
+    }
 
 }
 

@@ -17,28 +17,24 @@ class WalletClient extends RPClient{
         parent::__construct($server);
     }
     
-    public function getBalance(){
+    public function getBalance($decimals = 7){
         
-        $body = $this->setWallet($this->user->wallet->label)
-        //$body = $this->setWallet("supper")
+        $request = $this->setWallet($this->user->wallet)
         ->setMethod("getwalletinfo")
-        ->execute()
-        ->getBody();
+        ->execute();
 
-        $array = json_decode($body, true);
-        dd($array);
-        return number_format($array['result']['balance'], 7);
+        return $request->isError() ? $request->getError() : number_format($request->body['balance'], $decimals);
+
     }
 
     public function loadWallet(){
-        $body = $this->setMethod("loadwallet")
+        $request = $this->setMethod("loadwallet")
         ->setParam([
             $this->user->wallet->label
         ])
-        ->execute()
-        ->getBody();
+        ->execute();
 
-        $array = json_decode($body, true);
+        return $request->isError() ? $request->getError() : $request;
     }
 
 }

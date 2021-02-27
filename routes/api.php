@@ -42,5 +42,11 @@ Route::group([
          */
 
         Route::get('user', [AuthController::class, 'user'])->name('user');
+
+        /**
+         * Refresh details route
+         */
+        
+        Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
     });
 });
