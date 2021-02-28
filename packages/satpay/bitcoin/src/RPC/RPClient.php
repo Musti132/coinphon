@@ -38,6 +38,7 @@ class RPClient{
     public $method;
     public $server;
     public $logId;
+    public $url;
 
     public function __construct(Server $server, array $config = []){
         $this->config = array_merge($this->config, $config);
@@ -61,16 +62,15 @@ class RPClient{
         $label = ($this->wallet === null) ? null : $this->wallet->label;
 
         if($label !== null){
-            $request = $this->client->post($this->server->host.":".$this->server->port."/wallet/".$label, [
-                'body' => json_encode($body),
-                'http_errors' => false
-            ]);
+            $this->url = $this->server->host.":".$this->server->port."/wallet/".$label;
         } else{
-            $request = $this->client->post($this->server->host.":".$this->server->port, [
-                'body' => json_encode($body),
-                'http_errors' => false
-            ]);
+            $this->url = $this->server->host.":".$this->server->port;
         }
+
+        $request = $this->client->post($this->url, [
+            'body' => json_encode($body),
+            'http_errors' => false
+        ]);
 
         $response = new RPClientResponse($request);
 

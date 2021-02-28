@@ -31,6 +31,7 @@ class WalletController extends Controller
                 'status' => 'success',
                 'message' => 'Wallet created successfully',
             ]);
+
         } catch(WalletCreatorException $ex){
             return response()->json([
                 'status' => 'false',

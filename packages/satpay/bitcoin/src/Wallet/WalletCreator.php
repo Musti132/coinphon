@@ -39,7 +39,7 @@ class WalletCreator extends RPClient
             ->execute();
 
 
-        if(!$response->isError()){
+        if($response->isError()){
             throw new WalletCreatorException("REF: {$this->logId}");
         }
         

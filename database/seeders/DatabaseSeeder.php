@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\ServerRegion::factory(1)->create();
         \App\Models\Server::factory(1)->create();
         \App\Models\User::factory(1)->create();
+        \App\Models\WalletType::factory(1)->create();
     }
 }
