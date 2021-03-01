@@ -1,12 +1,12 @@
 <?php
 
-namespace SatPay\Bitcoin\Wallet;
+namespace CoinPhon\Bitcoin\Wallet;
 
 use App\Models\User;
 use BitWasp\Bitcoin\Bitcoin;
 use BitWasp\Bitcoin\Crypto\Random\Random;
 use BitWasp\Bitcoin\Key\Factory\PrivateKeyFactory;
-use SatPay\Bitcoin\RPC\RPClient;
+use CoinPhon\Bitcoin\RPC\RPClient;
 
 class OldWalletCreator extends RPClient
 {

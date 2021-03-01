@@ -10,7 +10,9 @@ use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
 use App\Http\Resources\WalletListResource;
-use SatPay\Bitcoin\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Bitcoin\RPC\RPClientResponse;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Bitcoin\Wallet\WalletClient;
 
 class WalletController extends Controller
 {
@@ -45,11 +47,22 @@ class WalletController extends Controller
                 'message' => 'Unknown error happened, please contact support',
             ], 500);
         }
-        
-        
-        if(!User::find(1)->walletExists()){
-            echo "Yes";
-            exit;
+    }
+
+    public function balance(Wallet $wallet){
+        $balance = 0;
+
+        $balance = $wallet->getWallet()->getBalance();
+
+        if(isset($body['code']) && $body['code'] == RPClientResponse::NOT_LOADED){
+            $wallet->getWallet()->loadWallet();
+            $balance = $wallet->getWallet()->getBalance();
         }
+
+        return $balance;
+    }
+
+    public function address(Wallet $wallet){
+        return $wallet->getWallet()->newAddress(WalletClient::BECH32);
     }
 }

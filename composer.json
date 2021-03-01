@@ -9,7 +9,7 @@
     "repositories": {
         "bitcoin": {
             "type": "path",
-            "url": "packages/satpay/bitcoin",
+            "url": "packages/coinphon/bitcoin/src",
             "options": {
                 "symlink": true
             }
@@ -27,8 +27,8 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
-        "satpay/bitcoin": "@dev",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "coinphon/bitcoin": "@dev"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

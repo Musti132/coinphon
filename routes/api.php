@@ -59,6 +59,14 @@ Route::group([
          */
         Route::apiResource('wallet', WalletController::class);
 
+        Route::group([
+            'prefix' => 'wallet',
+            'as' => 'wallet.'
+        ], function(){
+            Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
+            Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
+        });
+
         /**
          * Order controller
          */

@@ -1,13 +1,13 @@
 <?php
 
-namespace SatPay\Bitcoin\Wallet;
+namespace CoinPhon\Bitcoin\Wallet;
 
 use App\Models\Server;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Support\Str;
-use SatPay\Bitcoin\RPC\RPClient;
-use SatPay\Bitcoin\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Bitcoin\RPC\RPClient;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 
 class WalletCreator extends RPClient
 {
@@ -45,6 +45,7 @@ class WalletCreator extends RPClient
         
         $wallet = new Wallet([
             'label' => $this->label,
+            'type_id' => 1,
             'full_label' => $walletName,
             'server_id' => $this->server->id,
         ]);

@@ -1,5 +1,5 @@
 <?php
-namespace SatPay\Bitcoin\Address;
+namespace CoinPhon\Bitcoin\Address;
 
 
 

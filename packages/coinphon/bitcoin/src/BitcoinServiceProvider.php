@@ -1,5 +1,5 @@
 <?php
-namespace SatPay\Bitcoin;
+namespace CoinPhon\Bitcoin;
 
 use Illuminate\Support\ServiceProvider;
 

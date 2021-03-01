@@ -1,10 +1,10 @@
 <?php
 
-namespace SatPay\Bitcoin\RPC;
+namespace CoinPhon\Bitcoin\RPC;
 
 use App\Models\Server;
-use SatPay\Bitcoin\RPC\Exceptions\MethodEmptyException;
-use SatPay\Bitcoin\RPC\RPClientResponse;
+use CoinPhon\Bitcoin\RPC\Exceptions\MethodEmptyException;
+use CoinPhon\Bitcoin\RPC\RPClientResponse;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use App\Models\RPCLog;
@@ -59,7 +59,7 @@ class RPClient{
             'params' => $this->params,
         ];
 
-        $label = ($this->wallet === null) ? null : $this->wallet->label;
+        $label = ($this->wallet === null) ? null : $this->wallet->full_label;
 
         if($label !== null){
             $this->url = $this->server->host.":".$this->server->port."/wallet/".$label;

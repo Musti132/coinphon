@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use CoinPhon\Bitcoin\Wallet\Traits\Wallet as TraitsWallet;
 
 class Wallet extends Model
 {
-    use HasFactory;
+    use HasFactory, TraitsWallet;
 
     protected $guarded = [];
     protected $append = [

@@ -1,5 +1,5 @@
 <?php
-namespace SatPay\Bitcoin\Exceptions;
+namespace CoinPhon\Bitcoin\Exceptions;
 
 use Exception;
 

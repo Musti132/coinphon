@@ -1,6 +1,6 @@
 <?php
 
-namespace SatPay\Bitcoin\Address;
+namespace CoinPhon\Bitcoin\Address;
 
 use BitWasp\Bitcoin\Bitcoin;
 use BitWasp\Bitcoin\Address\AddressCreator;
@@ -12,8 +12,8 @@ use BitWasp\Bitcoin\Key\KeyToScript\KeyToScriptHelper;
 use BitWasp\Bitcoin\Network\NetworkFactory;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\Base58ExtendedKeySerializer;
 use BitWasp\Bitcoin\Serializer\Key\HierarchicalKey\ExtendedKeySerializer;
-use SatPay\KeyGenerator\Exceptions\PrefixException;
-use SatPay\KeyGenerator\Exceptions\PathException;
+use CoinPhon\KeyGenerator\Exceptions\PrefixException;
+use CoinPhon\KeyGenerator\Exceptions\PathException;
 
 class PublicKeyAddressGenerator implements AddressInterface {
 

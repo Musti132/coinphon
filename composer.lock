@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "931c3cba36ec0174e8dca453edd415e7",
+    "content-hash": "7dd40204d23b94027242ec573fdd3137",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -364,6 +364,45 @@
                 }
             ],
             "time": "2021-01-20T22:51:39+00:00"
+        },
+        {
+            "name": "coinphon/bitcoin",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "packages/coinphon/bitcoin",
+                "reference": "7acdd84f85938782e3e5762af6171810a77fb861"
+            },
+            "require": {
+                "bitwasp/bitcoin": "1.0.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CoinPhon\\Bitcoin\\BitcoinServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CoinPhon\\Bitcoin\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Musti132",
+                    "email": "44943708+Musti132@users.noreply.github.com"
+                }
+            ],
+            "description": "Multi bitcoin library made by and for CoinPhon",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "composer/semver",
@@ -3187,45 +3226,6 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
-        },
-        {
-            "name": "satpay/bitcoin",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "packages/satpay/bitcoin",
-                "reference": "a03b5eafbf662067bcab3632d56898e699a7bc3e"
-            },
-            "require": {
-                "bitwasp/bitcoin": "1.0.4"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "SatPay\\Bitcoin\\BitcoinServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SatPay\\Bitcoin\\": "src/"
-                }
-            },
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Musti132",
-                    "email": "44943708+Musti132@users.noreply.github.com"
-                }
-            ],
-            "description": "Mutli bitcoin library made by and for SatPay",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -8377,7 +8377,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "satpay/bitcoin": 20
+        "coinphon/bitcoin": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

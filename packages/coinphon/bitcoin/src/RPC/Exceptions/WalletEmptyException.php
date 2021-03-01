@@ -1,13 +1,13 @@
 <?php
-namespace SatPay\Bitcoin\Wallet\Exceptions;
+namespace CoinPhon\Bitcoin\RPC\Exceptions;
 
 use Exception;
 
-class WalletExistException extends Exception{
+class WalletEmptyException extends Exception{
 
     public function pathNotFound(){
         $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage().'</b> Wallet already exists.';
+        .': <b>'.$this->getMessage().'</b> Wallet has not been set.';
         return $errorMsg;
     }
 

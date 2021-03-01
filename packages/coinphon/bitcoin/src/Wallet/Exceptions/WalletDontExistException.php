@@ -1,13 +1,13 @@
 <?php
-namespace SatPay\Bitcoin\RPC\Exceptions;
+namespace CoinPhon\Bitcoin\Wallet\Exceptions;
 
 use Exception;
 
-class WalletException extends Exception{
+class WalletDontExistException extends Exception{
 
     public function pathNotFound(){
         $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage().'</b> Wallet does not exist or is not loaded';
+        .': <b>'.$this->getMessage().'</b> Wallet doesnt exists.';
         return $errorMsg;
     }
 

@@ -1,9 +1,11 @@
 <?php
-namespace SatPay\Bitcoin\RPC;
+namespace CoinPhon\Bitcoin\RPC;
 
 use GuzzleHttp\Psr7\Response;
 
 class RPClientResponse{
+
+    public const NOT_LOADED = -18;
 
     public $response;
     public $error;

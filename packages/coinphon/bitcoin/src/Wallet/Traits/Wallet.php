@@ -1,11 +1,11 @@
 <?php
-namespace SatPay\Bitcoin\Wallet\Traits;
+namespace CoinPhon\Bitcoin\Wallet\Traits;
 
 use App\Models\Server;
-use SatPay\Bitcoin\Wallet\Exceptions\WalletExistException;
-use SatPay\Bitcoin\Wallet\Exceptions\WalletDontExistException;
-use SatPay\Bitcoin\Wallet\WalletCreator;
-use SatPay\Bitcoin\Wallet\WalletClient;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletExistException;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
+use CoinPhon\Bitcoin\Wallet\WalletCreator;
+use CoinPhon\Bitcoin\Wallet\WalletClient;
 use App\Models\Wallet as WalletModel;
 
 trait Wallet{

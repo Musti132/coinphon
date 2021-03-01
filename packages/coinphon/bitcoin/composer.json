@@ -1,6 +1,6 @@
 {
-    "name": "satpay/bitcoin",
-    "description": "Mutli bitcoin library made by and for SatPay",
+    "name": "coinphon/bitcoin",
+    "description": "Multi bitcoin library made by and for CoinPhon",
     "type": "library",
     "require": {
         "bitwasp/bitcoin": "1.0.4"
@@ -13,13 +13,13 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "SatPay\\Bitcoin\\": "src/"
+            "CoinPhon\\Bitcoin\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "SatPay\\Bitcoin\\BitcoinServiceProvider"
+                "CoinPhon\\Bitcoin\\BitcoinServiceProvider"
             ]
         }
     }
