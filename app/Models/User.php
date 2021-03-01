@@ -45,8 +45,12 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function wallet(){
-        return $this->hasOne(Wallet::class);
+    public function wallets(){
+        return $this->hasMany(Wallet::class, 'user_id', 'id');
+    }
+
+    public function orders(){
+        return $this->hasManyThrough(Order::class, Wallet::class, 'id', 'wallet_id');
     }
     
     public function getJWTIdentifier()

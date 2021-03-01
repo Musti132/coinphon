@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Server;
+use App\Helpers\Response;
+use App\Http\Resources\WalletListResource;
 use SatPay\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 
 class WalletController extends Controller
@@ -15,12 +17,17 @@ class WalletController extends Controller
     //
 
     public function index(){
-        return User::findOrFail(1);
+        
+        $wallets = auth()->user()->wallets;
+        
+        return Response::success([
+            'wallets' => WalletListResource::collection($wallets),
+        ]);
     }
 
     public function store(WalletCreate $request){
 
-        $user = User::find(1);
+        $user = User::find($request->user()->id);
         $server = Server::find(1);
         $label = $request->label;
         

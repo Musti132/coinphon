@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\ServerRegion::factory(1)->create();
+        /*\App\Models\ServerRegion::factory(1)->create();
         \App\Models\Server::factory(1)->create();
         \App\Models\User::factory(1)->create();
-        \App\Models\WalletType::factory(1)->create();
+        \App\Models\WalletType::factory(1)->create();*/
+        \App\Models\Order::factory(1)->create();
+        \App\Models\Transaction::factory(10)->create();
     }
 }

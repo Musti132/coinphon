@@ -49,7 +49,7 @@ class WalletCreator extends RPClient
             'server_id' => $this->server->id,
         ]);
         
-        $this->user->wallet()->save($wallet);
+        $this->user->wallets()->save($wallet);
 
         return true;
     }

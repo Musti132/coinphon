@@ -18,8 +18,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('wallet_id')->references('id')->on('wallets');
             $table->decimal('amount', 8, 8);
             $table->decimal('amount_fiat', 8, 2);
-            $table->string('adress', 36);
-            $table->foreignId('transaction_id')->references('id')->on('transactions');
+            $table->string('address', 36);
             $table->boolean('status');
             $table->timestamps();
         });

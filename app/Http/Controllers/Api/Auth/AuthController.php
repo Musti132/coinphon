@@ -9,21 +9,23 @@ use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
     public function register(RegisterFormRequest $request){
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        $token = JWTAuth::fromUser($user);
+
         return response()->json([
             'status' => 'success',
-        ], 200);
+        ], 200)->header('Authorization', $token);
     }
 
     public function login(LoginRequest $request) {
@@ -33,7 +35,7 @@ class AuthController extends Controller
         if ($token = auth('api')->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         }
-
+        
         return response()->json(['error' => 'login_error'], 401);
     }
 

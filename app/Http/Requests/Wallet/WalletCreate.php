@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Rules\UserLabelExist;
+use App\Rules\WalletTypeExist;
 
 class WalletCreate extends FormRequest
 {
@@ -28,7 +29,7 @@ class WalletCreate extends FormRequest
     {
         return [
             'label' => ['required', 'max:64', 'min:4', 'string', new UserLabelExist],
-            'type' => ['required', 'numeric'],
+            'type' => ['required', 'numeric', new WalletTypeExist],
         ];
     }
 

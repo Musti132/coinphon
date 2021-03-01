@@ -20,7 +20,7 @@ class Wallet extends Model
     }
 
     public function server(){
-        return $this->hasOne(Server::class);
+        return $this->hasOne(Server::class, 'id');
     }
 
 }

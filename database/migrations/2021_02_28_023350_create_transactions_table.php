@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('received_fiat', 8, 2);
             $table->tinyInteger('confirmations');
             $table->string('from_address', 36);
+            $table->foreignId('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WalletController;
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +58,10 @@ Route::group([
          * Wallet controller
          */
         Route::apiResource('wallet', WalletController::class);
+
+        /**
+         * Order controller
+         */
+        Route::apiResource('order', OrderController::class);
     });
 });
