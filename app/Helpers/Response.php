@@ -13,14 +13,14 @@ Class Response {
 
     public static function error(string $message = "There has been a error.", $status = 400, array $headers = []){
         return response()->json([
-            'status' => 'success',
+            'status' => 'fail',
             'message' => $message,
         ], $status, $headers);
     }
 
     public static function forbidden(string $message = "Forbidden", $status = 403, array $headers = []){
         return response()->json([
-            'status' => 'success',
+            'status' => 'fail',
             'message' => $message,
         ], $status, $headers);
     }

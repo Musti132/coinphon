@@ -16,6 +16,7 @@ class WalletListResource extends JsonResource
     {
         return [
             'label' => $this->label,
+            'type' => $this->type,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

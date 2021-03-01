@@ -10,6 +10,9 @@ class Wallet extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $append = [
+        'type'
+    ];
 
     public function publicKey(){
         return $this->belongsTo(WalletPublicKey::class);
@@ -21,6 +24,10 @@ class Wallet extends Model
 
     public function server(){
         return $this->hasOne(Server::class, 'id');
+    }
+
+    public function type(){
+        return $this->hasOne(WalletType::class, 'id', 'type_id');
     }
 
 }
