@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 class OrderController extends Controller
-{
+{    
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index(){
         return User::with('orders')->find(1);
     }

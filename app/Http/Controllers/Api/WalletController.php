@@ -17,7 +17,12 @@ use CoinPhon\Bitcoin\Wallet\WalletClient;
 class WalletController extends Controller
 {
     //
-
+    
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index(){
         
         $wallets = auth()->user()->wallets;
@@ -26,7 +31,13 @@ class WalletController extends Controller
             'wallets' => WalletListResource::collection($wallets),
         ]);
     }
-
+    
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(WalletCreate $request){
 
         $user = User::find($request->user()->id);
@@ -48,7 +59,13 @@ class WalletController extends Controller
             ], 500);
         }
     }
-
+    
+    /**
+     * balance
+     *
+     * @param  mixed $wallet
+     * @return void
+     */
     public function balance(Wallet $wallet){
         $balance = 0;
 
@@ -61,7 +78,13 @@ class WalletController extends Controller
 
         return $balance;
     }
-
+    
+    /**
+     * address
+     *
+     * @param  mixed $wallet
+     * @return void
+     */
     public function address(Wallet $wallet){
         return $wallet->getWallet()->newAddress(WalletClient::BECH32);
     }

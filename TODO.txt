@@ -1,0 +1,3 @@
+Create repositories
+Change authentication to work with HttpOnly cookies.
+Create Notifications
