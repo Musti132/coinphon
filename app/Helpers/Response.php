@@ -10,7 +10,7 @@ Class Response {
 
     public static function error(string $message = "There has been a error.", $status = self::HTTP_ERROR, array $headers = []){
         return response()->json([
-            'status' => 'fail',
+            'status' => 'error',
             'message' => $message,
         ], $status, $headers);
     }

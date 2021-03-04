@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
+use App\Repository\WalletRepository;
 use App\Http\Resources\WalletListResource;
 use CoinPhon\Bitcoin\RPC\RPClientResponse;
 use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
@@ -16,16 +17,18 @@ use CoinPhon\Bitcoin\Wallet\WalletClient;
 
 class WalletController extends Controller
 {
-    //
-    
+    public $walletRepository;
+
+    public function __construct(WalletRepository $walletRepository){
+        $this->walletRepository = $walletRepository;
+    }
+
     /**
-     * index
-     *
-     * @return void
+     * @return Illuminate\Http\JsonResponse
      */
     public function index(){
         
-        $wallets = auth()->user()->wallets;
+        $wallets = $this->walletRepository->all();
         
         return Response::success([
             'wallets' => WalletListResource::collection($wallets),

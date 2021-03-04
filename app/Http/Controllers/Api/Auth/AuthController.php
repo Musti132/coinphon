@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function register(RegisterFormRequest $request){
+    public function register(RegisterFormRequest $request)
+    {
 
         $user = User::create([
             'name' => $request->name,
@@ -23,35 +26,53 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
+
         return response()->json([
             'status' => 'success',
         ], 200)->header('Authorization', $token);
     }
 
-    public function login(LoginRequest $request) {
-
+    public function login(LoginRequest $request)
+    {
         $credentials = $request->only('email', 'password');
-        
-        if ($token = auth('api')->attempt($credentials)) {
-            return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
+
+        if ($token = auth('api')->claims([config('jwt.name')."csrf_claim" => Str::random(32)])->attempt($credentials)) {
+            //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
+            $response = new Response(['status' => 'success']);
+
+            $response->withCookie(
+                config('jwt.name')."token",
+                $token,
+                config('jwt.ttl'),
+                '/'
+            );
+            $response->withCookie(
+                config('jwt.name')."csrf",
+                auth()->payload()->get(config('jwt.name').'csrf_claim'),
+                config('jwt.refresh_ttl'),
+                '/'
+            );
+            return $response;
         }
-        
+
         return response()->json(['error' => 'login_error'], 401);
     }
 
-    public function logout() {
+    public function logout()
+    {
 
         $this->guard()->logout();
 
         return response()->json([
             'status' => 'success',
-            'msg' => 'Logged out Successfully.'
+            'message' => 'Logged out Successfully.'
         ], 200);
     }
 
-    public function user(Request $request) {
+    public function user(Request $request)
+    {
 
-        if(!$request->user()){
+        if (!$request->user()) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Permission denied'
@@ -62,22 +83,28 @@ class AuthController extends Controller
             'status' => 'success',
             'data' => $request->user(),
         ]);
-
     }
 
-    public function refresh() {
+    public function refresh()
+    {
 
         if ($token = $this->guard()->refresh()) {
-            return response()
-                ->json(['status' => 'successs'], 200)
-                ->header('Authorization', $token);
+            $response = new Response(['status' => 'success']);
+
+            $response->withCookie(
+                config('jwt.name'),
+                $token,
+                config('jwt.refresh_ttl'),
+                '/'
+            );
+            return $response;
         }
 
         return response()->json(['error' => 'refresh_token_error'], 401);
     }
 
-    private function guard() {
+    private function guard()
+    {
         return Auth::guard();
     }
-
 }

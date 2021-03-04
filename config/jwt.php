@@ -301,4 +301,6 @@ return [
 
     ],
 
+    'name' => strtolower(env('APP_NAME', 'coinphon'))."_",
+
 ];

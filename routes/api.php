@@ -20,12 +20,12 @@ use App\Http\Controllers\Api\WalletController;
 
 Route::group([
     'prefix' => 'v1',
-], function(){
+], function () {
 
     Route::group([
         'prefix' => 'auth',
         'as' => 'auth.',
-    ], function(){
+    ], function () {
 
         /**
          * Register routes
@@ -38,9 +38,23 @@ Route::group([
 
         Route::post('login', [AuthController::class, 'login'])->name('login');
 
+
+        Route::middleware(['auth.jwt'])->group(function () {
+            /**
+             * User details route
+             */
+
+            Route::get('user', [AuthController::class, 'user'])->name('user');
+
+            /**
+             * Refresh details route
+             */
+
+            Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
+        });
     });
 
-    Route::middleware('api')->group(function (){
+    Route::middleware(['auth'])->group(function () {
 
         /**
          * User details route
@@ -62,7 +76,7 @@ Route::group([
         Route::group([
             'prefix' => 'wallet',
             'as' => 'wallet.'
-        ], function(){
+        ], function () {
             Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
             Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
         });
