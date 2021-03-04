@@ -23,32 +23,27 @@ class JWTAuthenticate
      */
     public function handle(Request $request, Closure $next)
     {
-        dd(Auth::user());
         //Make sure user has csrf_token in headers
         if (!$request->hasCookie(config('jwt.name')."csrf")) {
-            return Response::error('Token mismatch');
+            return Response::error('Token missing');
         }
         try{
+            //Grab token from cookie and decode
             $rawToken = $request->cookie(config('jwt.name').'token');
             $token = new Token($rawToken);
             $payload = JWTAuth::decode($token);
 
             $claimName = config('jwt.name').'csrf_claim';
 
-            //Check if header csrf_token matches the csrf_token set for user after login
+            //Check if csrf_token matches the csrf_token set for user after login
             if ($payload[$claimName] != $request->cookie(config('jwt.name')."csrf")) throw new TokenMismatchException();
             
-            //Authenticate user by id
+            //Authenticate user
             $user = User::find($payload['sub']);
 
-            $token = JWTAuth::fromUser($user);  
-
-            //Auth::loginUsingId($payload['sub'], true);
+            Auth::setUser($user, true);
         } catch(TokenExpiredException $e){
-            return Response::forbidden([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ]);
+            return Response::forbidden();
         };
 
         return $next($request);

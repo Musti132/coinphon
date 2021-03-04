@@ -8,25 +8,32 @@ Class Response {
     public const HTTP_SUCCESS = 200;
     public const HTTP_ERROR = 400;
 
-    public static function error(string $message = "There has been a error.", $status = self::HTTP_ERROR, array $headers = []){
+    public static function error(string $message = "There has been a error.", $code = self::HTTP_ERROR, array $headers = []){
         return response()->json([
             'status' => 'error',
             'message' => $message,
-        ], $status, $headers);
+        ], $code, $headers);
     }
 
-    public static function success(array $data = [], $status = self::HTTP_SUCCESS, array $headers = []){
+    public static function success(array $data = [], $code = self::HTTP_SUCCESS, array $headers = []){
         return response()->json([
             'status' => 'success',
             'data' => $data,
-        ], $status, $headers);
+        ], $code, $headers);
     }
 
-    public static function forbidden(string $message = "Forbidden", $status = self::HTTP_FORBIDDEN, array $headers = []){
+    public static function successMessage(string $message, $code = self::HTTP_SUCCESS, array $headers = []){
         return response()->json([
-            'status' => 'fail',
+            'status' => 'success',
             'message' => $message,
-        ], $status, $headers);
+        ], $code, $headers);
+    }
+
+    public static function forbidden(string $message = "Forbidden", $code = self::HTTP_FORBIDDEN, array $headers = []){
+        return response()->json([
+            'status' => 'unauthorized',
+            'message' => $message,
+        ], $code, $headers);
     }
 }
 
