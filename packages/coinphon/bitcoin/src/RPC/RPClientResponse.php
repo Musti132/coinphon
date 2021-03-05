@@ -1,11 +1,15 @@
 <?php
 namespace CoinPhon\Bitcoin\RPC;
 
+use App\Helpers\Response as HelpersResponse;
+use CoinPhon\Bitcoin\RPC\Exceptions\ForbiddenException;
 use GuzzleHttp\Psr7\Response;
 
 class RPClientResponse{
 
     public const NOT_LOADED = -18;
+    public const NO_ACCESS = 6;
+    public const HTTP_NO_ACCESS = 403;
 
     public $response;
     public $error;
@@ -24,11 +28,20 @@ class RPClientResponse{
     }
 
     public function setError($response){
-        $this->error = json_decode($response->getBody(), true)['error'];
+        if($this->httpCode === self::HTTP_NO_ACCESS){
+            return $this->error = [
+                'code' => self::NO_ACCESS,
+                'message' => 'No access to RPC client',
+            ];
+        }
+        return $this->error = json_decode($response->getBody(), true)['error'];
     }
     
     public function handleBody(){
-        $this->body = json_decode($this->response->getBody(), true)['result'];
+        if($this->httpCode === self::HTTP_NO_ACCESS){
+            return $this->body = [];
+        }
+        return $this->body = json_decode($this->response->getBody(), true)['result'];
     }
 
     public function getError(){

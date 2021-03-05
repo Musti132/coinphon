@@ -36,7 +36,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if ($token = auth()->claims([config('jwt.name')."csrf_claim" => Str::random(32)])->attempt($credentials)) {
+        if ($token = auth('api')->claims([config('jwt.name')."csrf_claim" => Str::random(32)])->attempt($credentials)) {
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
             $response = new Response(['status' => 'success']);
 
@@ -89,7 +89,7 @@ class AuthController extends Controller
 
     public function refresh()
     {
-
+        return Auth::guard()->refresh();
         if ($token = $this->guard()->refresh()) {
             $response = new Response(['status' => 'success']);
 

@@ -51,10 +51,16 @@ Route::group([
              */
 
             Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
+
+             /**
+             * Logout route
+             */
+
+            Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         });
     });
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth.jwt'])->group(function () {
 
         /**
          * User details route

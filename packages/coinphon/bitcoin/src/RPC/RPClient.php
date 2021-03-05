@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use App\Models\RPCLog;
 use App\Models\RPCMessages;
 use App\Models\Wallet;
+use CoinPhon\Bitcoin\RPC\Exceptions\ForbiddenException;
 
 class RPClient{
 
@@ -71,10 +72,9 @@ class RPClient{
             'body' => json_encode($body),
             'http_errors' => false
         ]);
+        $fullCommand = "{$this->method} ".implode(" ", $this->params);
 
         $response = new RPClientResponse($request);
-
-        $fullCommand = "{$this->method} ".implode(" ", $this->params);
 
         $log = RPCLog::create([
             'method' => $this->method,

@@ -15,6 +15,7 @@ class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->index();
             $table->string('label', 64);
             $table->string('full_label', 64);
             $table->foreignId('type_id')->references('id')->on('wallet_types');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Wallet;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,9 +14,12 @@ class WalletListResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
+            'id' => $this->uuid,
             'label' => $this->label,
-            'type' => $this->type,
+            'balance' => $this->getWallet()->getBalance(),
+            'type' => new TypeResource($this->type),
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

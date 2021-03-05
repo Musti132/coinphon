@@ -15,6 +15,11 @@ class Wallet extends Model
         'type'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
     public function publicKey(){
         return $this->belongsTo(WalletPublicKey::class);
     }

@@ -45,6 +45,7 @@ class WalletCreator extends RPClient
         
         $wallet = new Wallet([
             'label' => $this->label,
+            'uuid' => (string) Str::uuid(),
             'type_id' => 1,
             'full_label' => $walletName,
             'server_id' => $this->server->id,

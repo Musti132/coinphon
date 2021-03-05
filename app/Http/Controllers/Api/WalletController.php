@@ -10,8 +10,8 @@ use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
 use App\Repository\WalletRepository;
-use App\Http\Resources\WalletListResource;
-use CoinPhon\Bitcoin\RPC\RPClientResponse;
+use App\Http\Resources\Wallet\WalletListResource;
+use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
 use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 use CoinPhon\Bitcoin\Wallet\WalletClient;
 
@@ -42,24 +42,17 @@ class WalletController extends Controller
      * @return void
      */
     public function store(WalletCreate $request){
-
-        $user = User::find($request->user()->id);
+        $user = $request->user();
         $server = Server::find(1);
         $label = $request->label;
         
         try{
             $user->createWallet($server, $label);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Wallet created successfully',
-            ]);
+            return Response::successMessage('Wallet created successfully');
 
         } catch(WalletCreatorException $ex){
-            return response()->json([
-                'status' => 'false',
-                'message' => 'Unknown error happened, please contact support',
-            ], 500);
+            return Response::error('Unknown error happened, please contact support. '.$ex->getMessage());
         }
     }
     
@@ -70,16 +63,11 @@ class WalletController extends Controller
      * @return void
      */
     public function balance(Wallet $wallet){
-        $balance = 0;
-
         $balance = $wallet->getWallet()->getBalance();
 
-        if(isset($body['code']) && $body['code'] == RPClientResponse::NOT_LOADED){
-            $wallet->getWallet()->loadWallet();
-            $balance = $wallet->getWallet()->getBalance();
-        }
-
-        return $balance;
+        return Response::success([
+            'balance' => $balance
+        ]);
     }
     
     /**
@@ -89,6 +77,8 @@ class WalletController extends Controller
      * @return void
      */
     public function address(Wallet $wallet){
-        return $wallet->getWallet()->newAddress(WalletClient::BECH32);
+        return Response::success([
+            'address' => $wallet->getWallet()->newAddress(WalletClient::BECH32),
+        ]);
     }
 }
