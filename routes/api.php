@@ -45,8 +45,6 @@ Route::group([
              */
 
             Route::get('user', [AuthController::class, 'user'])->name('user');
-            Route::post('user', [AuthController::class, 'user'])->name('user');
-
             /**
              * Refresh details route
              */
