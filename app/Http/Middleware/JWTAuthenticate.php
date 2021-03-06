@@ -33,10 +33,11 @@ class JWTAuthenticate
             $payload = JWTAuth::decode($token);
             $method = $request->method();
 
+            //Do we actually need to check for csrf dude?
             $needToCheckForCSRF = $method == "POST" ? true : ($method == "PUT" ? true : ($method == "DELETE" ? true : ($method == "PATCH" ? true : false)));
-            
+
             if ($needToCheckForCSRF) {
-                return Response::forbidden("Token expired, please login again");
+
                 //Make sure user has CSRF token in headers
                 if (!$request->hasHeader("X-XSRF-TOKEN")) {
                     return Response::error('Token missing');

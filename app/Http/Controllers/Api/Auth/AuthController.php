@@ -114,6 +114,7 @@ class AuthController extends Controller
     {
 
         if ($token = $this->guard()->refresh()) {
+            
             $response = new Response(['status' => 'success']);
 
             $response->withCookie(
