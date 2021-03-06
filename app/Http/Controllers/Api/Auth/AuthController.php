@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Helpers\Response as HelperResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Str;
 
@@ -36,22 +38,35 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if ($token = auth('api')->claims([config('jwt.name')."csrf_claim" => Str::random(32)])->attempt($credentials)) {
+        if ($token = auth()->claims([config('jwt.name')."csrf_claim" => Str::random(32)])->attempt($credentials)) {
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
             $response = new Response(['status' => 'success']);
-
+            
             $response->withCookie(
-                config('jwt.name')."token",
+                "token",
                 $token,
                 config('jwt.ttl'),
                 '/'
             );
 
-            $response->withCookie(
-                config('jwt.name')."csrf",
+            Cookie::queue(
+                "csrf_tkn",
                 auth()->payload()->get(config('jwt.name').'csrf_claim'),
                 config('jwt.refresh_ttl'),
-                '/'
+                null,
+                null,
+                false,
+                false,
+            );
+
+            Cookie::queue(
+                "logged_in",
+                1,
+                config('jwt.refresh_ttl'),
+                null,
+                null,
+                false,
+                false,
             );
 
             return $response;
@@ -62,13 +77,21 @@ class AuthController extends Controller
 
     public function logout()
     {
-
         $this->guard()->logout();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Logged out Successfully.'
-        ], 200);
+        Cookie::queue(
+            "logged_in",
+            0,
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            false,
+            false,
+        );
+
+        return HelperResponse::successMessage('Logged out successfully.')
+            ->withCookie(Cookie::forget('token'))
+            ->withCookie(Cookie::forget('csrf_tkn'));
     }
 
     public function user(Request $request)
@@ -89,16 +112,17 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return Auth::guard()->refresh();
+        
         if ($token = $this->guard()->refresh()) {
             $response = new Response(['status' => 'success']);
 
             $response->withCookie(
-                config('jwt.name'),
+                "token",
                 $token,
                 config('jwt.refresh_ttl'),
                 '/'
             );
+            
             return $response;
         }
 

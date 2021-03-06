@@ -2,9 +2,10 @@
 
 namespace App\Helpers;
 
-Class Response {
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-    public const HTTP_FORBIDDEN = 403;
+Class Response extends HttpResponse{
+    
     public const HTTP_SUCCESS = 200;
     public const HTTP_ERROR = 400;
 

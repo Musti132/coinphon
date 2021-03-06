@@ -45,6 +45,7 @@ Route::group([
              */
 
             Route::get('user', [AuthController::class, 'user'])->name('user');
+            Route::post('user', [AuthController::class, 'user'])->name('user');
 
             /**
              * Refresh details route
@@ -61,18 +62,6 @@ Route::group([
     });
 
     Route::middleware(['auth.jwt'])->group(function () {
-
-        /**
-         * User details route
-         */
-
-        Route::get('user', [AuthController::class, 'user'])->name('user');
-
-        /**
-         * Refresh details route
-         */
-
-        Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
 
         /**
          * Wallet controller

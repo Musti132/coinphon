@@ -50,7 +50,7 @@ class WalletController extends Controller
             $user->createWallet($server, $label);
 
             return Response::successMessage('Wallet created successfully');
-
+            
         } catch(WalletCreatorException $ex){
             return Response::error('Unknown error happened, please contact support. '.$ex->getMessage());
         }
