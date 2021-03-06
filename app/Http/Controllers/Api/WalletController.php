@@ -28,7 +28,7 @@ class WalletController extends Controller
      */
     public function index(){
         
-        $wallets = $this->walletRepository->all();
+        $wallets = $this->walletRepository->allByAuthUser();
         
         return Response::success([
             'wallets' => WalletListResource::collection($wallets),

@@ -118,7 +118,7 @@ class AuthController extends Controller
             $response = new Response(['status' => 'success']);
 
             $response->withCookie(
-                "token",
+                "refresh_token",
                 $token,
                 config('jwt.refresh_ttl'),
                 '/'

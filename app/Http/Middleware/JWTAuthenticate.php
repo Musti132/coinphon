@@ -28,7 +28,7 @@ class JWTAuthenticate
     {
         try {
             //Grab token from cookie and decode
-            $rawToken = $request->cookie('token');
+            $rawToken = $request->cookie('refresh_token');
             $token = new Token($rawToken);
             $payload = JWTAuth::decode($token);
             $method = $request->method();
@@ -40,7 +40,7 @@ class JWTAuthenticate
 
                 //Make sure user has CSRF token in headers
                 if (!$request->hasHeader("X-XSRF-TOKEN")) {
-                    return Response::error('Token missing');
+                    return Response::error('CSRF token missing');
                 }
 
                 $claimName = config('jwt.name') . 'csrf_claim';
