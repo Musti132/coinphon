@@ -28,7 +28,9 @@ class JWTAuthenticate
     {
         try {
             //Grab token from cookie and decode
-            $rawToken = $request->cookie('refresh_token');
+            error_log('Some message here.');
+            $rawToken = $request->cookie('refresh_token') ?? $request->cookie('token');
+
             $token = new Token($rawToken);
             $payload = JWTAuth::decode($token);
             $method = $request->method();
@@ -50,11 +52,28 @@ class JWTAuthenticate
             }
 
             //Authenticate user
-            $user = User::find($payload['sub']);
-
-            Auth::setUser($user, true);
+            Auth::onceUsingId($payload['sub'], true);
         } catch (TokenExpiredException $ex) {
-            return Response::forbidden("Token expired, please login again");
+            return Response::forbidden("Token expired");
+            /*
+            $currentToken = JWTAuth::getToken();
+        
+            if ($token = JWTAuth::refresh($currentToken)) {
+                
+                $response = new Response(['status' => 'success']);
+    
+                Cookie::queue(
+                    "token",
+                    $token,
+                    config('jwt.ttl'),
+                    null,
+                    null,
+                    false,
+                    true,
+                );
+            } else{
+                return Response::error('Couldnt refresh token, please login agian');
+            }*/
         } catch (TokenMismatchException $ex) {
             return Response::forbidden("Token doesnt match, please login again");
         } catch (TokenBlacklistedException $ex) {
@@ -62,7 +81,7 @@ class JWTAuthenticate
         } catch (TokenInvalidException $ex) {
             return Response::error("Token invalid/not found, please login again");
         } catch (Exception $ex) {
-            return Response::error("Unknown error happened with authentication, please contact support");
+            return Response::error($ex->getMessage());
         }
 
         return $next($request);

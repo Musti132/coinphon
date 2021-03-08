@@ -42,11 +42,22 @@ class AuthController extends Controller
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
             $response = new Response(['status' => 'success']);
 
+            /*
             $response->withCookie(
                 "token",
                 $token,
                 config('jwt.ttl'),
                 '/'
+            );*/
+
+            Cookie::queue(
+                "token",
+                $token,
+                config('jwt.ttl'),
+                null,
+                null,
+                false,
+                true,
             );
 
             Cookie::queue(
@@ -78,6 +89,7 @@ class AuthController extends Controller
     public function logout()
     {
         $this->guard()->logout();
+        JWTAuth::invalidate(JWTAuth::parseToken());
 
         Cookie::queue(
             "logged_in",
@@ -91,6 +103,7 @@ class AuthController extends Controller
 
         return HelperResponse::successMessage('Logged out successfully.')
             ->withCookie(Cookie::forget('token'))
+            //->withCookie(Cookie::forget('refresh_token'))
             ->withCookie(Cookie::forget('csrf_tkn'));
     }
 
@@ -112,16 +125,20 @@ class AuthController extends Controller
 
     public function refresh()
     {
-
-        if ($token = $this->guard()->refresh()) {
+        $currentToken = JWTAuth::getToken();
+        
+        if ($token = JWTAuth::refresh($currentToken)) {
             
             $response = new Response(['status' => 'success']);
 
-            $response->withCookie(
-                "refresh_token",
+            Cookie::queue(
+                "token",
                 $token,
-                config('jwt.refresh_ttl'),
-                '/'
+                config('jwt.ttl'),
+                null,
+                null,
+                false,
+                true,
             );
 
             return $response;
