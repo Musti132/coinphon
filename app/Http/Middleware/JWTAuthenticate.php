@@ -55,9 +55,12 @@ class JWTAuthenticate
             
         } catch (TokenExpiredException $ex) {
 
+            // Get current token
             $currentToken = JWTAuth::getToken();
         
+            // Refresh it
             if ($token = JWTAuth::refresh($currentToken)) {
+                // Return back a cookie with the new token
                 Cookie::queue(
                     "token",
                     $token,
