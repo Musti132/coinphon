@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Str;
+use Tymon\JWTAuth\Facades\JWTFactory;
+use Tymon\JWTAuth\Token;
 
 class AuthController extends Controller
 {
@@ -42,18 +44,10 @@ class AuthController extends Controller
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
             $response = new Response(['status' => 'success']);
 
-            /*
-            $response->withCookie(
-                "token",
-                $token,
-                config('jwt.ttl'),
-                '/'
-            );*/
-
             Cookie::queue(
                 "token",
                 $token,
-                config('jwt.ttl'),
+                config('jwt.refresh_ttl'),
                 null,
                 null,
                 false,
@@ -103,7 +97,6 @@ class AuthController extends Controller
 
         return HelperResponse::successMessage('Logged out successfully.')
             ->withCookie(Cookie::forget('token'))
-            //->withCookie(Cookie::forget('refresh_token'))
             ->withCookie(Cookie::forget('csrf_tkn'));
     }
 
@@ -134,7 +127,7 @@ class AuthController extends Controller
             Cookie::queue(
                 "token",
                 $token,
-                config('jwt.ttl'),
+                config('jwt.refresh_ttl'),
                 null,
                 null,
                 false,

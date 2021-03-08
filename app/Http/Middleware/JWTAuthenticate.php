@@ -5,11 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
-use App\Models\User;
 use Exception;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
+use Illuminate\Support\Facades\Cookie;
 use Tymon\JWTAuth\Token;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
@@ -28,7 +28,6 @@ class JWTAuthenticate
     {
         try {
             //Grab token from cookie and decode
-            error_log('Some message here.');
             $rawToken = $request->cookie('refresh_token') ?? $request->cookie('token');
 
             $token = new Token($rawToken);
@@ -53,27 +52,29 @@ class JWTAuthenticate
 
             //Authenticate user
             Auth::onceUsingId($payload['sub'], true);
+            
         } catch (TokenExpiredException $ex) {
-            return Response::forbidden("Token expired");
-            /*
+
             $currentToken = JWTAuth::getToken();
         
             if ($token = JWTAuth::refresh($currentToken)) {
-                
-                $response = new Response(['status' => 'success']);
-    
                 Cookie::queue(
                     "token",
                     $token,
-                    config('jwt.ttl'),
+                    config('jwt.refresh_ttl'),
                     null,
                     null,
                     false,
                     true,
                 );
+
+                $id = JWTAuth::setToken($token)->payload()->get('sub');
+
+                //Authenticate user if token expired
+                Auth::onceUsingId($id, true);
             } else{
-                return Response::error('Couldnt refresh token, please login agian');
-            }*/
+                return Response::error('Couldnt refresh token, please login again');
+            }
         } catch (TokenMismatchException $ex) {
             return Response::forbidden("Token doesnt match, please login again");
         } catch (TokenBlacklistedException $ex) {
