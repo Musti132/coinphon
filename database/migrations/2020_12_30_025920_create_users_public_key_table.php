@@ -16,7 +16,7 @@ class CreateUsersPublicKeyTable extends Migration
         Schema::create('users_public_key', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->longText('public_key')->unique();
+            $table->string('public_key', 255)->unique();
             $table->timestamps();
         });
     }
