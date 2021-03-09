@@ -15,7 +15,7 @@ class CreateWalletPublicKeysTable extends Migration
     {
         Schema::create('wallet_public_keys', function (Blueprint $table) {
             $table->id();
-            $table->text('key', 255)->unique();
+            $table->longText('key')->unique();
             $table->timestamps();
         });
     }
