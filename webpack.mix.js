@@ -11,15 +11,29 @@ require('laravel-mix-eslint-config');
  |
  */
 
+
+mix.webpackConfig({
+    resolve: {
+        extensions: ['.js', '.vue', '.json'],
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js',
+            '@': __dirname + '/resources/js'
+        },
+    },
+    node: {
+        fs: 'empty'
+    }
+})
+
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/landing/style.scss', 'public/css/style.css').webpackConfig({
         module: {
-          rules: [
-            {
-              test: /\.scss/,
-              loader: 'import-glob-loader'
-            }
-          ]
+            rules: [
+                {
+                    test: /\.scss/,
+                    loader: 'import-glob-loader'
+                }
+            ]
         }
-      });
+    });
 mix.disableNotifications();

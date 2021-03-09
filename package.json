@@ -13,7 +13,7 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.14.1",
         "@typescript-eslint/parser": "^4.14.1",
-        "axios": "^0.19",
+        "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
         "eslint": "^7.18.0",
@@ -33,6 +33,10 @@
     },
     "dependencies": {
         "babel-loader": "^8.2.2",
-        "vue-router": "^3.4.9"
+        "laravel-echo": "^1.10.0",
+        "request": "^2.88.2",
+        "socket.io-client": "^3.1.2",
+        "vue-router": "^3.4.9",
+        "vue-socket.io": "^3.0.10"
     }
 }
