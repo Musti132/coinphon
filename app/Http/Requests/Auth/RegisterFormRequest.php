@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\CountryCheck;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -26,10 +27,14 @@ class RegisterFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'first' => ['required', 'string', 'max:32'],
+            'last' => ['required', 'string', 'max:64'],
+            'business_name' => ['string', 'min:4', 'max:64'],
+            'country' => ['required', 'integer', new CountryCheck],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
+        
     }
 
     protected function failedValidation(Validator $validator){

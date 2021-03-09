@@ -9,6 +9,9 @@ use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Helpers\Response as HelperResponse;
+use App\Http\Resources\User\UserAuthResource;
+use App\Models\Business;
+use App\Models\PhoneNumber;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -21,19 +24,30 @@ class AuthController extends Controller
 {
     public function register(RegisterFormRequest $request)
     {
+        $country_id = $request->country;
 
-        $user = User::create([
-            'name' => $request->name,
+        $data = [
+            'first' => $request->first,
+            'last' => $request->last,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+            'country_id' => $country_id,
+        ];
+
+        if($request->filled('business_name')){
+            $business = Business::create([
+                'name' => $request->business_name,
+            ]);
+
+            $data['is_business'] = true;
+            $data['business_id'] = $business->id;
+        }
+
+        $user = User::create($data);
 
         $token = JWTAuth::fromUser($user);
 
-
-        return response()->json([
-            'status' => 'success',
-        ], 200)->header('Authorization', $token);
+        return HelperResponse::successMessage('Successfully registered.');
     }
 
     public function login(LoginRequest $request)
@@ -112,10 +126,10 @@ class AuthController extends Controller
                 'message' => 'Permission denied'
             ]);
         }
-
+        
         return response()->json([
             'status' => 'success',
-            'data' => $request->user(),
+            'data' => new UserAuthResource($request->user()->load(['country', 'business'])),
         ]);
     }
 

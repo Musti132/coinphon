@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(CountryTableSeeder::class);
+        \App\Models\PhoneNumber::factory(1)->create();
         \App\Models\ServerRegion::factory(1)->create();
         \App\Models\Server::factory(1)->create();
         \App\Models\User::factory(1)->create();

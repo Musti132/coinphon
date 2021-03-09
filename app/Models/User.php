@@ -23,6 +23,12 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'first',
+        'last',
+        'phone_id',
+        'country_id',
+        'business_id',
+        'is_business'
     ];
 
     /**
@@ -34,6 +40,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'updated_at',
         'remember_token',
+        'hidden'
     ];
 
     /**
@@ -45,25 +52,49 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function wallets(){
+    protected $appends = ['country_name'];
+
+    public function wallets()
+    {
         return $this->hasMany(Wallet::class, 'user_id', 'id');
     }
 
-    public function orders(){
+    public function orders()
+    {
         return $this->hasManyThrough(Order::class, Wallet::class, 'id', 'wallet_id');
     }
-    
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
     }
 
-    public function refresh(){
+    public function refresh()
+    {
         return $this->hasMany(UserRefreshToken::class);
+    }
+
+    public function country()
+    {
+        return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+    
+    public function getCountryNameAttribute()
+    {
+        return $this->country->name;
+    }
+
+    public function phone()
+    {
+        return $this->hasOne(PhoneNumber::class, 'id', 'phone_id');
+    }
+
+    public function business(){
+        return $this->hasOne(Business::class, 'id', 'business_id');
     }
 }
