@@ -42,7 +42,10 @@ class AuthController extends Controller
 
         if ($token = auth()->claims([config('jwt.name') . "csrf_claim" => Str::random(64)])->attempt($credentials)) {
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
-            $response = new Response(['status' => 'success']);
+            $response = new Response([
+                'status' => 'success',
+                'message' => 'Authentication successful'
+            ]);
 
             Cookie::queue(
                 "token",
@@ -77,7 +80,7 @@ class AuthController extends Controller
             return $response;
         }
 
-        return response()->json(['error' => 'login_error'], 401);
+        return HelperResponse::forbidden('Username/Password not found.');
     }
 
     public function logout()

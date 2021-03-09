@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "CoinPhon API Documentation",
-        "_postman_id": "33362cb5-435b-45e4-b92f-470bc610b184",
+        "_postman_id": "bb86c89c-7c64-429c-ab25-23c5c7effe1c",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -42,7 +42,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"blanditiis\",\n    \"email\": \"pasquale.huel@example.org\",\n    \"password\": \"dolorem\"\n}"
+                            "raw": "{\n    \"name\": \"voluptas\",\n    \"email\": \"dwiegand@example.net\",\n    \"password\": \"esse\"\n}"
                         },
                         "description": ""
                     },
@@ -71,21 +71,21 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"kessler.sofia@example.com\",\n    \"password\": \"facere\"\n}"
+                            "raw": "{\n    \"email\": \"effertz.asia@example.net\",\n    \"password\": \"veritatis\"\n}"
                         },
                         "description": ""
                     },
                     "response": []
                 },
                 {
-                    "name": "api\/v1\/user",
+                    "name": "api\/v1\/auth\/user",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/user",
+                            "path": "api\/v1\/auth\/user",
                             "query": [],
-                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/user"
+                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/auth\/user"
                         },
                         "method": "GET",
                         "header": [
@@ -104,14 +104,14 @@
                     "response": []
                 },
                 {
-                    "name": "api\/v1\/refresh",
+                    "name": "api\/v1\/auth\/refresh",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/refresh",
+                            "path": "api\/v1\/auth\/refresh",
                             "query": [],
-                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/refresh"
+                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/auth\/refresh"
                         },
                         "method": "GET",
                         "header": [
@@ -130,7 +130,33 @@
                     "response": []
                 },
                 {
-                    "name": "index",
+                    "name": "api\/v1\/auth\/logout",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/logout",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/auth\/logout"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "api\/v1\/wallet",
                     "request": {
                         "url": {
                             "protocol": "http",
@@ -178,7 +204,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"label\": \"iure\",\n    \"type\": 41\n}"
+                            "raw": "{\n    \"label\": \"quia\",\n    \"type\": 767686631.396\n}"
                         },
                         "description": ""
                     },
@@ -197,7 +223,7 @@
                                 {
                                     "id": "wallet",
                                     "key": "wallet",
-                                    "value": "dolores",
+                                    "value": "autem",
                                     "description": ""
                                 }
                             ]
@@ -231,7 +257,7 @@
                                 {
                                     "id": "wallet",
                                     "key": "wallet",
-                                    "value": "ut",
+                                    "value": "tempore",
                                     "description": ""
                                 }
                             ]

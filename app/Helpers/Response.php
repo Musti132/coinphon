@@ -30,9 +30,9 @@ Class Response extends HttpResponse{
         ], $code, $headers);
     }
 
-    public static function forbidden(string $message = "Forbidden", $code = self::HTTP_FORBIDDEN, array $headers = []){
+    public static function forbidden(string $message = "Forbidden", $status = 'unauthorized', $code = self::HTTP_FORBIDDEN, array $headers = []){
         return response()->json([
-            'status' => 'unauthorized',
+            'status' => $status,
             'message' => $message,
         ], $code, $headers);
     }
