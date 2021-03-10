@@ -20,20 +20,28 @@ class Wallet extends Model
         return 'uuid';
     }
 
-    public function publicKey(){
+    public function publicKey()
+    {
         return $this->belongsTo(WalletPublicKey::class);
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function server(){
+    public function server()
+    {
         return $this->hasOne(Server::class, 'id');
     }
 
-    public function type(){
+    public function type()
+    {
         return $this->hasOne(WalletType::class, 'id', 'type_id');
     }
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('uuid', $value)->with('type')->firstOrFail();
+    }
 }

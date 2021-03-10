@@ -37,7 +37,7 @@ class WalletRepository
      */
     public function allByAuthUser()
     {
-        return auth()->user()->wallets;
+        return auth()->user()->wallets->load('type');
     }
     
     /**

@@ -29,7 +29,7 @@ class WalletCreate extends FormRequest
     {
         return [
             'label' => ['required', 'max:64', 'min:4', 'string', new UserLabelExist],
-            'type' => ['required', 'numeric', new WalletTypeExist],
+            'type' => ['required', 'string', new WalletTypeExist],
         ];
     }
 

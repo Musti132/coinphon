@@ -26,7 +26,7 @@ class WalletTypeExist implements Rule
      */
     public function passes($attribute, $value)
     {
-        return WalletType::where('id', $value)->exists();
+        return WalletType::where('name', $value)->exists();
     }
 
     /**

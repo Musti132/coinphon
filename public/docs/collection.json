@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "CoinPhon API Documentation",
-        "_postman_id": "bb86c89c-7c64-429c-ab25-23c5c7effe1c",
+        "_postman_id": "6a4f3db8-de30-49e6-9466-2e56eafe784f",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -42,7 +42,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"voluptas\",\n    \"email\": \"dwiegand@example.net\",\n    \"password\": \"esse\"\n}"
+                            "raw": "{\n    \"first\": \"omnis\",\n    \"last\": \"et\",\n    \"business_name\": \"nobis\",\n    \"country\": 15,\n    \"email\": \"charity20@example.com\",\n    \"password\": \"eum\"\n}"
                         },
                         "description": ""
                     },
@@ -71,7 +71,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"effertz.asia@example.net\",\n    \"password\": \"veritatis\"\n}"
+                            "raw": "{\n    \"email\": \"erica.herzog@example.net\",\n    \"password\": \"commodi\"\n}"
                         },
                         "description": ""
                     },
@@ -156,6 +156,32 @@
                     "response": []
                 },
                 {
+                    "name": "api\/v1\/country\/list",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/country\/list",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/v1\/country\/list"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
                     "name": "api\/v1\/wallet",
                     "request": {
                         "url": {
@@ -204,7 +230,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"label\": \"quia\",\n    \"type\": 767686631.396\n}"
+                            "raw": "{\n    \"label\": \"vero\",\n    \"type\": 50.283553\n}"
                         },
                         "description": ""
                     },
@@ -223,7 +249,7 @@
                                 {
                                     "id": "wallet",
                                     "key": "wallet",
-                                    "value": "autem",
+                                    "value": "perferendis",
                                     "description": ""
                                 }
                             ]
@@ -257,7 +283,7 @@
                                 {
                                     "id": "wallet",
                                     "key": "wallet",
-                                    "value": "tempore",
+                                    "value": "eum",
                                     "description": ""
                                 }
                             ]

@@ -16,7 +16,7 @@ Class Response extends HttpResponse{
         ], $code, $headers);
     }
 
-    public static function success(array $data = [], $code = self::HTTP_SUCCESS, array $headers = []){
+    public static function success($data = [], $code = self::HTTP_SUCCESS, array $headers = []){
         return response()->json([
             'status' => 'success',
             'data' => $data,

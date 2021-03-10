@@ -11,6 +11,7 @@ use App\Models\Server;
 use App\Helpers\Response;
 use App\Repository\WalletRepository;
 use App\Http\Resources\Wallet\WalletListResource;
+use App\Http\Resources\Wallet\WalletShowResource;
 use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
 use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 use CoinPhon\Bitcoin\Wallet\WalletClient;
@@ -49,7 +50,7 @@ class WalletController extends Controller
         try{
             $user->createWallet($server, $label);
 
-            return Response::successMessage('Wallet created successfully');
+            return Response::successMessage('Your wallet will be created shortly');
             
         } catch(WalletCreatorException $ex){
             return Response::error('Unknown error happened, please contact support. '.$ex->getMessage());
@@ -80,5 +81,15 @@ class WalletController extends Controller
         return Response::success([
             'address' => $wallet->getWallet()->newAddress(WalletClient::BECH32),
         ]);
+    }
+
+        /**
+     * address
+     *
+     * @param  mixed $wallet
+     * @return void
+     */
+    public function show(Wallet $wallet){
+        return Response::success(new WalletShowResource($wallet));
     }
 }
