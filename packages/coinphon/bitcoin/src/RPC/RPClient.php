@@ -72,6 +72,7 @@ class RPClient{
             'body' => json_encode($body),
             'http_errors' => false
         ]);
+        
         $fullCommand = "{$this->method} ".implode(" ", $this->params);
 
         $response = new RPClientResponse($request);

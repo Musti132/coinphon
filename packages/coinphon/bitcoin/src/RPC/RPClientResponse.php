@@ -9,7 +9,10 @@ class RPClientResponse{
 
     public const NOT_LOADED = -18;
     public const NO_ACCESS = 6;
+    public const BLOCKS_VERIFY = -28;
+
     public const HTTP_NO_ACCESS = 403;
+    public const HTTP_INTERNAL_SERVER_ERROR = 500;
 
     public $response;
     public $error;
@@ -34,11 +37,25 @@ class RPClientResponse{
                 'message' => 'No access to RPC client',
             ];
         }
+
+        if($this->httpCode === self::HTTP_INTERNAL_SERVER_ERROR){
+            return $this->error = [
+                'code' => self::BLOCKS_VERIFY,
+                'message' => 'Blocks are being verified, please wait',
+            ];
+        }
+
         return $this->error = json_decode($response->getBody(), true)['error'];
     }
     
     public function handleBody(){
+
         if($this->httpCode === self::HTTP_NO_ACCESS){
+            return $this->body = [];
+        }
+
+        if($this->httpCode === self::HTTP_INTERNAL_SERVER_ERROR){
+          
             return $this->body = [];
         }
         return $this->body = json_decode($this->response->getBody(), true)['result'];

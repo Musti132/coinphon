@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
-use App\Helpers\Response as HelperResponse;
 use App\Http\Resources\User\UserAuthResource;
-use App\Models\Business;
-use App\Models\PhoneNumber;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Business;
+use App\Models\PhoneNumber;
+use App\Helpers\Response as HelperResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
 
@@ -34,7 +34,8 @@ class AuthController extends Controller
             'country_id' => $country_id,
         ];
 
-        if($request->filled('business_name')){
+        if ($request->filled('business_name')) {
+            
             $business = Business::create([
                 'name' => $request->business_name,
             ]);
@@ -126,7 +127,7 @@ class AuthController extends Controller
                 'message' => 'Permission denied'
             ]);
         }
-        
+
         return response()->json([
             'status' => 'success',
             'data' => new UserAuthResource($request->user()->load(['country', 'business'])),
@@ -136,9 +137,9 @@ class AuthController extends Controller
     public function refresh()
     {
         $currentToken = JWTAuth::getToken();
-        
+
         if ($token = JWTAuth::refresh($currentToken)) {
-            
+
             $response = new Response(['status' => 'success']);
 
             Cookie::queue(

@@ -1,10 +1,7 @@
 <?php
 namespace CoinPhon\Bitcoin\Address;
 
-
-
 interface AddressInterface{
-
     /**
      * @return string Bitcoin address from public key
      */

@@ -64,7 +64,11 @@ class WalletController extends Controller
      * @return void
      */
     public function balance(Wallet $wallet){
-        $balance = $wallet->getWallet()->getBalance();
+        try{
+            $balance = $wallet->getWallet()->getBalance();
+        } catch(Exception $ex){
+            return Response::error('Unknown error happened');
+        }
 
         return Response::success([
             'balance' => $balance
@@ -83,7 +87,7 @@ class WalletController extends Controller
         ]);
     }
 
-        /**
+    /**
      * address
      *
      * @param  mixed $wallet

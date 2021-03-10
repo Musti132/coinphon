@@ -31,7 +31,7 @@ class WalletClient extends RPClient
             ->execute();
 
         if ($request->isError()) {
-            return 0;
+            return "null";
         }
 
         return number_format($request->body['balance'], $decimals);

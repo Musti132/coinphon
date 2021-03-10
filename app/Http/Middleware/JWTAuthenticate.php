@@ -60,6 +60,7 @@ class JWTAuthenticate
         
             // Refresh it
             if ($token = JWTAuth::refresh($currentToken)) {
+
                 // Return back a cookie with the new token
                 Cookie::queue(
                     "token",
@@ -70,7 +71,7 @@ class JWTAuthenticate
                     false,
                     true,
                 );
-
+                
                 $id = JWTAuth::setToken($token)->payload()->get('sub');
 
                 //Authenticate user if token expired
@@ -79,11 +80,11 @@ class JWTAuthenticate
                 return Response::error('Couldnt refresh token, please login again');
             }
         } catch (TokenMismatchException $ex) {
-            return Response::forbidden("Token doesnt match, please login again");
+            return Response::forbidden("Access token doesnt match, please login");
         } catch (TokenBlacklistedException $ex) {
-            return Response::forbidden("Token is blacklisted, please login again");
+            return Response::forbidden("Access token is blacklisted, please login again");
         } catch (TokenInvalidException $ex) {
-            return Response::error("Token invalid/not found, please login again");
+            return Response::error("Access token invalid/not found, please login");
         } catch (Exception $ex) {
             return Response::error($ex->getMessage());
         }

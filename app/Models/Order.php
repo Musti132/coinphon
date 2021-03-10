@@ -12,4 +12,8 @@ class Order extends Model
     public function transaction(){
         return $this->hasOne(Transaction::class);
     }
+
+    public function wallet(){
+        return $this->belongsTo(Wallet::class, 'wallet_id');
+    }
 }

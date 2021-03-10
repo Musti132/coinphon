@@ -2,20 +2,20 @@
 
 namespace App\Repository;
 
-use App\Models\Wallet;
+use App\Models\Order;
 
-class WalletRepository
+class OrderRepository
 {
     
 
     /**
      * @param int $id
      * 
-     * @return Wallet
+     * @return Order
      */
-    public function getWallet(int $id)
+    public function getOrder(int $id)
     {
-        return Wallet::findOrFail($id);
+        return Order::findOrFail($id);
     }
 
     /**
@@ -23,9 +23,9 @@ class WalletRepository
      * 
      * @return Wallet
      */
-    public function getAllWalletById(int $id)
+    public function getAllOrdersById(int $id)
     {
-        return Wallet::where('user_id', $id);
+        return auth()->user()->orders();
     }
 
     /**
@@ -37,17 +37,24 @@ class WalletRepository
      */
     public function all(string $orderBy = "id", string $sort = "asc", array $columns = [])
     {
-        return $this->sort(new Wallet, $orderBy, $sort, $columns);
+        return $this->sort(new Order, $orderBy, $sort, $columns);
     }
 
     /**
      * Returns all wallets related to the authenticated user.
      *
+     * @param bool $withTransaction Load transaction
+     * 
      * @return Wallet.
      */
-    public function allByAuthUser()
+    public function allByAuthUser(bool $withTransaction = false)
     {
-        $wallets = $this->getAllWalletById(\Auth::id())->with('type')->get();
+        $wallets = $this->getAllOrdersById(\Auth::id())
+        ->when($withTransaction, function($q) use($withTransaction){
+            $q->with(['transaction', 'wallet' => function($q){
+                $q->with('type');
+            }]);
+        })->get();
 
         return $wallets;
     }
