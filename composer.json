@@ -20,6 +20,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "aws/aws-sdk-php": "^3.171",
+        "barryvdh/laravel-cors": "^2.0",
         "bitwasp/bitcoin": "^1.0.4",
         "coinphon/bitcoin": "@dev",
         "doctrine/dbal": "^3.0",
