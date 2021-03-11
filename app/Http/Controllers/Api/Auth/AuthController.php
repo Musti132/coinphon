@@ -66,8 +66,8 @@ class AuthController extends Controller
                 "token",
                 $token,
                 config('jwt.refresh_ttl'),
-                null,
-                null,
+                false,
+                false,
                 false,
                 true,
             );
@@ -88,7 +88,7 @@ class AuthController extends Controller
                 config('jwt.refresh_ttl'),
                 null,
                 null,
-                false,
+                null,
                 false,
             );
 
