@@ -24,7 +24,6 @@ class OrderController extends Controller
      * @return void
      */
     public function index(){
-        //return $this->orderRepository->allByAuthUser(true);
         return OrderAllResource::collection($this->orderRepository->allByAuthUser(true));
     }
 }

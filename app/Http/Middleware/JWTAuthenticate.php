@@ -80,11 +80,11 @@ class JWTAuthenticate
                 return Response::error('Couldnt refresh token, please login again');
             }
         } catch (TokenMismatchException $ex) {
-            return Response::forbidden("Access token doesnt match, please login");
+            return Response::forbidden("CSRF/Access token doesnt match, please login");
         } catch (TokenBlacklistedException $ex) {
             return Response::forbidden("Access token is blacklisted, please login again");
         } catch (TokenInvalidException $ex) {
-            return Response::error("Access token invalid/not found, please login");
+            return Response::forbidden("Access token invalid/not found, please login");
         } catch (Exception $ex) {
             return Response::error($ex->getMessage());
         }

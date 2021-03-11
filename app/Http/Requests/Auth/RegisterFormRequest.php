@@ -30,7 +30,7 @@ class RegisterFormRequest extends FormRequest
             'first' => ['required', 'string', 'max:32'],
             'last' => ['required', 'string', 'max:64'],
             'business_name' => ['string', 'min:4', 'max:64'],
-            'country' => ['required', 'integer', new CountryCheck],
+            'country' => ['required', 'string', new CountryCheck],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];

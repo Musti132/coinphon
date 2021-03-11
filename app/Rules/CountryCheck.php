@@ -26,7 +26,7 @@ class CountryCheck implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Country::where('name', $value)->doesntExist();
+        return Country::where('code', $value)->doesntExist();
     }
 
     /**
