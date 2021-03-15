@@ -20,7 +20,7 @@ class CreateWalletsTable extends Migration
             $table->string('full_label', 64);
             $table->foreignId('type_id')->references('id')->on('wallet_types');
             $table->boolean('status')->default(1);
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignUuid('user_id')->references('id')->on('users');
             $table->foreignId('server_id')->references('id')->on('servers');
             $table->timestamps();
         });

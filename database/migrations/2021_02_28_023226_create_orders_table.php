@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('order_id', 11)->unique();
             $table->foreignId('wallet_id')->references('id')->on('wallets');
             $table->decimal('amount', 8, 8);
             $table->decimal('amount_fiat', 8, 2);

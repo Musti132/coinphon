@@ -255,6 +255,8 @@ return [
 
     'decrypt_cookies' => false,
 
+    'identifier' => 'uuid',
+
     /*
     |--------------------------------------------------------------------------
     | Providers

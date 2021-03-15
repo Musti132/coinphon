@@ -6,6 +6,7 @@ use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Server;
+use App\Models\User;
 
 class WalletFactory extends Factory
 {
@@ -24,7 +25,7 @@ class WalletFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
+            'user_id' => User::all()->random(1)->first()->id,
             'label' => Str::random(16),
             'uuid' => (string) Str::uuid(),
             'type_id' => 1,

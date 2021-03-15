@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use CoinPhon\Bitcoin\Wallet\Traits\Wallet as WalletTrait;
+use Illuminate\Support\Str;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -28,7 +29,8 @@ class User extends Authenticatable implements JWTSubject
         'phone_id',
         'country_id',
         'business_id',
-        'is_business'
+        'is_business',
+        'uuid'
     ];
 
     /**
@@ -53,6 +55,14 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $appends = ['country_name'];
+    public $incrementing = false;
+
+    protected static function boot(){
+        parent::boot();
+        static::creating(function ($post) {
+            $post->{$post->getKeyName()} = (string)Str::uuid();
+        });
+    }
 
     public function wallets()
     {

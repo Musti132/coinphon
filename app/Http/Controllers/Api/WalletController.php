@@ -12,6 +12,7 @@ use App\Helpers\Response;
 use App\Repository\WalletRepository;
 use App\Http\Resources\Wallet\WalletListResource;
 use App\Http\Resources\Wallet\WalletShowResource;
+use App\Models\Webhook;
 use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
 use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 use CoinPhon\Bitcoin\Wallet\WalletClient;
@@ -19,6 +20,12 @@ use CoinPhon\Bitcoin\Wallet\WalletClient;
 class WalletController extends Controller
 {
     public $walletRepository;
+
+    public $types = [
+        'legacy' => WalletClient::LEGACY,
+        'p2sh-segwit' => WalletClient::P2SH,
+        'bech32' => WalletClient::BECH32,
+    ];
 
     public function __construct(WalletRepository $walletRepository){
         $this->walletRepository = $walletRepository;
@@ -28,7 +35,19 @@ class WalletController extends Controller
      * @return Illuminate\Http\JsonResponse
      */
     public function index(){
+
+        /*$webhook = Webhook::create([
+            'endpoint' => 'https://dog.ceo/api/breeds/image/random'
+        ]);*/
+
+        $wallet = Wallet::find(1);
+
+        ///$wallet->webhooks()->attach($webhook->id);
+
+        return $wallet->webhooks;
         
+        return Wallet::find(1)->webhooks;
+
         $wallets = $this->walletRepository->allByAuthUser();
         
         return Response::success([
@@ -81,9 +100,16 @@ class WalletController extends Controller
      * @param  mixed $wallet
      * @return void
      */
-    public function address(Wallet $wallet){
+    public function address(Request $request, Wallet $wallet){;
+        $type = WalletClient::LEGACY;
+
+        if(in_array($request->type, $this->types)){
+            $type = $this->types[$request->type];
+        }
+
         return Response::success([
-            'address' => $wallet->getWallet()->newAddress(WalletClient::BECH32),
+            'address' => $wallet->getWallet()->newAddress($type),
+            'expires' => now()->addHour(),
         ]);
     }
 

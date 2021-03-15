@@ -13,17 +13,17 @@ class WalletRepository
      * 
      * @return Wallet
      */
-    public function getWallet(int $id)
+    public function getWallet(string $id)
     {
         return Wallet::findOrFail($id);
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * 
      * @return Wallet
      */
-    public function getAllWalletById(int $id)
+    public function getAllWalletById(string $id)
     {
         return Wallet::where('user_id', $id);
     }
@@ -47,6 +47,7 @@ class WalletRepository
      */
     public function allByAuthUser()
     {
+
         $wallets = $this->getAllWalletById(\Auth::id())->with('type')->get();
 
         return $wallets;

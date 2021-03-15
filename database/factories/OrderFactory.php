@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
+use RandomLib\Factory as RandomFactory;
 
 class OrderFactory extends Factory
 {
@@ -23,7 +24,14 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
+        $factory = new RandomFactory;
+
+        $generator = $factory->getMediumStrengthGenerator();
+
+        $orderId = 'PHON'.$generator->generateString(7, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
         return [
+            'order_id' => $orderId,
             'wallet_id' => Wallet::all()->random(1)->first()->id,
             'amount' => '0.00281823',
             'amount_fiat' => '130.45',

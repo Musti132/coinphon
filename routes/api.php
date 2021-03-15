@@ -81,5 +81,11 @@ Route::group([
          * Order controller
          */
         Route::apiResource('order', OrderController::class);
+        Route::group([
+            'prefix' => 'order',
+            'as' => 'order.'
+        ], function () {
+            Route::post('{wallet}/new', [OrderController::class, 'newOrder'])->name('new');
+        });
     });
 });

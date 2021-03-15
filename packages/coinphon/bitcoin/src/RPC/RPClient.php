@@ -33,6 +33,13 @@ class RPClient{
      */
     private $client;
 
+    /**
+     * Http Client
+     * 
+     * @var boolean
+     */
+    private $testnet = true;
+
 
     public $params = [];
     public $wallet;
@@ -61,6 +68,10 @@ class RPClient{
         ];
 
         $label = ($this->wallet === null) ? null : $this->wallet->full_label;
+
+        if($this->testnet == true){
+            $this->server->port = "1".$this->server->port;
+        }
 
         if($label !== null){
             $this->url = $this->server->host.":".$this->server->port."/wallet/".$label;

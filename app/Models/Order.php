@@ -9,6 +9,19 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'wallet_id',
+        'amount',
+        'amount_fiat',
+        'address',
+        'status',
+    ];
+
+    public function getRouteKeyName()
+    {
+        return 'order_id';
+    }
+
     public function transaction(){
         return $this->hasOne(Transaction::class);
     }

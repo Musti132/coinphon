@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Illuminate\Contracts\Validation\Validator;
 
 Class Response extends HttpResponse{
     
@@ -35,6 +36,20 @@ Class Response extends HttpResponse{
         return response()->json([
             'status' => $status,
             'message' => $message,
+        ], $code, $headers);
+    }
+
+    public function custom($data, $status, $code = 200, array $headers = []){
+        return response()->json([
+            'status' => $status,
+            'data' => $data,
+        ], $code, $headers);
+    }
+
+    public static function validation(Validator $data, $status = "validation_error", $code = 422, array $headers = []){
+        return response()->json([
+            'status' => $status,
+            'data' => $data->errors()->all(),
         ], $code, $headers);
     }
 }

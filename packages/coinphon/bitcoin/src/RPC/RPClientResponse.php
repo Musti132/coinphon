@@ -40,8 +40,8 @@ class RPClientResponse{
 
         if($this->httpCode === self::HTTP_INTERNAL_SERVER_ERROR){
             return $this->error = [
-                'code' => self::BLOCKS_VERIFY,
-                'message' => 'Blocks are being verified, please wait',
+                'code' => json_decode($this->response->getBody(), true)['error']['code'],
+                'message' => json_decode($this->response->getBody(), true)['error']['message'],
             ];
         }
 
@@ -49,15 +49,18 @@ class RPClientResponse{
     }
     
     public function handleBody(){
-
         if($this->httpCode === self::HTTP_NO_ACCESS){
             return $this->body = [];
         }
 
         if($this->httpCode === self::HTTP_INTERNAL_SERVER_ERROR){
-          
-            return $this->body = [];
+
+            return $this->body = [
+                'status' => 'failed',
+                'code' => json_decode($this->response->getBody(), true)['error']['code'],
+            ];
         }
+
         return $this->body = json_decode($this->response->getBody(), true)['result'];
     }
 

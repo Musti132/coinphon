@@ -55,7 +55,9 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if ($token = auth()->claims([config('jwt.name') . "csrf_claim" => Str::random(64)])->attempt($credentials)) {
+        if ($token = auth()->claims([
+            config('jwt.name') . "csrf_claim" => Str::random(64),
+            ])->attempt($credentials)) {
             //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
             $response = new Response([
                 'status' => 'success',

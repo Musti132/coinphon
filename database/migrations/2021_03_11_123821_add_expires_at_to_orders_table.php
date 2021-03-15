@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersPublicKeyTable extends Migration
+class AddExpiresAtToOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateUsersPublicKeyTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_public_key', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUuid('user_id')->references('id')->on('users');
-            $table->string('public_key', 255)->unique();
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->timestamp('expires_at')->after('status');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateUsersPublicKeyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_public_key');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('expires_at');
+        });
     }
 }

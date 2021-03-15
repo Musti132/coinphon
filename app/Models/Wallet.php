@@ -40,6 +40,10 @@ class Wallet extends Model
         return $this->hasOne(WalletType::class, 'id', 'type_id');
     }
 
+    public function webhooks(){
+        return $this->belongsToMany(Webhook::class, 'webhook_wallet');
+    }
+
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('uuid', $value)->with('type')->firstOrFail();
