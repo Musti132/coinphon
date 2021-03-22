@@ -31,7 +31,6 @@ class OrderRepository
         });
 
         return $orders;
-        //return auth()->user()->load('wallets.orders');
     }
 
     /**
@@ -63,7 +62,7 @@ class OrderRepository
             $q->with(['wallet' => function($q){
                 $q->with('type');
             }]);
-        })->get();
+        });
 
         return $wallets;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wallet\WalletCreate;
+use App\Http\Requests\Wallet\WalletAddressRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Wallet;
@@ -23,12 +24,6 @@ class WalletController extends Controller
 {
     public $walletRepository;
 
-    public $types = [
-        'legacy' => WalletClient::LEGACY,
-        'p2sh-segwit' => WalletClient::P2SH,
-        'bech32' => WalletClient::BECH32,
-    ];
-
     public function __construct(WalletRepository $walletRepository)
     {
         $this->walletRepository = $walletRepository;
@@ -42,11 +37,9 @@ class WalletController extends Controller
 
     public function index()
     {
-        $wallets = $this->walletRepository->allByAuthUser();
+        $wallets = $this->walletRepository->allByAuthUser()->paginate(10);
 
-        return Response::success([
-            'wallets' => WalletListResource::collection($wallets),
-        ]);
+        return WalletListResource::collection($wallets);
     }
 
     /**
@@ -102,11 +95,9 @@ class WalletController extends Controller
      * @return void
      */
 
-    public function address(Request $request, Wallet $wallet)
-    {;
-
+    public function address(WalletAddressRequest $request, Wallet $wallet)
+    {
         $data = (new WalletService())->getAddress($request, $wallet);
-
         return Response::success($data);
     }
 

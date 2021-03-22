@@ -24,7 +24,6 @@ class WalletClient extends RPClient
 
     public function getBalance($decimals = 7)
     {
-
         $request = $this->setWallet($this->wallet)
             ->setMethod("getbalance")
             ->execute();

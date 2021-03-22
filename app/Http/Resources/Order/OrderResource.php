@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
             'amount_fiat' => $this->amount_fiat,
             'address' => $this->address,
             'status' => $this->status,
+            'note' => 'Hello',
             'created_at' => $this->created_at,
             'wallet' => new WalletShowResource($this->wallet),
             'transaction' => new TransactionResource($this->whenLoaded('transaction')),

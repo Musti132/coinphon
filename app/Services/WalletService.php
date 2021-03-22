@@ -3,9 +3,16 @@
 namespace App\Services;
 
 use App\Models\Wallet;
-use Request;
+use Illuminate\Http\Request;
+use CoinPhon\Bitcoin\Wallet\WalletClient;
 
 class WalletService{
+
+    public $types = [
+        'legacy' => WalletClient::LEGACY,
+        'p2sh-segwit' => WalletClient::P2SH,
+        'bech32' => WalletClient::BECH32,
+    ];
 
     public function getAddress(Request $request, Wallet $wallet){
         $type = WalletClient::LEGACY;

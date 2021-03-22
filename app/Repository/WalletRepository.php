@@ -8,7 +8,6 @@ use Str;
 class WalletRepository
 {
     
-
     /**
      * @param int $id
      * 
@@ -26,7 +25,7 @@ class WalletRepository
      */
     public function getAllWalletById(string $id)
     {
-        return Wallet::where('user_id', $id);
+        return User::findOrFail($id)->wallets();
     }
 
     /**
@@ -49,7 +48,8 @@ class WalletRepository
     public function allByAuthUser()
     {
 
-        $wallets = $this->getAllWalletById(\Auth::id())->with('type')->get();
+        // $wallets = (auth()->user())->load('wallets.type')->wallets;
+        $wallets = Wallet::with('type')->where('user_id', request()->user()->id);
 
         return $wallets;
     }
