@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Wallet;
+use Str;
 
 class WalletRepository
 {
@@ -69,5 +70,15 @@ class WalletRepository
         })->when($columns, function ($q) use ($columns) {
             return $q->select($columns);
         })->get();
+    }
+
+    public function createWallet(string $label, string $fullLabel, $serverId){
+        return new Wallet([
+            'label' => $label,
+            'uuid' => (string) Str::uuid(),
+            'type_id' => 1,
+            'full_label' => $fullLabel,
+            'server_id' => $serverId,
+        ]);
     }
 }

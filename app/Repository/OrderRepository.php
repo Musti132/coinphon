@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Helpers\Response;
 use App\Models\Order;
 
 class OrderRepository
@@ -23,9 +24,14 @@ class OrderRepository
      * 
      * @return Wallet
      */
-    public function getAllOrdersById(int $id)
+    public function getAllOrdersById(string $id)
     {
-        return auth()->user()->orders();
+        $orders = Order::whereHas('wallet', function($q) {
+            $q->where('user_id', \Auth::id());
+        });
+
+        return $orders;
+        //return auth()->user()->load('wallets.orders');
     }
 
     /**
@@ -44,14 +50,17 @@ class OrderRepository
      * Returns all wallets related to the authenticated user.
      *
      * @param bool $withTransaction Load transaction
+     * @param bool $withType Load wallet types
      * 
      * @return Wallet.
      */
-    public function allByAuthUser(bool $withTransaction = false)
+    public function allByAuthUser(bool $withTransaction = false, bool $withType = false)
     {
         $wallets = $this->getAllOrdersById(\Auth::id())
         ->when($withTransaction, function($q) use($withTransaction){
-            $q->with(['transaction', 'wallet' => function($q){
+            $q->with(['transaction']);
+        })->when($withType, function ($q) use($withType){
+            $q->with(['wallet' => function($q){
                 $q->with('type');
             }]);
         })->get();

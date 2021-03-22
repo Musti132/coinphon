@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Wallet;
 
+use Cache;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class WalletListResource extends JsonResource
@@ -14,10 +15,16 @@ class WalletListResource extends JsonResource
      */
     public function toArray($request)
     {
+        $wallet = $this->getWallet();
+
+        $balance = Cache::remember('wallet_'.$this->uuid, now()->addMinutes(10), function () use($wallet) {
+            return $wallet->getBalance();
+        });
+
         return [
             'id' => $this->uuid,
             'label' => $this->label,
-            'balance' => $this->getWallet()->getBalance(),
+            'balance' => $balance,
             'type' => new TypeResource($this->whenLoaded('type')),
             'created_at' => $this->created_at->diffForHumans(),
         ];

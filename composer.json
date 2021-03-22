@@ -22,6 +22,7 @@
         "aws/aws-sdk-php": "^3.171",
         "bitwasp/bitcoin": "^1.0.4",
         "coinphon/bitcoin": "@dev",
+        "consoletvs/charts": "7.*",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -31,9 +32,11 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
         "paragonie/random-lib": "^2.0",
+        "predis/predis": "^1.1",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "knuckleswtf/scribe": "^2.5",
@@ -49,7 +52,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper"
+            ]
         }
     },
     "autoload": {

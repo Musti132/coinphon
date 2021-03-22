@@ -1,3 +1,1 @@
-Create repositories
-- Done Change authentication to work with HttpOnly cookies.
-Create Notifications
+Fix RequestException RPClient.php when loading wallet with a label not found

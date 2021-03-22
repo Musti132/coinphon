@@ -7,6 +7,7 @@ use App\Http\Requests\Order\NewOrderRequest;
 use App\Http\Resources\Order\OrderAllResource;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
+use App\Http\Resources\Order\OrderListResource;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Transaction;
@@ -38,7 +39,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return OrderAllResource::collection($this->orderRepository->allByAuthUser(true));
+        return OrderListResource::collection($this->orderRepository->allByAuthUser(false, true));
     }
 
     public function newOrder(NewOrderRequest $request, Wallet $wallet)

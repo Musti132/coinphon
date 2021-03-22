@@ -7,14 +7,13 @@ use App\Models\Server;
 use App\Models\Wallet;
 use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
 use CoinPhon\Bitcoin\RPC\RPClient;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
 
 class WalletClient extends RPClient
 {
     public const LEGACY = 'legacy';
     public const P2SH = 'p2sh-segwit';
     public const BECH32 = 'bech32';
-
-    public $wallet;
 
     public function __construct(Wallet $wallet)
     {
@@ -27,14 +26,18 @@ class WalletClient extends RPClient
     {
 
         $request = $this->setWallet($this->wallet)
-            ->setMethod("getwalletinfo")
+            ->setMethod("getbalance")
             ->execute();
 
         if ($request->isError()) {
-            return "null";
+            try{
+                return $this->loadWallet();
+            } catch(WalletDontExistException $e){
+                return "0.0000000";
+            }
         }
 
-        return number_format($request->body['balance'], $decimals);
+        return number_format($request->body, $decimals);
     }
 
     public function loadWallet()
@@ -44,6 +47,8 @@ class WalletClient extends RPClient
                 $this->wallet->full_label
             ])
             ->execute();
+            
+        throw new WalletDontExistException("Cannot find wallet");
 
         return $request->isError() ? $request->getError() : $request;
     }

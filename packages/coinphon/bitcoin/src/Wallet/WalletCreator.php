@@ -11,8 +11,8 @@ use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
 
 class WalletCreator extends RPClient
 {
-    public $server;
     public $label;
+    public $name;
     
     private $client;
     private $user;
@@ -21,7 +21,6 @@ class WalletCreator extends RPClient
     public function __construct(Server $server, User $user, $label){
 
         parent::__construct($server);
-        $this->server = $server;
         $this->user = $user;
         $this->label = $label;
 
@@ -30,11 +29,11 @@ class WalletCreator extends RPClient
 
     public function createWallet(){
 
-        $walletName = "{$this->label}-{$this->user->id}".md5($this->user->id.Str::random(10));
-    
+        $this->name = "{$this->label}-".md5($this->user->id.Str::random(9));
+        
         $response = $this->setMethod("createwallet")
             ->setParam([
-                $walletName
+                $this->name
             ])
             ->execute();
 
@@ -42,18 +41,8 @@ class WalletCreator extends RPClient
         if($response->isError()){
             throw new WalletCreatorException("REF: {$this->logId}");
         }
-        
-        $wallet = new Wallet([
-            'label' => $this->label,
-            'uuid' => (string) Str::uuid(),
-            'type_id' => 1,
-            'full_label' => $walletName,
-            'server_id' => $this->server->id,
-        ]);
-        
-        $this->user->wallets()->save($wallet);
 
-        return true;
+        return $this;
     }
 
 

@@ -27,7 +27,7 @@ class UserLabelExist implements Rule
     public function passes($attribute, $value)
     {
     
-        return Wallet::select('label')->where('label', $value)->doesntExist();
+        return Wallet::select('label')->where('label', $value)->where('user_id', auth()->id())->doesntExist();
     }
 
     /**

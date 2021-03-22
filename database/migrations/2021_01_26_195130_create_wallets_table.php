@@ -22,6 +22,7 @@ class CreateWalletsTable extends Migration
             $table->boolean('status')->default(1);
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->foreignId('server_id')->references('id')->on('servers');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

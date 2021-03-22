@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Order;
 
-use App\Http\Resources\Wallet\WalletShowResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Str;
 
-class OrderAllResource extends JsonResource
+class OrderListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,12 @@ class OrderAllResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'amount' => $this->amount,
             'amount_fiat' => $this->amount_fiat,
             'address' => $this->address,
             'status' => $this->status,
-            'created_at' => $this->created_at,
-            'wallet' => new WalletShowResource($this->wallet),
-            'transaction' => new TransactionResource($this->whenLoaded('transaction')),
+            'name' => Str::random(6),
         ];
     }
 }

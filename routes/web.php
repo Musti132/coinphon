@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Helpers\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,7 @@ Route::get('/', function () {
 //Route::view('/{any?}', function (){
 //    return view('home');
 //})->where('any', '^(?!api\/)[\/\w\.-]*');
+
+Route::fallback(function () {
+    return Response::notFound();
+});

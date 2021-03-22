@@ -37,7 +37,7 @@ class JWTAuthenticate
             //Do we actually need to check for csrf dude?
             $needToCheckForCSRF = $method == "POST" ? true : ($method == "PUT" ? true : ($method == "DELETE" ? true : ($method == "PATCH" ? true : false)));
 
-            if ($needToCheckForCSRF) {
+            if ($needToCheckForCSRF && env('APP_DEBUG') !== true) {
 
                 //Make sure user has CSRF token in headers
                 if (!$request->hasHeader("X-XSRF-TOKEN")) {
@@ -51,7 +51,9 @@ class JWTAuthenticate
             }
 
             //Authenticate user
-            Auth::onceUsingId($payload['sub'], true);
+            if(!Auth::onceUsingId($payload['sub'], true)){
+                return Response::forbidden('Permission denied');
+            };
             
         } catch (TokenExpiredException $ex) {
 

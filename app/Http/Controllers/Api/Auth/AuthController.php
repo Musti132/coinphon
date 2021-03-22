@@ -35,7 +35,7 @@ class AuthController extends Controller
         ];
 
         if ($request->filled('business_name')) {
-            
+
             $business = Business::create([
                 'name' => $request->business_name,
             ]);
@@ -46,7 +46,40 @@ class AuthController extends Controller
 
         $user = User::create($data);
 
-        $token = JWTAuth::fromUser($user);
+        $token = auth()->claims([
+            config('jwt.name') . "csrf_claim" => Str::random(64),
+        ])->login($user);
+
+        Cookie::queue(
+            "token",
+            $token,
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            false,
+            true,
+        );
+
+        Cookie::queue(
+            "csrf_tkn",
+            auth()->payload()->get(config('jwt.name') . 'csrf_claim'),
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            false,
+            false,
+        );
+
+        Cookie::queue(
+            "logged_in",
+            1,
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            false,
+            false,
+        );
+
 
         return HelperResponse::successMessage('Successfully registered.');
     }
@@ -57,8 +90,8 @@ class AuthController extends Controller
 
         if ($token = auth()->claims([
             config('jwt.name') . "csrf_claim" => Str::random(64),
-            ])->attempt($credentials)) {
-            //return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
+        ])->attempt($credentials)) {
+
             $response = new Response([
                 'status' => 'success',
                 'message' => 'Authentication successful'

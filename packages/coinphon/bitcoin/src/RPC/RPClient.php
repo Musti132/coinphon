@@ -11,6 +11,7 @@ use App\Models\RPCLog;
 use App\Models\RPCMessages;
 use App\Models\Wallet;
 use CoinPhon\Bitcoin\RPC\Exceptions\ForbiddenException;
+use GuzzleHttp\Exception\RequestException;
 
 class RPClient{
 
@@ -19,7 +20,7 @@ class RPClient{
      * 
      * @var array
      */
-    private $config = [
+    private array $config = [
         'auth' => [
             'rpcuser',
             'RPC123',
@@ -31,22 +32,29 @@ class RPClient{
      * 
      * @var Client
      */
-    private $client;
+    private Client $client;
 
     /**
      * Http Client
      * 
      * @var boolean
      */
-    private $testnet = true;
+    private bool $testnet = true;
+
+    /**
+     * Http Client
+     * 
+     * @var boolean
+     */
+    private int $testnetPort = 18332;
 
 
     public $params = [];
-    public $wallet;
-    public $method;
-    public $server;
-    public $logId;
-    public $url;
+    public ?Wallet $wallet = null;
+    public string $method;
+    public Server $server;
+    public int $logId;
+    public string $url;
 
     public function __construct(Server $server, array $config = []){
         $this->config = array_merge($this->config, $config);
@@ -68,20 +76,26 @@ class RPClient{
         ];
 
         $label = ($this->wallet === null) ? null : $this->wallet->full_label;
+        
+        $port = $this->server->port;
 
         if($this->testnet == true){
-            $this->server->port = "1".$this->server->port;
+            $port = 18332;
         }
 
         if($label !== null){
-            $this->url = $this->server->host.":".$this->server->port."/wallet/".$label;
+            $this->url = $this->server->host.":".$port."/wallet/".$label;
         } else{
-            $this->url = $this->server->host.":".$this->server->port;
+            $this->url = $this->server->host.":".$port."/";
+        }
+
+        if($this->method == "loadwallet"){
+            $this->url = $this->server->host.":".$port."/";
         }
 
         $request = $this->client->post($this->url, [
             'body' => json_encode($body),
-            'http_errors' => false
+            'http_errors' => false,
         ]);
         
         $fullCommand = "{$this->method} ".implode(" ", $this->params);
@@ -107,6 +121,7 @@ class RPClient{
 
             $log->message()->save($message);
         }
+
 
         return $response;
     }

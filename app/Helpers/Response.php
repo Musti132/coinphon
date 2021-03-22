@@ -39,11 +39,18 @@ Class Response extends HttpResponse{
         ], $code, $headers);
     }
 
-    public function custom($data, $status, $code = 200, array $headers = []){
+    public static function custom($data, $status, $code = 200, array $headers = []){
         return response()->json([
             'status' => $status,
             'data' => $data,
         ], $code, $headers);
+    }
+
+    public static function notFound(){
+        return response()->json([
+            'status' => "not_found",
+            'message' => "Request page not found",
+        ], 404, []);
     }
 
     public static function validation(Validator $data, $status = "validation_error", $code = 422, array $headers = []){
