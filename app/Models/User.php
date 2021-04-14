@@ -116,7 +116,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function orders()
     {
-        return $this->hasManyThrough(Order::class, Wallet::class, 'id', 'wallet_id');
+        return $this->hasManyThrough(Order::class, Wallet::class);
     }
 
     public function getJWTIdentifier()

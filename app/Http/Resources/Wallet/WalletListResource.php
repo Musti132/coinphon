@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class WalletListResource extends JsonResource
 {
+
+    public static $wrap = 'sdasd';
+
     /**
      * Transform the resource into an array.
      *
@@ -17,7 +20,7 @@ class WalletListResource extends JsonResource
     {
         $wallet = $this->getWallet();
 
-        $balance = Cache::remember('wallet_'.$this->uuid, now()->addMinutes(10), function () use($wallet) {
+        $balance = Cache::remember('wallet_'.$this->uuid, now()->addSeconds(config('cache.wallet_ttl')), function () use($wallet) {
             return $wallet->getBalance();
         });
 

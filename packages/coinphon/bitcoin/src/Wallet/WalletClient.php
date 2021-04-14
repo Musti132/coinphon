@@ -18,7 +18,7 @@ class WalletClient extends RPClient
     public function __construct(Wallet $wallet)
     {
         $this->wallet = $wallet;
-        $server = Server::find($this->wallet->server_id);
+        $server = $this->wallet->server;
         parent::__construct($server);
     }
 

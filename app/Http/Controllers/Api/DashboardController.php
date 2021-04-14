@@ -4,25 +4,56 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Wallet;
+use App\Repository\DashboardRepository;
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 
 class DashboardController extends Controller
 {
-    public function index(){
+    public $dashboardRepository;
+
+    public function __construct(DashboardRepository $dashboardRepository){
+        $this->dashboardRepository = $dashboardRepository;
+    }
+
+    public function index()
+    {
+        $ordersYesterday = $this->dashboardRepository->getOrdersByDate(now()->subDay(1))->get();
+        $ordersToday = $this->dashboardRepository->getOrdersByDate(today())->get();
+
+        $changeAmount = $this->dashboardRepository->calculatePercentageChange(
+            $ordersToday->sum('amount_fiat'),
+            $ordersYesterday->sum('amount_fiat')
+        );
+
+        $amountYesterday = $ordersYesterday->sum('amount_fiat');
+        $amountToday = $ordersToday->sum('amount_fiat');
+
+        $changeVolume = $this->dashboardRepository->calculatePercentageChange(
+            $ordersToday->count(),
+            $ordersYesterday->count()
+        );
 
         return Response::success([
             'total_balance' => '0.0551223',
             'total_balance_fiat' => '700',
+            'balance_change' => $changeAmount,
             'revenue' => Chartisan::build()
-            ->labels(['total_revenue'])
-            ->dataset("24h", [52, 41, 991])
-            ->toObject(),
+                ->labels(['total_revenue'])
+                ->extra(['change24h' => $changeAmount])
+                    ->dataset("today", [$amountToday])
+                    ->dataset("yesterday", [$amountYesterday])
+                    ->toObject(),
             'order_volume' => Chartisan::build()
-            ->labels(['total_volume'])
-            ->dataset("24h", [52, 41, 991])
-            ->toObject(),
+                ->labels(['total_volume'])
+                ->extra(['change24h' => $changeVolume])
+                    ->dataset("today", [$ordersToday->count()])
+                    ->dataset("yesterday", [$ordersYesterday->count()])
+                    ->toObject(),
             'price_chart' => [
                 'coins' => [
                     [
@@ -32,9 +63,9 @@ class DashboardController extends Controller
                         '24h' => '29.3',
                         'cap' => '1,078,414,735,960',
                         'last_7' => Chartisan::build()
-                        ->labels(['price_change'])
-                        ->dataset("7days", [49123, 51299, 41382])
-                        ->toObject(),
+                            ->labels(['price_change'])
+                                ->dataset("7days", [49123, 51299, 41382])
+                                ->toObject(),
                     ],
                     [
                         'name' => 'Ethereum',
@@ -43,12 +74,13 @@ class DashboardController extends Controller
                         '24h' => '6.2',
                         'cap' => '206,515,284,213',
                         'last_7' => Chartisan::build()
-                        ->labels(['price_change'])
-                        ->dataset("7days", [1452, 1499, 1532])
-                        ->toObject(),
+                            ->labels(['price_change'])
+                                ->dataset("7days", [1452, 1499, 1532])
+                                ->toObject(),
                     ],
                 ]
             ]
         ]);
     }
+    
 }

@@ -37,9 +37,11 @@ class WalletController extends Controller
 
     public function index()
     {
-        $wallets = $this->walletRepository->allByAuthUser()->paginate(10);
+        $wallets = $this->walletRepository->allByAuthUser();
 
-        return WalletListResource::collection($wallets);
+        return WalletListResource::collection($wallets->paginate())->additional([
+            'status' => 'success',
+        ]);
     }
 
     /**

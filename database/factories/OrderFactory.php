@@ -30,13 +30,22 @@ class OrderFactory extends Factory
 
         $orderId = 'PHON'.$generator->generateString(7, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
+        $rand = mt_rand(1, 2);
+
+        $date = now();
+
+        if($rand == 1){
+            $date = now()->subDay(1);
+        }
+
         return [
             'order_id' => $orderId,
             'wallet_id' => Wallet::all()->random(1)->first()->id,
             'amount' => '0.00281823',
-            'amount_fiat' => '130.45',
+            'amount_fiat' => mt_rand(000, 999).'.45',
             'address' => '18q5XMhURn2eJfFD3drNGanky9DAou4yvL',
             'status' => 0,
+            'created_at' => $date
         ];
     }
 }

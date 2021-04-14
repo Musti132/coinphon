@@ -31,7 +31,7 @@ class ListWalletsTest extends TestCase
                 'status' => 'success',
             ])
             ->assertJsonStructure([
-                'status', 'data' => ['wallets']
+                'status', 'data' => []
             ]);
     }
 }

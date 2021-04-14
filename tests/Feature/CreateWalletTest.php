@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CreateWalletTest extends TestCase
 {
-    public $wallets = 10;
+    public $wallets = 2;
 
     /**
      * A basic feature test example.

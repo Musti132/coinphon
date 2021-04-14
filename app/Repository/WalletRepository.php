@@ -49,7 +49,7 @@ class WalletRepository
     {
 
         // $wallets = (auth()->user())->load('wallets.type')->wallets;
-        $wallets = Wallet::with('type')->where('user_id', request()->user()->id);
+        $wallets = Wallet::with(['type', 'server'])->where('user_id', request()->user()->id);
 
         return $wallets;
     }

@@ -15,7 +15,6 @@ class UserAuthResource extends JsonResource
      */
     public function toArray($request)
     {
-        $business = ($this->business()->exists() == false) ? [] : new BusinessResource($this->business);
 
         return [
             'id' => $this->id,
@@ -24,7 +23,7 @@ class UserAuthResource extends JsonResource
             'first' => $this->first,
             'last' => $this->last,
             'is_business' => (bool) $this->is_business,
-            'business' => $business,
+            'business' => new BusinessResource($this->whenLoaded('business')),
         ];
     }
 }

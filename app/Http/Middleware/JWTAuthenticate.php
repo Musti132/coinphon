@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
+use App\Models\User;
 use Exception;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +52,10 @@ class JWTAuthenticate
             }
 
             //Authenticate user
+            
             if(!Auth::onceUsingId($payload['sub'], true)){
                 return Response::forbidden('Permission denied');
-            };
+            }
             
         } catch (TokenExpiredException $ex) {
 

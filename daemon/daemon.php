@@ -1,29 +1,15 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+$test = "Hello";
 
-use GuzzleHttp\Client;
-use CoinPhon\Bitcoin\Daemon\Daemon;
+$length = strlen($test) - 1;
 
+$toChange = $length - 2;
 
-$config = [
-    'auth' => [
-        'rpcuser',
-        'RPC123',
-    ],
-];
+$oldLetter = $test[$toChange];
 
-$client = new Client($config);
+echo strpos($test, 'l');
 
-$body = [
-    'jsonrpc' => '1.0',
-    'id' => random_int(99999, 999999),
-    'method' => "createwallet",
-    'params' => [
-        'test'
-    ],
-];
+$test[$toChange] = $test[$length];
+$test[$length] = $oldLetter;
 
-echo $client->post('52.214.96.107:18332/', [
-    'body' => json_encode($body),
-    'http_errors' => false
-])->getBody();
+echo $test;

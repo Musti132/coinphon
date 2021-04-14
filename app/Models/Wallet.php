@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use CoinPhon\Bitcoin\Wallet\Traits\Wallet as TraitsWallet;
+use CoinPhon\Bitcoin\Wallet\Traits\Wallet as WalletTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -44,10 +44,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Wallet extends Model
 {
-    use HasFactory, TraitsWallet, SoftDeletes;
+    use HasFactory, WalletTrait, SoftDeletes;
+
+    protected $hidden = [
+        'server_id',
+        'full_label',
+        'id',
+    ];
 
     protected $guarded = [];
-    protected $append = [
+    protected $with = [
         'type'
     ];
 
@@ -73,7 +79,7 @@ class Wallet extends Model
 
     public function server()
     {
-        return $this->hasOne(Server::class, 'id');
+        return $this->hasOne(Server::class, 'id', 'server_id');
     }
 
     public function type()
@@ -88,5 +94,29 @@ class Wallet extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('uuid', $value)->with('type')->firstOrFail();
+    }
+
+    public function monitoringIn(){
+        return $this->hasMany(MonitoringIn::class);
+    }
+
+    public function monitoringOut(){
+        return $this->hasMany(MonitoringOut::class);
+    }
+
+    public function getSuccessMonitoringIn(){
+        return $this->monitoringIn()->where('code', 200);
+    }
+
+    public function getSuccessMonitoringOut(){
+        return $this->monitoringOut()->where('code', 200);
+    }
+
+    public function getFailedMonitoringIn(){
+        return $this->monitoringIn()->where('code', '!=', 200);
+    }
+
+    public function getFailedMonitoringOut(){
+        return $this->monitoringOut()->where('code', '!=', 200);
     }
 }

@@ -57,10 +57,10 @@ class OrderRepository
     {
         $wallets = $this->getAllOrdersById(\Auth::id())
         ->when($withTransaction, function($q) use($withTransaction){
-            $q->with(['transaction']);
+            return $q->with(['transaction']);
         })->when($withType, function ($q) use($withType){
-            $q->with(['wallet' => function($q){
-                $q->with('type');
+            return $q->with(['wallet' => function($q){
+                return $q->with('type');
             }]);
         });
 
