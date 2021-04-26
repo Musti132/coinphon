@@ -1,5 +1,7 @@
-@extends('errors::minimal')
+<?php
+echo json_encode([
+    'status' => 'forbidden',
+    'message' => 'Forbidden'
+]);
 
-@section('title', __('Forbidden'))
-@section('code', '403')
-@section('message', __($exception->getMessage() ?: 'Forbidden'))
+?>

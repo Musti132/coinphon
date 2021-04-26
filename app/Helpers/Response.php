@@ -9,7 +9,7 @@ Class Response extends HttpResponse{
     
     public const HTTP_SUCCESS = 200;
     public const HTTP_ERROR = 400;
-    public const HTTP_NEEDS_AUTH = 401;
+    public const HTTP_NEEDS_AUTH = 403;
 
     public static function error(string $message = "There has been a error.", $code = self::HTTP_ERROR, array $headers = []){
         return response()->json([
@@ -32,7 +32,7 @@ Class Response extends HttpResponse{
         ], $code, $headers);
     }
 
-    public static function forbidden(string $message = "Forbidden", $status = 'unauthorized', $code = self::HTTP_NEEDS_AUTH, array $headers = []){
+    public static function forbidden(string $message = "Forbidden", $status = 'unauthorized', $code = self::HTTP_FORBIDDEN, array $headers = []){
         return response()->json([
             'status' => $status,
             'message' => $message,
@@ -49,7 +49,7 @@ Class Response extends HttpResponse{
     public static function notFound(){
         return response()->json([
             'status' => "not_found",
-            'message' => "Request page not found",
+            'message' => "Requested page not found",
         ], 404, []);
     }
 

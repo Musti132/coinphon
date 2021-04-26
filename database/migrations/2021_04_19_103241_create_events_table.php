@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWebhookWalletTable extends Migration
+class CreateEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateWebhookWalletTable extends Migration
      */
     public function up()
     {
-        Schema::create('webhook_wallet', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->references('id')->on('wallets');
-            $table->foreignId('webhook_id')->references('id')->on('webhooks');
+            $table->string('event');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateWebhookWalletTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('webhook_wallet');
+        Schema::dropIfExists('events');
     }
 }

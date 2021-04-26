@@ -18,6 +18,7 @@ class WalletClient extends RPClient
     public function __construct(Wallet $wallet)
     {
         $this->wallet = $wallet;
+
         $server = $this->wallet->server;
         parent::__construct($server);
     }
@@ -61,6 +62,15 @@ class WalletClient extends RPClient
             ])
             ->execute();
 
-        return $request->isError() ? $request->getError() : $request->body;
+        if($request->isError()){
+            
+            switch($request->getErrorCode()){
+                case -18:
+                    throw new WalletDontExistException('Wallet does not exist');
+            }
+
+        }
+
+        return $request->body;
     }
 }

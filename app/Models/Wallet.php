@@ -54,8 +54,12 @@ class Wallet extends Model
 
     protected $guarded = [];
     protected $with = [
-        'type'
+        'type',
+        'server'
     ];
+
+    public const STATUS_DEACTIVATED = 0;
+    public const STATUS_ACTIVE = 1;
 
     public function getRouteKeyName()
     {
@@ -88,7 +92,7 @@ class Wallet extends Model
     }
 
     public function webhooks(){
-        return $this->belongsToMany(Webhook::class, 'webhook_wallet');
+        return $this->hasMany(Webhook::class);
     }
 
     public function resolveRouteBinding($value, $field = null)
@@ -118,5 +122,9 @@ class Wallet extends Model
 
     public function getFailedMonitoringOut(){
         return $this->monitoringOut()->where('code', '!=', 200);
+    }
+
+    public function active(){
+        return $this->where('status', 1);
     }
 }

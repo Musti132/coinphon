@@ -15,7 +15,10 @@ class CreateWebhooksTable extends Migration
     {
         Schema::create('webhooks', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 16);
             $table->string('endpoint');
+            $table->foreignId('wallet_id')->references('id')->on('wallets');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

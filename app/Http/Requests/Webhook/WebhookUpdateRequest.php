@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Wallet;
+namespace App\Http\Requests\Webhook;
 
-use Illuminate\Contracts\Validation\Validator;
+use App\Helpers\Response;
+use App\Rules\UserOwnsWalletCheck;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class WalletAddressRequest extends FormRequest
+class WebhookUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,8 +16,8 @@ class WalletAddressRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {   
-        return (request()->user()->id === $this->wallet->user_id) ? true : false;
+    {
+        return true;
     }
 
     /**
@@ -26,16 +28,12 @@ class WalletAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['string'],
+            'endpoint' => ['string'],
+            'wallet_id' => [new UserOwnsWalletCheck],
         ];
     }
 
     protected function failedValidation(Validator $validator){
-        $message = [
-            'status' => 'failed',
-            'error' => $validator->errors()->all(),
-        ];
-
-        throw new HttpResponseException(response()->json($message, 422));
+        throw new HttpResponseException(Response::validation($validator));
     }
 }

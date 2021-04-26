@@ -119,6 +119,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasManyThrough(Order::class, Wallet::class);
     }
 
+    public function webhooks(){
+        return $this->hasManyThrough(Webhook::class, Wallet::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

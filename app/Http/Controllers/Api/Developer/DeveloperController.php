@@ -49,12 +49,12 @@ class DeveloperController extends Controller
                 'success' => Chartisan::build()
                 ->labels([$successIn->pluck('date')])
                 ->extra(['success_dataset' => $successIn->sum('count')])
-                    ->dataset("today", [$successIn->pluck('count', 'date')])
+                    ->dataset("success_dataset", [$successIn->pluck('count', 'date')])
                     ->toObject(),
                 'failed' => Chartisan::build()
                 ->labels([$failedIn->pluck('date')])
                 ->extra(['failed_dataset' => $failedIn->sum('count')])
-                    ->dataset("today", [$failedIn->pluck('count', 'date')])
+                    ->dataset("failed_dataset", [$failedIn->pluck('count', 'date')])
                     ->toObject(),
                 
             ],

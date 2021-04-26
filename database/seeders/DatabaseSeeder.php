@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\Wallet::factory(10)->create();
         \App\Models\Order::factory(10)->create();
         \App\Models\Transaction::factory(10)->create();
+        \App\Models\Webhook::factory(10)->create();
+        $this->call(EventSeeder::class);
         $this->call(DeveloperSeeder::class);
     }
 }

@@ -45,10 +45,4 @@ class RegisterFormRequest extends FormRequest
 
         throw new HttpResponseException(response()->json($message, 422));
     }
-    /*
-    public function messages(){
-        return [
-            'name.required' => 'GET A NAME',
-        ];
-    }*/
 }

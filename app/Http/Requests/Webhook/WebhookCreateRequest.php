@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Wallet;
+namespace App\Http\Requests\Webhook;
 
+use App\Rules\UserOwnsWalletCheck;
 use App\Helpers\Response;
-use Illuminate\Contracts\Validation\Validator;
+use App\Rules\CheckWalletStatus;
+use App\Rules\Webhook\CheckIfNameExists;
+use App\Rules\Webhook\CheckIfWebhookExists;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Rules\UserLabelExist;
-use App\Rules\WalletTypeExist;
 
-class WalletCreate extends FormRequest
+class WebhookCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +31,9 @@ class WalletCreate extends FormRequest
     public function rules()
     {
         return [
-            'label' => ['required', 'max:64', 'min:4', 'string', new UserLabelExist],
-            'type' => ['required', 'string', new WalletTypeExist],
+            'name' => ['required', 'string', 'max:16', new CheckIfNameExists],
+            'endpoint' => ['required', 'string', new CheckIfWebhookExists],
+            'wallet_id' => ['required', new UserOwnsWalletCheck, new CheckWalletStatus]
         ];
     }
 

@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Response;
 
 class RPClientResponse{
 
-    public const NOT_LOADED = -18;
+    public const NOT_LOADED_OR_DONT_EXIST = -18;
     public const NO_ACCESS = 6;
     public const BLOCKS_VERIFY = -28;
 
@@ -17,6 +17,7 @@ class RPClientResponse{
     public $response;
     public $error;
     public $statusCode;
+    public $errorCode;
     public $body;
 
     public function __construct(\GuzzleHttp\Psr7\Response $response) {
@@ -27,10 +28,15 @@ class RPClientResponse{
     }
 
     public function handleHttpCode(){
-        return ($this->httpCode != 200) ? $this->setError($this->response) : $this->statusCode = $this->httpCode;
+        return ($this->httpCode != 200) ? $this->setError(json_decode($this->response->getBody(), true)) : $this->statusCode = $this->httpCode;
     }
 
     public function setError($response){
+        
+        if(array_key_exists('code', $response['error'])){
+            $this->errorCode = $response['error']['code'];
+        }
+
         if($this->httpCode === self::HTTP_NO_ACCESS){
             return $this->error = [
                 'code' => self::NO_ACCESS,
@@ -40,12 +46,12 @@ class RPClientResponse{
 
         if($this->httpCode === self::HTTP_INTERNAL_SERVER_ERROR){
             return $this->error = [
-                'code' => json_decode($this->response->getBody(), true)['error']['code'],
-                'message' => json_decode($this->response->getBody(), true)['error']['message'],
+                'code' => $response['error']['code'],
+                'message' => $response['error']['message'],
             ];
         }
 
-        return $this->error = json_decode($response->getBody(), true)['error'];
+        return $this->error = $response['error'];
     }
     
     public function handleBody(){
@@ -70,6 +76,14 @@ class RPClientResponse{
 
     public function isError(){
         return ($this->error === null) ? false : true;
+    }
+
+    public function statusCode(){
+        return $this->httpCode;
+    }
+
+    public function getErrorCode(){
+        return $this->errorCode;
     }
 
 }

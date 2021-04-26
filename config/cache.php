@@ -104,9 +104,9 @@ return [
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
 
     /**
-     * Wallet cache time (seconds)
+     * Wallet balance cache time (seconds)
      */
 
-    'wallet_ttl' => 60,
+    'wallet_balance_ttl' => 60,
 
 ];

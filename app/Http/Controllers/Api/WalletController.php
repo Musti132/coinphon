@@ -17,8 +17,10 @@ use App\Models\Webhook;
 use App\Services\WalletService;
 use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
 use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
 use CoinPhon\Bitcoin\Wallet\WalletClient;
 use Illuminate\Support\Str;
+use Cache;
 
 class WalletController extends Controller
 {
@@ -80,9 +82,10 @@ class WalletController extends Controller
     public function balance(Wallet $wallet)
     {
         try {
-            $balance = $wallet->getWallet()->getBalance();
+            $balance = $wallet->refreshBalance();
+            Cache::put('wallet_'.$wallet->uuid, $balance, now()->addSeconds(config('cache.wallet_balance_ttl')));
         } catch (Exception $ex) {
-            return Response::error('Unknown error happened');
+            return Response::error('Couldnt refresh balance');
         }
 
         return Response::success([
@@ -99,8 +102,20 @@ class WalletController extends Controller
 
     public function address(WalletAddressRequest $request, Wallet $wallet)
     {
-        $data = (new WalletService())->getAddress($request, $wallet);
-        return Response::success($data);
+        if($wallet->status === Wallet::STATUS_DEACTIVATED){
+            return Response::forbidden('Wallet is currently deactivated, to activate go to dashboard',);
+        }
+
+        try{
+            $data = (new WalletService())->getAddress($request, $wallet);
+        } catch(WalletDontExistException $ex){
+            return Response::error($ex->getMessage());
+        }
+
+        return Response::success([
+            'address' => $data,
+            'expires' => now()->addHour(),
+        ]);
     }
 
     /**

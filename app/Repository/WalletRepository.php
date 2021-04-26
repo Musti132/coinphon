@@ -41,7 +41,7 @@ class WalletRepository
     }
 
     /**
-     * Returns all wallets related to the authenticated user.
+     * Returns all wallets related to the currently logged in user.
      *
      * @return Wallet.
      */

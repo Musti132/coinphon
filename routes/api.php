@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Developer\DeveloperController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\Developer\WebhookController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -100,8 +102,8 @@ Route::group([
             Route::get('', [DashboardController::class, 'index'])->name('home');
         });
 
-                /**
-         * Dashboard controller
+        /**
+         * Developer controller
          */
         Route::group([
             'prefix' => 'developer',
@@ -109,5 +111,11 @@ Route::group([
         ], function () {
             Route::get('', [DeveloperController::class, 'index'])->name('home');
         });
+
+        /**
+         * Webhook controller
+         */
+        
+        Route::apiResource('webhook', WebhookController::class);
     });
 });
