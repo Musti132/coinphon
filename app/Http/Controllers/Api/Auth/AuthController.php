@@ -92,9 +92,12 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->attempt($credentials)) {
 
+            $user = User::with('country', 'business')->where('email', $request->email)->first();
+
             $response = new Response([
                 'status' => 'success',
-                'message' => 'Authentication successful'
+                'message' => 'Authentication successful',
+                'data' => new UserAuthResource($user),
             ]);
 
             Cookie::queue(

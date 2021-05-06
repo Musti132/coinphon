@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Models\WalletType;
 use App\Repository\DashboardRepository;
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
@@ -38,10 +39,19 @@ class DashboardController extends Controller
             $ordersYesterday->count()
         );
 
+        $rate = WalletType::find(1)->rates()->where('currency', 'USD')->first()->rate;
+
+        //dd($rate);
+
+        $cryptoBalance = "0.551223";
+
+        $fiatBalance = number_format($cryptoBalance * $rate, 2);
+
         return Response::success([
-            'total_balance' => '0.0551223',
-            'total_balance_fiat' => '700',
+            'total_balance' => $cryptoBalance,
+            'total_balance_fiat' => $fiatBalance,
             'balance_change' => $changeAmount,
+            'volume_change' => $changeVolume,
             'revenue' => Chartisan::build()
                 ->labels(['total_revenue'])
                 ->extra(['change24h' => $changeAmount])
@@ -60,7 +70,7 @@ class DashboardController extends Controller
                         'name' => 'Bitcoin',
                         'short' => 'BTC',
                         'price' => '49123.3',
-                        '24h' => '29.3',
+                        'twenty_four_hour' => '29.3',
                         'cap' => '1,078,414,735,960',
                         'last_7' => Chartisan::build()
                             ->labels(['price_change'])
@@ -71,7 +81,7 @@ class DashboardController extends Controller
                         'name' => 'Ethereum',
                         'short' => 'ETH',
                         'price' => '1599.3',
-                        '24h' => '6.2',
+                        'twenty_four_hour' => '6.2',
                         'cap' => '206,515,284,213',
                         'last_7' => Chartisan::build()
                             ->labels(['price_change'])

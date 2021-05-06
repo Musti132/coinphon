@@ -63,7 +63,7 @@ class WebhookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Webhook  $webhook
      * @return \Illuminate\Http\Response
      */
     public function update(WebhookUpdateRequest $request, Webhook $webhook)

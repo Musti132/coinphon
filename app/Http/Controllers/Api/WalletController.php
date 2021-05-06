@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
+use App\Http\Requests\Wallet\WalletUpdateRequest;
 use App\Repository\WalletRepository;
 use App\Http\Resources\Wallet\WalletListResource;
 use App\Http\Resources\Wallet\WalletShowResource;
@@ -116,6 +117,27 @@ class WalletController extends Controller
             'address' => $data,
             'expires' => now()->addHour(),
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Http\Requests\Wallet\WalletUpdateRequest  $request
+     * @param  App\Models\Wallet  $wallet
+     * @return \Illuminate\Http\Response
+     */
+
+    public function update(WalletUpdateRequest $request, Wallet $wallet)
+    {
+        $label = $request->filled('label') ? $request->label : $wallet->label;
+        $status = $request->filled('status') ? $request->status : $wallet->status;
+
+        $wallet->update([
+            'label' => $label,
+            'status' => $status
+        ]);
+
+        return Response::successMessage('Wallet updated');
     }
 
     /**

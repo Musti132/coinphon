@@ -58,7 +58,6 @@ class JWTAuthenticate
             }
             
         } catch (TokenExpiredException $ex) {
-
             // Get current token
             $currentToken = JWTAuth::getToken();
         
@@ -78,7 +77,7 @@ class JWTAuthenticate
                 
                 $id = JWTAuth::setToken($token)->payload()->get('sub');
 
-                //Authenticate user if token expired
+                //Authenticate user
                 Auth::onceUsingId($id, true);
             } else{
                 return Response::error('Couldnt refresh token, please login again');

@@ -3,11 +3,12 @@
 namespace App\Http\Requests\Wallet;
 
 use App\Helpers\Response;
+use App\Rules\UserLabelExist;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class WalletAddressRequest extends FormRequest
+class WalletUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,8 +16,8 @@ class WalletAddressRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {   
-        return (request()->user()->id === $this->wallet->user_id);
+    {
+        return (request()->user()->id === $this->wallet->user_id);;
     }
 
     /**
@@ -27,7 +28,8 @@ class WalletAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['string'],
+            'label' => ['string', 'max:64', 'min:4', new UserLabelExist],
+            'status' => ['integer'],
         ];
     }
 

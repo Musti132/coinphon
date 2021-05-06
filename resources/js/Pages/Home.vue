@@ -1,76 +1,84 @@
 <template>
-    <div>
-        <p v-if="isConnected">We're connected to the server!</p>
-        <div v-for="(item, key) in socketMessage" :key="key">
-            <p>{{ item.topOfBookData[0].bidPrice }} {{item.ticker}}</p>
-        </div>
-        
-        <button @click="pingServer()">Ping Server</button>
-
-        <input type="text" v-model="fields.seconds" required/>
-
-        <button @click="updateTimer()">Update price interval</button>
+    <div class="center grid">
+        <vs-row>
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                <vs-card>
+                    <template #title>
+                        <h3>
+                            Current balance
+                            <i class="bx bxl-bitcoin btc-color"></i>
+                        </h3>
+                    </template>
+                    <template #text>
+                        <p>${{ revenue_fiat }} ({{ revenue_crypto }} BTC)</p>
+                    </template>
+                </vs-card>
+            </vs-col>
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                <vs-card>
+                    <template #title>
+                        <h3>
+                            Balance change (24h)
+                            <i class="bx bxs-dollar-circle success"></i>
+                        </h3>
+                    </template>
+                    <template #text>
+                        <p>${{ balance_change }}</p>
+                    </template>
+                </vs-card>
+            </vs-col>
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                <vs-card>
+                    <template #title>
+                        <h3>
+                            Order Volume change (24h)
+                            <i class="bx bxs-shopping-bag-alt primary"></i>
+                        </h3>
+                    </template>
+                    <template #text>
+                        <p>
+                            {{ volume_change }}%
+                        </p>
+                    </template>
+                </vs-card>
+            </vs-col>
+        </vs-row>
+        <HomeCryptoTable v-bind:cryptoData="cryptoData"></HomeCryptoTable>
     </div>
 </template>
 
 <script>
+import HomeCryptoTable from "../Components/HomeCryptoTable";
+
 export default {
     data() {
         return {
-            isConnected: false,
-            socketMessage: {},
-            counter: 0,
-            fields: {},
-            timer: null,
+            cryptoData: {},
+            revenue_fiat: null,
+            revenue_crypto: null,
+            balance_change: null,
+            volume_change: null,
         };
     },
 
-    mounted(){
-        //this.timer = setInterval(this.pingServer, 3000)
+    components: {
+        HomeCryptoTable,
     },
 
-    sockets: {
-        connect() {
-            // Fired when the socket connects.
-            this.isConnected = true;
-        },
-
-        message(data) {
-            //console.log(data);
-        },
-
-        disconnect() {
-            this.isConnected = false;
-        },
-
-        // Fired when the server sends something on the "messageChannel" channel.
-        messageChannel(data) {
-            this.socketMessage = data;
-            console.log(data);
-        },
+    mounted() {
+        this.loadRevenue();
     },
 
     methods: {
-        async updateTimer(){
-            clearInterval(this.timer);
-            this.timer = setInterval(await this.pingServer, this.fields.seconds);
+        loadRevenue() {
+            axios.get("/api/v1/dashboard").then((resp) => {
+                this.cryptoData = resp.data.data.price_chart.coins;
+                this.balance_change = resp.data.data.balance_change;
+                this.volume_change = resp.data.data.volume_change;
+                this.revenue_fiat = resp.data.data.total_balance_fiat;
+                this.revenue_crypto = resp.data.data.total_balance;
+            });
         },
-        async pingServer() {
-            console.log(Math.ceil(Math.random()*10))
-            // Send the "pingServer" event to the server.
-            this.$socket.emit("pingServer", "PING!");
-        },
-
     },
 };
 </script>
-
-<style scoped>
-p {
-    color: black !important;
-}
-
-input{
-    color: black !important;
-}
-</style>

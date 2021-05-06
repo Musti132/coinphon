@@ -7,7 +7,9 @@ use App\Http\Requests\Order\NewOrderRequest;
 use App\Http\Resources\Order\OrderAllResource;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
+use App\Http\Requests\Order\MarkOrderRequest;
 use App\Http\Resources\Order\OrderListResource;
+use App\Http\Resources\Order\OrderResource;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Transaction;
@@ -39,7 +41,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return OrderListResource::collection($this->orderRepository->allByAuthUser(false, false)->paginate(10));
+        return OrderListResource::collection($this->orderRepository->allByAuthUser(false, false)->paginate(5));
+    }
+
+    public function show(Order $order){
+        return new OrderResource($order);
     }
 
     public function newOrder(NewOrderRequest $request, Wallet $wallet)
@@ -72,5 +78,13 @@ class OrderController extends Controller
         $order->transaction()->save($transaction);
 
         return Response::successMessage('Order created');
+    }
+
+    public function mark(MarkOrderRequest $request, Order $order){
+
+        $order->status = 1;
+        $order->save();
+
+        return Response::successMessage('Order updated');
     }
 }

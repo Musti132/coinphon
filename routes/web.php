@@ -13,16 +13,12 @@ use App\Helpers\Response;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/', function () {
-    return view('home');
-});*/
 
 //Auth::routes();
 
-//Route::view('/{any?}', function (){
-//    return view('home');
-//})->where('any', '^(?!api\/)[\/\w\.-]*');
+Route::get('/{any?}', function (){
+    return view('home');
+})->where('any', '^(?!api\/)[\/\w\.-]*');
 
 Route::fallback(function () {
     return Response::notFound();

@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Models\CryptoRate;
+use App\Models\WalletType;
+use Http;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Stringable;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,6 +29,36 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function (){
+            $ticker = Http::get('https://blockchain.info/ticker')->json();
+
+            foreach($ticker as $key => $value){
+                $walletType = WalletType::find(1);
+
+                if($rate = $walletType->rates()->where('currency', $key)->first()){
+                    $rate->update([
+                        'rate' => $value['15m'],
+                        'currency' => $key,
+                        'symbol' => $value['symbol'],
+                    ]);
+
+                    return true;
+                }
+
+                $rate = new CryptoRate([
+                    'rate' => $value['15m'],
+                    'currency' => $key,
+                    'symbol' => $value['symbol'],
+                ]);
+
+                $walletType->rates()->save($rate);
+
+            }
+
+
+        })->onFailure(function (Stringable $output){
+            file_put_contents('CryptoRate_log.txt', $output, FILE_APPEND);
+        })->everyMinute();
     }
 
     /**

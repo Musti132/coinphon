@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,20 +38,32 @@ class Handler extends ExceptionHandler
      * @return void
      */
     public function register()
-    { 
+    {
         $this->reportable(function (Throwable $e) {
         });
     }
 
-    public function render($request, Throwable $e){
-
-
+    public function render($request, Throwable $e)
+    {
         /**
-         * Change default \ModelNotFoundException to JSON Response
+         * Change default \ModelNotFoundException view to JSON Response
          */
-        if($e instanceof ModelNotFoundException){
+
+        if ($e instanceof ModelNotFoundException) {
             return Response::notFound();
         }
-    }
 
+        /**
+         * Change default \NotFoundHttpException view to JSON Response
+         */
+        if ($e instanceof NotFoundHttpException) {
+            return Response::notFound();
+        }
+
+        if ($e instanceof MethodNotAllowedHttpException) {
+            return Response::notFound();
+        }
+
+        return parent::render($request, $e);
+    }
 }

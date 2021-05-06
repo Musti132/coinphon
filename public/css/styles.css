@@ -1,0 +1,10 @@
+body {
+  background-color: #1e2023;
+}
+
+.img-responsive {
+  height: auto;
+  width: auto;
+  max-height: 62px;
+  max-width: 200px;
+}

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Wallet;
+namespace App\Http\Requests\Webhook;
 
 use App\Helpers\Response;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class WalletAddressRequest extends FormRequest
+class AttachEventRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,8 +15,8 @@ class WalletAddressRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {   
-        return (request()->user()->id === $this->wallet->user_id);
+    {
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class WalletAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['string'],
+            'event_id' => ['required', 'array'],
         ];
     }
 

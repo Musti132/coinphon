@@ -7,13 +7,15 @@
 	    <title>CoinPhon</title>
 
 	    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="icon" href="favicon.ico">
 
 	    <link rel="preconnect" href="https://fonts.gstatic.com">
 	    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+        <link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
+
     </head>
     <body>
-        
         <div id="app">
             <App></App>
         </div>

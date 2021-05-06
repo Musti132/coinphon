@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Developer\DeveloperController;
+use App\Http\Controllers\Api\Developer\EventController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\Developer\WebhookController;
@@ -33,7 +34,7 @@ Route::group([
     ], function () {
 
         /**
-         * Register routes
+         * Register route
          */
         Route::post('register', [AuthController::class, 'register'])->name('register');
 
@@ -64,12 +65,10 @@ Route::group([
         });
     });
 
-    Route::get('country/list', [CountryController::class, 'list'])->name('country.list');
-
     Route::middleware(['auth.jwt'])->group(function () {
 
         /**
-         * Wallet controller
+         * Wallet routes
          */
         Route::apiResource('wallet', WalletController::class);
 
@@ -82,7 +81,7 @@ Route::group([
         });
 
         /**
-         * Order controller
+         * Order routes
          */
         Route::apiResource('order', OrderController::class);
         Route::group([
@@ -90,10 +89,11 @@ Route::group([
             'as' => 'order.'
         ], function () {
             Route::post('{wallet}/new', [OrderController::class, 'newOrder'])->name('new');
+            Route::post('{order}/mark', [OrderController::class, 'mark'])->name('markOrder');
         });
 
         /**
-         * Dashboard controller
+         * Dashboard routes
          */
         Route::group([
             'prefix' => 'dashboard',
@@ -103,7 +103,7 @@ Route::group([
         });
 
         /**
-         * Developer controller
+         * Developer routes
          */
         Route::group([
             'prefix' => 'developer',
@@ -113,9 +113,16 @@ Route::group([
         });
 
         /**
-         * Webhook controller
+         * Webhook routes
          */
-        
         Route::apiResource('webhook', WebhookController::class);
+
+        Route::group([
+            'prefix' => 'webhook',
+            'as' => 'webhook.',
+        ], function () {
+            Route::post('{webhook}/event/attach', [EventController::class, 'attach'])->name('events_attach');
+        });
+
     });
 });

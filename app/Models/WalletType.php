@@ -27,4 +27,8 @@ class WalletType extends Model
     use HasFactory;
 
     const UPDATED_AT = null;
+
+    public function rates(){
+        return $this->hasMany(CryptoRate::class, 'crypto_id', 'id');
+    }
 }

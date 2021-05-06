@@ -40,6 +40,11 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const CANCELLED = 3;
+    public const REFUNDED = 6;
+    public const COMPLETED = 1;
+    public const CONFIRMING = 2;
+
     protected $fillable = [
         'wallet_id',
         'amount',

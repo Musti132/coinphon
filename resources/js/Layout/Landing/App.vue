@@ -1,17 +1,29 @@
 <template>
     <div id="main">
-		<router-view></router-view>
+        <Menu></Menu>
+
+        <div class="container-fluid">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
 <script>
-    import Menu from '../../Components/Menu.vue'
-    export default {
-        mounted() {
-        },
+import Menu from "../../Components/Menu.vue";
+export default {
+    mounted() {
+        this.$vs.setTheme("dark");
+    },
 
-        components: {
-            Menu,
-        }
-    }
+    components: {
+        Menu,
+    },
+};
 </script>
+
+<style scoped>
+.container-fluid {
+    margin-top: 125px;
+    max-width: 95em;
+}
+</style>

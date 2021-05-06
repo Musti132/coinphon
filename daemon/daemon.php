@@ -1,15 +1,49 @@
 <?php
-$test = "Hello";
+/*
 
-$length = strlen($test) - 1;
+enum Status
+{
+    case DRAFT;
+    case PUBLISHED;
+    case ARCHIVED;
+    
+    public function color(): string
+    {
+        return match($this) 
+        {
+            Status::DRAFT => 'grey',   
+            Status::PUBLISHED => 'green',   
+            Status::ARCHIVED => 'red',   
+        };
+    }
+}
 
-$toChange = $length - 2;
+$status = Status::DRAFT;
 
-$oldLetter = $test[$toChange];
+echo $status->color();
 
-echo strpos($test, 'l');
 
-$test[$toChange] = $test[$length];
-$test[$length] = $oldLetter;
+exit;
+*/
+Class Foo {
 
-echo $test;
+    public $test = "hello";
+    public $data = "test";
+
+    public function run(){
+        return "RUN";
+    }
+
+    public function bar(){
+        return "BAR";
+    }
+
+    public function test(){
+        $reflect = new ReflectionClass($this);
+        return $reflect->getProperties();
+    }
+}
+
+$foo = new Foo();
+
+print_r($foo->test()[0]->class);
