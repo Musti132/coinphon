@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhoneNumbersTable extends Migration
+class CreateUserLoginsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreatePhoneNumbersTable extends Migration
      */
     public function up()
     {
-        Schema::create('phone_numbers', function (Blueprint $table) {
+        Schema::create('user_logins', function (Blueprint $table) {
             $table->id();
-            $table->char('number', 16);
-            $table->foreignId('country_id')->references('id')->on('countries');
+            $table->string('device_hash');
+            $table->string('browser', 28);
+            $table->string('device', 20);
+            $table->string('os', 12);
+            $table->ipAddress('ip');
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ class CreatePhoneNumbersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phone_numbers');
+        Schema::dropIfExists('user_logins');
     }
 }

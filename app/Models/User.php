@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use CoinPhon\Bitcoin\Wallet\Traits\Wallet as WalletTrait;
 use Illuminate\Support\Str;
+use Glorand\Model\Settings\Traits\HasSettingsField;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -58,7 +59,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, WalletTrait;
+    use HasFactory, Notifiable, WalletTrait, HasSettingsField;
 
     /**
      * The attributes that are mass assignable.
@@ -109,6 +110,10 @@ class User extends Authenticatable implements JWTSubject
         });
     }
 
+    public function devices(){
+        return $this->hasMany(UserLogin::class);
+    }
+
     public function wallets()
     {
         return $this->hasMany(Wallet::class, 'user_id', 'id');
@@ -148,9 +153,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->country->name;
     }
 
-    public function phone()
+    public function phones()
     {
-        return $this->hasOne(PhoneNumber::class, 'id', 'phone_id');
+        return $this->hasMany(PhoneNumber::class, 'id', 'phone_id');
     }
 
     public function business(){

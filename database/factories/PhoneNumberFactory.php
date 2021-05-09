@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Country;
-use App\Models\Model;
 use App\Models\PhoneNumber;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PhoneNumberFactory extends Factory
@@ -34,7 +34,8 @@ class PhoneNumberFactory extends Factory
 
         return [
             'number' => $number,
-            'country_id' => Country::all()->random(1)->first()->id
+            'country_id' => Country::all()->random(1)->first()->id,
+            'user_id' => User::all()->first()->id,
         ];
     }
 }

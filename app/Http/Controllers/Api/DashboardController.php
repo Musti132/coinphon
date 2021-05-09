@@ -6,12 +6,15 @@ use App\Helpers\Response;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\UserLogin;
 use App\Models\Wallet;
 use App\Models\WalletType;
 use App\Repository\DashboardRepository;
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
+use Twilio\Rest\Client;
+use Jenssegers\Agent\Agent;
 
 class DashboardController extends Controller
 {
@@ -21,7 +24,7 @@ class DashboardController extends Controller
         $this->dashboardRepository = $dashboardRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $ordersYesterday = $this->dashboardRepository->getOrdersByDate(now()->subDay(1))->get();
         $ordersToday = $this->dashboardRepository->getOrdersByDate(today())->get();
@@ -40,8 +43,6 @@ class DashboardController extends Controller
         );
 
         $rate = WalletType::find(1)->rates()->where('currency', 'USD')->first()->rate;
-
-        //dd($rate);
 
         $cryptoBalance = "0.551223";
 

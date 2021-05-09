@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhoneNumbersTable extends Migration
+class CreateSmsCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePhoneNumbersTable extends Migration
      */
     public function up()
     {
-        Schema::create('phone_numbers', function (Blueprint $table) {
+        Schema::create('sms_codes', function (Blueprint $table) {
             $table->id();
-            $table->char('number', 16);
-            $table->foreignId('country_id')->references('id')->on('countries');
-            $table->foreignUuid('user_id')->references('id')->on('users');
+            $table->string('code');
+            $table->foreignId('phone_id')->references('id')->on('phone_numbers');
+            $table->boolean('used')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePhoneNumbersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phone_numbers');
+        Schema::dropIfExists('sms_codes');
     }
 }

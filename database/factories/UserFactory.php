@@ -28,7 +28,6 @@ class UserFactory extends Factory
         return [
             'first' => $this->faker->name,
             'last' => $this->faker->name,
-            'phone_id' => PhoneNumber::all()->random(1)->first()->id,
             'country_id' => Country::all()->random(1)->first()->id,
             'email' => "power132@mail.com",
             'email_verified_at' => now(),

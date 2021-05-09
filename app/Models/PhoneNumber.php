@@ -32,4 +32,12 @@ class PhoneNumber extends Model
         'number',
         'country_id'
     ];
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

@@ -5,23 +5,32 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterFormRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\SmsVerifyRequest;
 use App\Http\Resources\User\UserAuthResource;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Business;
 use App\Models\PhoneNumber;
 use App\Helpers\Response as HelperResponse;
+use App\Repository\AuthRepository;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
 
 class AuthController extends Controller
 {
+    public $authRepository;
+
+    public function __construct(AuthRepository $authRepository)
+    {
+        $this->authRepository = $authRepository;
+    }
+
     public function register(RegisterFormRequest $request)
     {
         $country_id = $request->country;
@@ -50,36 +59,11 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->login($user);
 
-        Cookie::queue(
-            "token",
-            $token,
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            true,
-        );
+        auth()->user()->settings()->apply([
+            '2fa_enabled' => false,
+        ]);
 
-        Cookie::queue(
-            "csrf_tkn",
-            auth()->payload()->get(config('jwt.name') . 'csrf_claim'),
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            false,
-        );
-
-        Cookie::queue(
-            "logged_in",
-            1,
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            false,
-        );
-
+        $this->authRepository->createRegisterCookies($token);
 
         return HelperResponse::successMessage('Successfully registered.');
     }
@@ -92,6 +76,12 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->attempt($credentials)) {
 
+            if($this->authRepository->requiresSmsAuth($request)){
+                return HelperResponse::forbidden('Sms Auth required');
+            }
+
+            $this->authRepository->saveUserLogin($request);
+
             $user = User::with('country', 'business')->where('email', $request->email)->first();
 
             $response = new Response([
@@ -99,36 +89,8 @@ class AuthController extends Controller
                 'message' => 'Authentication successful',
                 'data' => new UserAuthResource($user),
             ]);
-
-            Cookie::queue(
-                "token",
-                $token,
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                true,
-            );
-
-            Cookie::queue(
-                "csrf_tkn",
-                auth()->payload()->get(config('jwt.name') . 'csrf_claim'),
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                false,
-            );
-
-            Cookie::queue(
-                "logged_in",
-                1,
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                false,
-            );
+            
+            $this->authRepository->createLoginCookies($token);
 
             return $response;
         }

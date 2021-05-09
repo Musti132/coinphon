@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\SmsController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Developer\DeveloperController;
@@ -44,6 +45,24 @@ Route::group([
 
         Route::post('login', [AuthController::class, 'login'])->name('login');
 
+        /**
+         * 2Factor routes
+         */
+        Route::group([
+            'prefix' => 'sms',
+            'as' => 'sms.'
+        ], function () {
+            /**
+             * Sms verify
+             */
+            Route::post('verify', [SmsController::class, 'verify'])->name('verify');
+
+            /**
+             * Send sms 
+             */
+            Route::post('send', [SmsController::class, 'store'])->name('send');
+        });
+
 
         Route::middleware(['auth.jwt'])->group(function () {
             /**
@@ -57,7 +76,7 @@ Route::group([
 
             Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
 
-             /**
+            /**
              * Logout route
              */
 
@@ -123,6 +142,5 @@ Route::group([
         ], function () {
             Route::post('{webhook}/event/attach', [EventController::class, 'attach'])->name('events_attach');
         });
-
     });
 });

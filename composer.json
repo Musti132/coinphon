@@ -26,13 +26,16 @@
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "glorand/laravel-model-settings": "^4.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "illuminate/routing": "^8.29",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
         "paragonie/random-lib": "^2.0",
         "predis/predis": "^1.1",
+        "twilio/sdk": "^6.23",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

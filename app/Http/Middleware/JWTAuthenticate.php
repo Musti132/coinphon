@@ -36,7 +36,11 @@ class JWTAuthenticate
             $method = $request->method();
 
             //Do we actually need to check for csrf dude?
-            $needToCheckForCSRF = $method == "POST" ? true : ($method == "PUT" ? true : ($method == "DELETE" ? true : ($method == "PATCH" ? true : false)));
+            $needToCheckForCSRF = 
+            $method == "POST" ? true : 
+            ($method == "PUT" ? true : 
+            ($method == "DELETE" ? true : 
+            ($method == "PATCH" ? true : false)));
 
             if ($needToCheckForCSRF && env('APP_DEBUG') !== true) {
 
