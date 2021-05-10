@@ -54,7 +54,7 @@ class Wallet extends Model
 
     protected $guarded = [];
     protected $with = [
-        'type',
+        'types',
         'server'
     ];
 
@@ -86,9 +86,9 @@ class Wallet extends Model
         return $this->hasOne(Server::class, 'id', 'server_id');
     }
 
-    public function type()
+    public function types()
     {
-        return $this->hasOne(WalletType::class, 'id', 'type_id');
+        return $this->belongsToMany(CryptoType::class, 'crypto_wallet', 'wallet_id', 'crypto_id');
     }
 
     public function webhooks(){

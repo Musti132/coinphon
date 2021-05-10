@@ -17,6 +17,8 @@ class TypeResource extends JsonResource
         return [
             'short' => $this->short,
             'name' => $this->name,
+            'logo' => $this->logo_url,
+            'style' => $this->style,
         ];
     }
 }

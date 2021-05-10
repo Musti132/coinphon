@@ -10,7 +10,7 @@ class SmsCode extends Model
 {
     use HasFactory;
 
-    const EXPIRATION_TIME = 20;
+    const EXPIRATION_TIME = 20; // Minutes
 
     protected $table = 'sms_codes';
 
@@ -18,6 +18,7 @@ class SmsCode extends Model
         'code',
         'phone_id',
         'used',
+        'expires_at'
     ];
 
     public static function generateCode($length = 6){

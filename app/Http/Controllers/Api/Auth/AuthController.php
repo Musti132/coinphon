@@ -41,6 +41,9 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'country_id' => $country_id,
+            'settings' => json_encode([
+                '2fa_enabled' => false,
+            ])
         ];
 
         if ($request->filled('business_name')) {
@@ -58,10 +61,6 @@ class AuthController extends Controller
         $token = auth()->claims([
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->login($user);
-
-        auth()->user()->settings()->apply([
-            '2fa_enabled' => false,
-        ]);
 
         $this->authRepository->createRegisterCookies($token);
 

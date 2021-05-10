@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSmsCodesTable extends Migration
+class CreateCryptoWalletTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSmsCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sms_codes', function (Blueprint $table) {
+        Schema::create('crypto_wallet', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->foreignId('phone_id')->references('id')->on('phone_numbers');
-            $table->boolean('used')->default(0);
-            $table->dateTime('expires_at');
+            $table->foreignId('wallet_id')->references('id')->on('wallets');
+            $table->foreignId('crypto_id')->references('id')->on('crypto_types');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSmsCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sms_codes');
+        Schema::dropIfExists('crypto_wallet');
     }
 }
