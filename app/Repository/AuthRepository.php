@@ -19,8 +19,8 @@ class AuthRepository
      */
     public function saveUserLogin(Request $request)
     {
-        $userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36';
-        $agent = new Agent($request->header(), $userAgent);
+        $userAgent = '';
+        $agent = new Agent($request->header(), $_SERVER['HTTP_USER_AGENT']);
 
         if($this->deviceExists($userAgent)){
             return false;
@@ -32,12 +32,19 @@ class AuthRepository
 
         $hashedDevice = md5($userAgent);
 
+        $expires_at = null;
+
+        if($request->remember){
+            $expires_at = now()->addDays(30);
+        }
+
         $userLog = new UserLogin([
             'device_hash' => $hashedDevice,
             'browser' => $agent->browser(),
             'os' => $agent->platform(),
             'device' => $agent->device(),
             'ip' => $request->getClientIp(),
+            'expires_at' => $expires_at,
         ]);
 
         auth()->user()->devices()->save($userLog);
@@ -51,9 +58,9 @@ class AuthRepository
             return false;
         }
 
-        $hash = auth()->user()->devices()->where('device_hash', md5($request->server('HTTP_USER_AGENT')))->doesntExist();
+        $device = auth()->user()->devices()->where('device_hash', md5($request->server('HTTP_USER_AGENT')))->where('expires_at', '>=', now())->doesntExist();
 
-        return $hash;
+        return $device;
     }
 
     public function deviceExists(string $device){

@@ -76,7 +76,7 @@ class AuthController extends Controller
         ])->attempt($credentials)) {
 
             if($this->authRepository->requiresSmsAuth($request)){
-                return HelperResponse::forbidden('Sms Auth required');
+                return HelperResponse::forbidden('Sms Auth required', 'sms_required');
             }
 
             $this->authRepository->saveUserLogin($request);

@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\CryptoRate;
+use App\Models\CryptoType;
 use App\Models\WalletType;
 use Http;
 use Illuminate\Console\Scheduling\Schedule;
@@ -29,36 +30,39 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->call(function (){
-            $ticker = Http::get('https://blockchain.info/ticker')->json();
+        $types = CryptoType::where('short', '!=', 'CRT')->get('short')->pluck('short');
+        $data = collect($types)->implode(',');
 
-            foreach($ticker as $key => $value){
-                $walletType = WalletType::find(1);
+        $schedule->call(function () use ($data) {
+            $ticker = Http::get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=' . env('CMC_PRO_API_KEY') . '&symbol=' . $data)->json();
 
-                if($rate = $walletType->rates()->where('currency', $key)->first()){
-                    $rate->update([
-                        'rate' => $value['15m'],
-                        'currency' => $key,
-                        'symbol' => $value['symbol'],
+            foreach ($ticker['data'] as $key => $value) {
+                $cryptoType = CryptoType::where('short', $key)->first();
+
+
+                foreach ($value['quote'] as $currency => $value) {
+                    if ($rate = $cryptoType->rates()->where('currency', $currency)->first()) {
+                        $rate->update([
+                            'rate' => $value['price'],
+                            'currency' => $currency,
+                            'symbol' => "$",
+                        ]);
+
+                        return true;
+                    }
+
+                    $rate = new CryptoRate([
+                        'rate' => $value['price'],
+                        'currency' => $currency,
+                        'symbol' => "$",
                     ]);
 
-                    return true;
+                    $cryptoType->rates()->save($rate);
                 }
-
-                $rate = new CryptoRate([
-                    'rate' => $value['15m'],
-                    'currency' => $key,
-                    'symbol' => $value['symbol'],
-                ]);
-
-                $walletType->rates()->save($rate);
-
             }
-
-
-        })->onFailure(function (Stringable $output){
+        })->onFailure(function (Stringable $output) {
             file_put_contents('CryptoRate_log.txt', $output, FILE_APPEND);
-        })->everyMinute();
+        })->everyFiveMinutes();
     }
 
     /**
@@ -68,7 +72,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

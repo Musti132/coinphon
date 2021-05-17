@@ -8,11 +8,25 @@ use Str;
 
 class DashboardRepository
 {
+
+
+    /**
+     * @param Carbon $date
+     * 
+     * @return App\Models\Order;
+     */
     public function getOrdersByDate(Carbon $date){
         return auth()->user()->orders()->whereDate('orders.created_at', $date);
     }
 
-    function calculatePercentageChange($newNumber, $oldNumber) : int
+
+    /**
+     * @param int $newNumber
+     * @param int $oldNumber
+     * 
+     * @return int
+     */
+    function calculatePercentageChange(int $newNumber, int $oldNumber) : int
     {
         if ($oldNumber == 0) {
             $oldNumber++;

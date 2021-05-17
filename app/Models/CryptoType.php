@@ -19,4 +19,8 @@ class CryptoType extends Model
     public function wallets(){
         return $this->belongsToMany(Wallet::class, 'crypto_wallet');
     }
+
+    public function rates(){
+        return $this->hasMany(CryptoRate::class, 'crypto_id', 'id');
+    }
 }

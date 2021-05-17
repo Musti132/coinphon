@@ -39,6 +39,8 @@ class SmsController extends Controller
     {
         $code = $request->code;
 
-        dd($code);
+        SmsCode::where('code', $code)->update([
+            'used' => 1,
+        ]);
     }
 }

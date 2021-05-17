@@ -71,9 +71,9 @@ class OrderRepository
      * Sort query
      *
      * @param  Model $q
-     * @param  String $orderBy
-     * @param  String $sort
-     * @param  Array $columns
+     * @param  string $orderBy
+     * @param  string $sort
+     * @param  array $columns
      * @return Collection
      */
     public function sort($q, string $orderBy = null, string $sort = "asc", array $columns = [])

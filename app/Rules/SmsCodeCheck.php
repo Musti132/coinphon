@@ -26,7 +26,7 @@ class SmsCodeCheck implements Rule
      */
     public function passes($attribute, $value)
     {
-        return SmsCode::where('code', $value)->doesntExist();
+        return SmsCode::where('code', $value)->where('used', 0)->exists();
     }
 
     /**

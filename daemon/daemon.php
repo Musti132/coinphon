@@ -1,30 +1,6 @@
 <?php
+
 /*
-
-enum Status
-{
-    case DRAFT;
-    case PUBLISHED;
-    case ARCHIVED;
-    
-    public function color(): string
-    {
-        return match($this) 
-        {
-            Status::DRAFT => 'grey',   
-            Status::PUBLISHED => 'green',   
-            Status::ARCHIVED => 'red',   
-        };
-    }
-}
-
-$status = Status::DRAFT;
-
-echo $status->color();
-
-
-exit;
-*/
 Class Foo {
 
     public $test = "hello";
@@ -46,4 +22,4 @@ Class Foo {
 
 $foo = new Foo();
 
-print_r($foo->test()[0]->class);
+print_r($foo->test()[0]->class);*/

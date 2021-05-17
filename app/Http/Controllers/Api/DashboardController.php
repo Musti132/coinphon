@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Models\CryptoType;
+use App\Models\CryptoRate;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\UserLogin;
@@ -15,6 +17,7 @@ use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Twilio\Rest\Client;
 use Jenssegers\Agent\Agent;
+use Http;
 
 class DashboardController extends Controller
 {
@@ -42,7 +45,7 @@ class DashboardController extends Controller
             $ordersYesterday->count()
         );
 
-        $rate = WalletType::find(1)->rates()->where('currency', 'USD')->first()->rate;
+        $rate = CryptoType::find(1)->rates()->where('currency', 'USD')->first()->rate;
 
         $cryptoBalance = "0.551223";
 
