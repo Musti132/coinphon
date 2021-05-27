@@ -11,9 +11,9 @@ Class Response extends HttpResponse{
     public const HTTP_ERROR = 400;
     public const HTTP_NEEDS_AUTH = 403;
 
-    public static function error(string $message = "There has been a error.", $code = self::HTTP_ERROR, array $headers = []){
+    public static function error(string $message = "There has been a error.", string $status = "error", $code = self::HTTP_ERROR, array $headers = []){
         return response()->json([
-            'status' => 'error',
+            'status' => $status,
             'message' => $message,
         ], $code, $headers);
     }

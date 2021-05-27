@@ -21,6 +21,7 @@ use App\Repository\AuthRepository;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
@@ -43,6 +44,9 @@ class AuthController extends Controller
             'country_id' => $country_id,
             'settings' => json_encode([
                 '2fa_enabled' => false,
+                'order_confirmation' => true,
+                'order_new' => true,
+                'withdraw' => true,
             ])
         ];
 
@@ -75,11 +79,15 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->attempt($credentials)) {
 
-            if($this->authRepository->requiresSmsAuth($request)){
-                return HelperResponse::forbidden('Sms Auth required', 'sms_required');
-            }
+            $info = $this->authRepository->saveUserLogin($request);
 
-            $this->authRepository->saveUserLogin($request);
+            if($this->authRepository->requiresSmsAuth($request)){
+                if(!(new AuthService())->dispatchSms(auth()->user(), $info)){
+                    return HelperResponse::error('Failed sending sms', 'sms_failed');
+                }
+
+                return HelperResponse::forbidden('Sms auth required', 'sms_required');
+            }
 
             $user = User::with('country', 'business')->where('email', $request->email)->first();
 

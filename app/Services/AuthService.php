@@ -2,28 +2,24 @@
 
 namespace App\Services;
 
+use App\Jobs\SendVerificationSms;
 use App\Models\User;
+use App\Models\UserLogin;
+use App\Repository\AuthRepository;
 use Twilio\Rest\Client;
 
-class AuthService
+class AuthService extends AuthRepository
 {
-    public function sendFactorSms(User $user)
+    public function dispatchSms(User $user, UserLogin $device)
     {
-        // Your Account SID and Auth Token from twilio.com/console
-        $sid = env('TWILIO_SID');
-        $token = env('TWILIO_AUTH_TOKEN');
-        $client = new Client($sid, $token);
+        $phone = $user->phones()->first();
 
-        // Use the client to do fun stuff like send text messages!
-        $client->messages->create(
-            // the number you'd like to send the message to
-            '+4552112257',
-            [
-                // A Twilio phone number you purchased at twilio.com/console
-                'from' => '+18438859382',
-                // the body of the text message you'd like to send
-                'body' => 'Hey Jenny! Good luck on the bar exam!'
-            ]
-        );
+        $sms = $this->createSms($phone, $device);
+
+        return SendVerificationSms::dispatch($sms, $phone);
+    }
+
+    public function deviceExists(string $userAgent){
+        return parent::deviceExists(md5($userAgent));
     }
 }

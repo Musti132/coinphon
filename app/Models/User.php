@@ -155,7 +155,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function phones()
     {
-        return $this->hasMany(PhoneNumber::class, 'id', 'phone_id');
+        return $this->hasMany(PhoneNumber::class, 'user_id', 'id');
     }
 
     public function business(){

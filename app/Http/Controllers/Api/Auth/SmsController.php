@@ -14,6 +14,8 @@ class SmsController extends Controller
 {
     public function store()
     {
+        (new AuthService)->deviceExists($_SERVER['HTTP_USER_AGENT']);
+
         $phone = PhoneNumber::all()->first();
 
         SmsCode::create([
@@ -24,10 +26,8 @@ class SmsController extends Controller
         ]);
 
         $length = strlen($phone->number);
-
+        
         $ending = substr($phone->number, $length - 2, $length);
-
-        (new AuthService())->sendFactorSms(auth()->user());
 
         return Response::successMessage(
             'Code has been sent to attached phone number on account, ending in ' . $ending
@@ -39,8 +39,20 @@ class SmsController extends Controller
     {
         $code = $request->code;
 
-        SmsCode::where('code', $code)->update([
+        $smsCode = SmsCode::where('code', $code);
+
+        //Set used to true in db
+
+        $smsCode->update([
             'used' => 1,
         ]);
+
+        //Authorize device to login;
+
+        $smsCode->first()->device()->update([
+            'active' => 1,
+        ]);
+
+        return Response::success('Code verified');
     }
 }

@@ -23,3 +23,14 @@ Class Foo {
 $foo = new Foo();
 
 print_r($foo->test()[0]->class);*/
+
+$array = [
+    'test' => 'test1',
+    'hello'
+];
+
+print_r($array);
+
+unset($array['test']);
+
+print_r($array);

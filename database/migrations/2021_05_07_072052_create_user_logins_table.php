@@ -21,6 +21,7 @@ class CreateUserLoginsTable extends Migration
             $table->string('os', 12);
             $table->ipAddress('ip');
             $table->foreignUuid('user_id')->references('id')->on('users');
+            $table->boolean('active')->default(0);
             $table->date('expires_at')->nullable();
             $table->timestamps();
         });

@@ -39,7 +39,6 @@ class Kernel extends ConsoleKernel
             foreach ($ticker['data'] as $key => $value) {
                 $cryptoType = CryptoType::where('short', $key)->first();
 
-
                 foreach ($value['quote'] as $currency => $value) {
                     if ($rate = $cryptoType->rates()->where('currency', $currency)->first()) {
                         $rate->update([

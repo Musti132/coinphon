@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\Developer\EventController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\Developer\WebhookController;
+use App\Http\Controllers\Api\Profile\NotificationController;
+use App\Http\Controllers\Api\Profile\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +77,7 @@ Route::group([
              */
 
             Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
+            
 
             /**
              * Logout route
@@ -98,6 +101,19 @@ Route::group([
             Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
             Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
         });
+
+        /**
+         * Profile routes
+         */
+        Route::group([
+            'prefix' => 'profile',
+            'as' => 'profile.'
+        ], function () {
+            Route::post('notification/update', [NotificationController::class, 'update'])->name('update');
+            Route::post('logout/{device}', [ProfileController::class, 'logout'])->name('logout');
+        });
+
+        Route::apiResource('profile', ProfileController::class);
 
         /**
          * Order routes

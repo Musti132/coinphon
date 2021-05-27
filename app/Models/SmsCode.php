@@ -18,6 +18,7 @@ class SmsCode extends Model
         'code',
         'phone_id',
         'used',
+        'device_id',
         'expires_at'
     ];
 
@@ -43,5 +44,9 @@ class SmsCode extends Model
 
     public function isExpired(){
         return $this->created_at->diffInMinutes(now() > static::EXPIRATION_TIME);
+    }
+
+    public function device(){
+        return $this->hasOne(UserLogin::class, 'id', 'device_id');
     }
 }

@@ -22,8 +22,10 @@ class UserAuthResource extends JsonResource
             'country' => $this->country_name,
             'first' => $this->first,
             'last' => $this->last,
+            'settings' => json_decode($this->settings),
             'is_business' => (bool) $this->is_business,
             'business' => new BusinessResource($this->whenLoaded('business')),
+            'devices' => DeviceResource::collection($this->whenLoaded('devices')),
         ];
     }
 }
