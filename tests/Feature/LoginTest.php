@@ -16,11 +16,13 @@ class LoginTest extends TestCase
      */
     public function testLogin()
     {
-        $userData = User::all()->first();
+        $userData = $this->fakeUser();
 
         $response = $this->postJson('api/v1/auth/login', [
             'email' => $userData->email,
             'password' => 'password',
+        ], [
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.27 (KHTML, like Gecko) Chrome/12.0.712.0 Safari/534.27',
         ]);
 
         $response

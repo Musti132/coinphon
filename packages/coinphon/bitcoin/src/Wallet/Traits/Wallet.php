@@ -31,6 +31,10 @@ trait Wallet{
         return new WalletClient($this);
     }
 
+    /**
+     * Get latest balance for a wallet
+     * @return int
+     */
     public function refreshBalance(){
         $balance = $this->getWallet($this)->getBalance();
 

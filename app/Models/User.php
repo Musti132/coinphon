@@ -107,6 +107,12 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
         static::creating(function ($post) {
             $post->{$post->getKeyName()} = (string)Str::uuid();
+            $post->settings = json_encode([
+                '2fa_enabled' => false,
+                'order_confirmation' => true,
+                'order_new' => true,
+                'withdraw' => true,
+            ]);
         });
     }
 

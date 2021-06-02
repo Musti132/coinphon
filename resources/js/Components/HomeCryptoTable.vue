@@ -24,7 +24,7 @@
                         {{ tr.name }} ({{ tr.short }})
                     </vs-td>
                     <vs-td>
-                        1{{ tr.price }}
+                        {{ tr.price }}
                     </vs-td>
                     <vs-td>
                         {{ tr.twenty_four_hour }}%

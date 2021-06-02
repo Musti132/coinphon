@@ -42,12 +42,6 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'country_id' => $country_id,
-            'settings' => json_encode([
-                '2fa_enabled' => false,
-                'order_confirmation' => true,
-                'order_new' => true,
-                'withdraw' => true,
-            ])
         ];
 
         if ($request->filled('business_name')) {

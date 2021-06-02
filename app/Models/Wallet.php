@@ -97,7 +97,7 @@ class Wallet extends Model
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->where('uuid', $value)->with('type')->firstOrFail();
+        return $this->where('uuid', $value)->with('types')->firstOrFail();
     }
 
     public function monitoringIn(){

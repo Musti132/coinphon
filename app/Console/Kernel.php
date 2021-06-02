@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $types = CryptoType::where('short', '!=', 'CRT')->get('short')->pluck('short');
+        
         $data = collect($types)->implode(',');
 
         $schedule->call(function () use ($data) {

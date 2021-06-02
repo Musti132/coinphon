@@ -41,7 +41,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return OrderListResource::collection($this->orderRepository->allByAuthUser(false, false)->paginate(5));
+        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(5));
     }
 
     public function show(Order $order){

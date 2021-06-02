@@ -22,7 +22,7 @@ class AuthRepository
     {
 
         //Grab UA and parse it
-        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $userAgent = $request->header('User-Agent');
         $agent = new Agent($request->header(), $userAgent);
 
         $device = $this->userDeviceExists($userAgent)->first();

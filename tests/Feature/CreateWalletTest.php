@@ -27,7 +27,7 @@ class CreateWalletTest extends TestCase
     
             $response = $this->call('POST', 'api/v1/wallet/', [
                 'label' => 'HelloWallet'.Str::random(2),
-                'type' => 'bitcoin',
+                'type' => 'Bitcoin',
             ], [
                 'token' => $auth,
             ]);

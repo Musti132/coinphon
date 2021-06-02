@@ -17,6 +17,6 @@ class CreateOrderTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
 }

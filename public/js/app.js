@@ -38785,7 +38785,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("vs-td", [
                         _vm._v(
-                          "\n                    1" +
+                          "\n                    " +
                             _vm._s(tr.price) +
                             "\n                "
                         )

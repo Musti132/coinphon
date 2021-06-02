@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\WalletType;
+use App\Models\CryptoType;
 use Illuminate\Contracts\Validation\Rule;
 
 class WalletTypeExist implements Rule
@@ -26,7 +26,7 @@ class WalletTypeExist implements Rule
      */
     public function passes($attribute, $value)
     {
-        return WalletType::where('name', $value)->exists();
+        return CryptoType::where('name', $value)->exists();
     }
 
     /**
