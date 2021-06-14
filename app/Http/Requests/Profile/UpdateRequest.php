@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Profile;
 
 use App\Helpers\Response;
+use App\Rules\Profile\CurrentPasswordCheck;
 use App\Rules\Profile\EmailCheck;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -30,6 +31,7 @@ class UpdateRequest extends FormRequest
         return [
             'email' => ['string', new EmailCheck],
             'password' => ['string', 'min:8', 'confirmed'],
+            'current_password' => ['string', 'min:8', 'required', 'required_if:password,true', new CurrentPasswordCheck]
         ];
     }
 
