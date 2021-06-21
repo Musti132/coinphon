@@ -45,6 +45,7 @@ class OrderFactory extends Factory
             'amount_fiat' => mt_rand(000, 999).'.45',
             'address' => '18q5XMhURn2eJfFD3drNGanky9DAou4yvL',
             'status' => 0,
+            'expires_at' => now()->addDays(10),
             'created_at' => $date
         ];
     }
