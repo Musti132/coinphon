@@ -24,8 +24,9 @@ class ApiKeyFactory extends Factory
     public function definition()
     {
         return [
+            'label' => $this->faker->userName(),
             'user_id' => User::all()->random(1)->first()->id,
-            'key' => hash_hmac('sha256', Str::random(128), 'my_super_secret'),
+            'key' => "CNPH".hash_hmac('sha256', Str::random(128), Str::random(9)),
         ];
     }
 }

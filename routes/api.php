@@ -6,13 +6,16 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\SmsController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\Developer\ApiController;
 use App\Http\Controllers\Api\Developer\DeveloperController;
 use App\Http\Controllers\Api\Developer\EventController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Api\Developer\WebhookController;
+use App\Http\Controllers\Api\Profile\DeviceController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\ProfileController;
+use App\Http\Controllers\Api\Wallet\Manage\CryptoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +103,13 @@ Route::group([
         ], function () {
             Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
             Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
+
+            Route::group([
+                'prefix' => 'create',
+                'as' => 'create.'
+            ], function () {
+                Route::get('cryptos', [CryptoController::class, 'cryptos'])->name('cryptos');
+            });
         });
 
         /**
@@ -111,6 +121,7 @@ Route::group([
         ], function () {
             Route::post('notification/update', [NotificationController::class, 'update'])->name('update');
             Route::post('logout/{device}', [ProfileController::class, 'logout'])->name('logout');
+            Route::get('devices', [DeviceController::class, 'devices'])->name('devices');
         });
 
         Route::apiResource('profile', ProfileController::class);
@@ -119,6 +130,7 @@ Route::group([
          * Order routes
          */
         Route::apiResource('order', OrderController::class);
+
         Route::group([
             'prefix' => 'order',
             'as' => 'order.'
@@ -157,6 +169,17 @@ Route::group([
             'as' => 'webhook.',
         ], function () {
             Route::post('{webhook}/event/attach', [EventController::class, 'attach'])->name('events_attach');
+        });
+
+        /**
+         * Webhook routes
+         */
+        Route::apiResource('api', ApiController::class);
+
+        Route::group([
+            'prefix' => 'api',
+            'as' => 'api.',
+        ], function () {
         });
     });
 });

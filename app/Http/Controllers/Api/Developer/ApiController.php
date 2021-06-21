@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers\Api\Developer;
 
+use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ApiCreateRequest;
+use App\Http\Requests\Api\ApiUpdateRequest;
+use App\Http\Resources\Api\ApiListResource;
+use App\Http\Resources\Api\ApiShowResource;
 use App\Models\ApiKey;
 use Illuminate\Http\Request;
+use RandomLib\Factory;
+use Str;
 
 class ApiController extends Controller
 {
@@ -15,7 +22,9 @@ class ApiController extends Controller
      */
     public function index()
     {
-        return ApiKey::all();
+        $keys = auth()->user()->apiKeys;
+        
+        return ApiListResource::collection($keys);
     }
 
     /**
@@ -24,9 +33,24 @@ class ApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ApiCreateRequest $request)
     {
-        //
+        $factory = new Factory;
+
+        $generator = $factory->getHighStrengthGenerator();
+
+        $actualKey = $generator->generateString(ApiKey::API_KEY_LENGTH, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-');
+
+        $key = 'CNPH'. hash_hmac('sha256', $actualKey, ApiKey::SECRET_LENGTH);
+
+        $api = new ApiKey([
+            'label' => $request->label,
+            'key' => md5($key),
+        ]);
+
+        auth()->user()->apiKeys()->save($api);
+
+        return (new ApiShowResource($api))->key($key);
     }
 
     /**
@@ -35,9 +59,9 @@ class ApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Apikey $api)
     {
-        //
+        return new ApiShowResource($api);
     }
 
     /**
@@ -47,9 +71,12 @@ class ApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ApiUpdateRequest $request, ApiKey $api)
     {
-        //
+        $api->label = $request->name;
+        $api->save();
+
+        return Response::successMessage('API Key updated');
     }
 
     /**
@@ -58,8 +85,14 @@ class ApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Apikey $api)
     {
-        //
+        if($api->user_id != auth()->id()) {
+            return Response::forbidden('Forbidden', 'action_unauthorized');
+        }
+
+        $api->delete();
+
+        return Response::successMessage('Deleted API key');
     }
 }

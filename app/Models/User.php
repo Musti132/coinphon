@@ -149,6 +149,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserRefreshToken::class);
     }
 
+    public function apiKeys(){
+        return $this->hasMany(ApiKey::class);
+    }
+
     public function country()
     {
         return $this->hasOne(Country::class, 'id', 'country_id');

@@ -15,8 +15,10 @@ class CreateApiKeysTable extends Migration
     {
         Schema::create('api_keys', function (Blueprint $table) {
             $table->id();
+            $table->string('label', 32)->notNull();
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->string('key', 256);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
