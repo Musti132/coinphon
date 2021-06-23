@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 /**
  * App\Models\Order
@@ -69,9 +70,11 @@ class Order extends Model
         return $this->belongsTo(Wallet::class, 'wallet_id');
     }
 
-    public function getStatusAttribute($value)
+    public function getStatusMessageAttribute()
     {
         $status = "Unknown";
+
+        $value = $this->attributes['status'];
 
         switch ($value) {
             case 3:
@@ -93,7 +96,7 @@ class Order extends Model
                 $status = "Unknown";
                 break;
         }
-
-        return $this->attributes['status'] = $status;
+        
+        return $this->attributes['status_message'] = $status;
     }
 }
