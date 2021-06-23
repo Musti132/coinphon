@@ -41,9 +41,10 @@ class Order extends Model
     use HasFactory;
 
     public const CANCELLED = 3;
-    public const REFUNDED = 6;
+    public const REFUNDED = 4;
     public const COMPLETED = 1;
     public const CONFIRMING = 2;
+    public const IN_PROCESS = 0;
 
     protected $fillable = [
         'wallet_id',
@@ -58,11 +59,41 @@ class Order extends Model
         return 'order_id';
     }
 
-    public function transaction(){
+    public function transaction()
+    {
         return $this->hasOne(Transaction::class);
     }
 
-    public function wallet(){
+    public function wallet()
+    {
         return $this->belongsTo(Wallet::class, 'wallet_id');
+    }
+
+    public function getStatusAttribute($value)
+    {
+        $status = "Unknown";
+
+        switch ($value) {
+            case 3:
+                $status = "Cancelled";
+                break;
+            case 4:
+                $status = "Refunded";
+                break;
+            case 1:
+                $status = "Completed";
+                break;
+            case 2:
+                $status = "Confirming";
+                break;
+            case 0:
+                $status = "In Process";
+                break;
+            default:
+                $status = "Unknown";
+                break;
+        }
+
+        return $this->attributes['status'] = $status;
     }
 }

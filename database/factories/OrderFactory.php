@@ -32,6 +32,8 @@ class OrderFactory extends Factory
 
         $rand = mt_rand(1, 2);
 
+        $status = mt_rand(0, 4);
+
         $date = now();
 
         if($rand == 1){
@@ -44,7 +46,7 @@ class OrderFactory extends Factory
             'amount' => '0.00281823',
             'amount_fiat' => mt_rand(000, 999).'.45',
             'address' => '18q5XMhURn2eJfFD3drNGanky9DAou4yvL',
-            'status' => 0,
+            'status' => $status,
             'expires_at' => now()->addDays(10),
             'created_at' => $date
         ];

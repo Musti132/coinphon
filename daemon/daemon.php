@@ -1,5 +1,14 @@
 <?php
 
+function mySuperLongFunc
+(string $test, int $word, array $array, bool $mixed) 
+{
+    echo $test;
+}
+
+mySuperLongFunc("test", 2, [], false);
+
+
 /*
 Class Foo {
 
@@ -23,6 +32,7 @@ Class Foo {
 $foo = new Foo();
 
 print_r($foo->test()[0]->class);*/
+/*
 
 $array = [
     'test' => 'test1',
@@ -33,4 +43,4 @@ print_r($array);
 
 unset($array['test']);
 
-print_r($array);
+print_r($array);*/
