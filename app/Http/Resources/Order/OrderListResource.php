@@ -20,7 +20,8 @@ class OrderListResource extends JsonResource
             'amount' => $this->amount,
             'amount_fiat' => $this->amount_fiat,
             'address' => $this->address,
-            'status' => $this->status,
+            'status' => $this->status_message,
+            'status_code' => $this->status,
             'name' => Str::random(6),
         ];
     }
