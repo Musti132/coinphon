@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
-use CoinPhon\Bitcoin\Wallet\WalletClient;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
+use CoinPhon\Crypto\Wallet\WalletClient;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletDontExistException;
 
 class WalletService{
 

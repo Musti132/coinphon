@@ -1,13 +1,13 @@
 <?php
-namespace CoinPhon\Bitcoin\RPC\Exceptions;
+namespace CoinPhon\Crypto\Wallet\Exceptions;
 
 use Exception;
 
-class ForbiddenException extends Exception{
+class WalletExistException extends Exception{
 
     public function pathNotFound(){
         $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage().'</b> No access to RPC client';
+        .': <b>'.$this->getMessage().'</b> Wallet already exists.';
         return $errorMsg;
     }
 

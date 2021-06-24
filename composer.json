@@ -9,7 +9,7 @@
     "repositories": {
         "bitcoin": {
             "type": "path",
-            "url": "packages/coinphon/bitcoin/src",
+            "url": "packages/coinphon/crypto/src",
             "options": {
                 "symlink": true
             }
@@ -21,6 +21,7 @@
         "php": "^7.3|^8.0",
         "aws/aws-sdk-php": "^3.171",
         "bitwasp/bitcoin": "^1.0.4",
+        "composer/composer": "1.10.22",
         "coinphon/bitcoin": "@dev",
         "consoletvs/charts": "7.*",
         "doctrine/dbal": "^3.0",
@@ -65,6 +66,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "CoinPhon\\Crypto\\": "packages/coinphon/Crypto/src",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

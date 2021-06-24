@@ -1,11 +1,11 @@
 <?php
-namespace CoinPhon\Bitcoin\Wallet\Traits;
+namespace CoinPhon\Crypto\Wallet\Traits;
 
 use App\Models\Server;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletExistException;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
-use CoinPhon\Bitcoin\Wallet\WalletCreator;
-use CoinPhon\Bitcoin\Wallet\WalletClient;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletExistException;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletDontExistException;
+use CoinPhon\Crypto\Wallet\WalletCreator;
+use CoinPhon\Crypto\Wallet\WalletClient;
 use App\Models\Wallet as WalletModel;
 
 trait Wallet{
@@ -25,7 +25,7 @@ trait Wallet{
 
     /**
      * Return new instance of Wallet Client
-     * @return CoinPhon\Bitcoin\Wallet\WalletClient
+     * @return CoinPhon\Crypto\Wallet\WalletClient
      */
     public function getWallet(){
         return new WalletClient($this);

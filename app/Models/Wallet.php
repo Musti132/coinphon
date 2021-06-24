@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use CoinPhon\Bitcoin\Wallet\Traits\Wallet as WalletTrait;
+use CoinPhon\Crypto\Wallet\Traits\Wallet as WalletTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -49,7 +49,7 @@ class Wallet extends Model
     protected $hidden = [
         'server_id',
         'full_label',
-        'id',
+        'uuid',
     ];
 
     protected $guarded = [];

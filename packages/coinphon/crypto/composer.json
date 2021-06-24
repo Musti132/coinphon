@@ -1,5 +1,5 @@
 {
-    "name": "coinphon/bitcoin",
+    "name": "coinphon/crypto",
     "description": "Multi bitcoin library made by and for CoinPhon",
     "type": "library",
     "require": {
@@ -13,13 +13,13 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "CoinPhon\\Bitcoin\\": "src/"
+            "CoinPhon\\Crypto\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "CoinPhon\\Bitcoin\\BitcoinServiceProvider"
+                "CoinPhon\\Crypto\\BitcoinServiceProvider"
             ]
         }
     }

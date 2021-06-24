@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Profile\DeviceController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\ProfileController;
 use App\Http\Controllers\Api\Wallet\Manage\CryptoController;
+use App\Models\UserLogin;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,6 @@ use App\Http\Controllers\Api\Wallet\Manage\CryptoController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-
 
 Route::group([
     'prefix' => 'v1',
@@ -120,7 +119,7 @@ Route::group([
             'as' => 'profile.'
         ], function () {
             Route::post('notification/update', [NotificationController::class, 'update'])->name('update');
-            Route::post('logout/{device}', [ProfileController::class, 'logout'])->name('logout');
+            Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
             Route::get('devices', [DeviceController::class, 'devices'])->name('devices');
         });
 

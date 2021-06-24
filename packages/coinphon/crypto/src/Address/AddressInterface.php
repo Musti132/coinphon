@@ -1,5 +1,5 @@
 <?php
-namespace CoinPhon\Bitcoin\Address;
+namespace CoinPhon\Crypto\Address;
 
 interface AddressInterface{
     /**

@@ -30,7 +30,7 @@ class WalletListResource extends JsonResource
             'status' => $this->status,
             'balance' => $balance,
             'type' => TypeResource::collection($this->whenLoaded('types')),
-            'created_at' => $this->created_at->diffForHumans(),
+            'created' => $this->created_at->diffForHumans(),
         ];
     }
 }

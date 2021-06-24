@@ -1,13 +1,28 @@
 <?php
+function bubblesort(array $array) {
+    $length = count($array);
 
-function mySuperLongFunc
-(string $test, int $word, array $array, bool $mixed) 
-{
-    echo $test;
+    for($i = 0; $i < $length; $i++) {
+
+        for($j = 0; $j < $length - $i - 1; $j++) {
+
+            echo $length - $i - 1 ."\n";
+
+            $value = $array[$j];
+
+            if($value > $array[$j + 1]){
+                $array[$j] = $array[$j + 1];
+                $array[$j + 1] = $value;
+            }
+        }
+    }
+
+    print_r($array);
 }
 
-mySuperLongFunc("test", 2, [], false);
+$array = [5, 2 , 3, 1];
 
+bubblesort($array);
 
 /*
 Class Foo {

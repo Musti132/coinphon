@@ -1,13 +1,13 @@
 <?php
-namespace CoinPhon\Bitcoin\Wallet\Exceptions;
+namespace CoinPhon\Crypto\Wallet\Exceptions;
 
 use Exception;
 
-class WalletExistException extends Exception{
+class WalletDontExistException extends Exception{
 
     public function pathNotFound(){
         $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage().'</b> Wallet already exists.';
+        .': <b>'.$this->getMessage().'</b> Wallet doesnt exists.';
         return $errorMsg;
     }
 

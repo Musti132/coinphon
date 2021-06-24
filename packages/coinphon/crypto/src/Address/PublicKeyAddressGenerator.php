@@ -1,6 +1,6 @@
 <?php
 
-namespace CoinPhon\Bitcoin\Address;
+namespace CoinPhon\Crypto\Address;
 
 use BitWasp\Bitcoin\Bitcoin;
 use BitWasp\Bitcoin\Address\AddressCreator;

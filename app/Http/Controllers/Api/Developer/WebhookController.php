@@ -23,7 +23,9 @@ class WebhookController extends Controller
      */
     public function index()
     {
-        $data = auth()->user()->webhooks()->with(['wallet', 'events'])->get();
+        $data = auth()->user()->webhooks()->with(['wallet' => function ($q) {
+            $q->select('label', 'uuid', 'id');
+        }, 'events'])->get();
 
         return WebhookResource::collection($data);
     }

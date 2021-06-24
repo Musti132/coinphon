@@ -1,13 +1,13 @@
 <?php
-namespace CoinPhon\Bitcoin\RPC\Exceptions;
+namespace CoinPhon\Crypto\RPC\Exceptions;
 
 use Exception;
 
-class MethodEmptyException extends Exception{
+class BlockNotVerifiedException extends Exception{
 
     public function pathNotFound(){
         $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage().'</b> Method has not been set.';
+        .': <b>'.$this->getMessage().'</b> Server not ready for response';
         return $errorMsg;
     }
 

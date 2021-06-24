@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use CoinPhon\Bitcoin\Wallet\Traits\Wallet as WalletTrait;
+use CoinPhon\Crypto\Wallet\Traits\Wallet as WalletTrait;
 use Illuminate\Support\Str;
 use Glorand\Model\Settings\Traits\HasSettingsField;
 

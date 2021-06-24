@@ -16,10 +16,10 @@ use App\Http\Resources\Wallet\WalletListResource;
 use App\Http\Resources\Wallet\WalletShowResource;
 use App\Models\Webhook;
 use App\Services\WalletService;
-use CoinPhon\Bitcoin\RPC\Exceptions\WalletException;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletDontExistException;
-use CoinPhon\Bitcoin\Wallet\WalletClient;
+use CoinPhon\Crypto\RPC\Exceptions\WalletException;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletDontExistException;
+use CoinPhon\Crypto\Wallet\WalletClient;
 use Illuminate\Support\Str;
 use Cache;
 

@@ -32,6 +32,7 @@ class ProfileController extends Controller
 
     public function logout(DeviceLogoutRequest $request, UserLogin $device)
     {
+        dd($device->id);
         $device->active = 0;
         $device->save();
 

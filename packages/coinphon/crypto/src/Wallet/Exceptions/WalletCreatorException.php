@@ -1,5 +1,5 @@
 <?php
-namespace CoinPhon\Bitcoin\Wallet\Exceptions;
+namespace CoinPhon\Crypto\Wallet\Exceptions;
 
 use Exception;
 

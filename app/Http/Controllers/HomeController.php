@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use CoinPhon\Bitcoin\RPC\RPClient;
+use CoinPhon\Crypto\RPC\RPClient;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
-use CoinPhon\Bitcoin\Address\PublicKeyAddressGenerator;
+use CoinPhon\Crypto\Address\PublicKeyAddressGenerator;
 use App\Models\WalletPublicKey;
 use App\Models\Wallet;
 use App\Models\ServerRegion;

@@ -1,4 +1,5 @@
 const https = require('https')
+var 
 
 const options = {
     hostname: 'www.random.org',
@@ -15,7 +16,7 @@ const req = https.request(options, res => {
 })
 
 req.on('error', error => {
-    console.error(error)
+    process.stdout.write(error)
 })
 
 req.end()

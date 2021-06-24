@@ -1,13 +1,13 @@
 <?php
 
-namespace CoinPhon\Bitcoin\Wallet;
+namespace CoinPhon\Crypto\Wallet;
 
 use App\Models\Server;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Support\Str;
-use CoinPhon\Bitcoin\RPC\RPClient;
-use CoinPhon\Bitcoin\Wallet\Exceptions\WalletCreatorException;
+use CoinPhon\Crypto\RPC\RPClient;
+use CoinPhon\Crypto\Wallet\Exceptions\WalletCreatorException;
 
 class WalletCreator extends RPClient
 {

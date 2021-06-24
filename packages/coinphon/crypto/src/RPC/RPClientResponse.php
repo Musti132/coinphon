@@ -1,9 +1,9 @@
 <?php
 
-namespace CoinPhon\Bitcoin\RPC;
+namespace CoinPhon\Crypto\RPC;
 
 use App\Helpers\Response as HelpersResponse;
-use CoinPhon\Bitcoin\RPC\Exceptions\ForbiddenException;
+use CoinPhon\Crypto\RPC\Exceptions\ForbiddenException;
 use GuzzleHttp\Psr7\Response;
 
 class RPClientResponse

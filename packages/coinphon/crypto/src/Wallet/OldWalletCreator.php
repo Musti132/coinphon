@@ -1,12 +1,12 @@
 <?php
 
-namespace CoinPhon\Bitcoin\Wallet;
+namespace CoinPhon\Crypto\Wallet;
 
 use App\Models\User;
 use BitWasp\Bitcoin\Bitcoin;
 use BitWasp\Bitcoin\Crypto\Random\Random;
 use BitWasp\Bitcoin\Key\Factory\PrivateKeyFactory;
-use CoinPhon\Bitcoin\RPC\RPClient;
+use CoinPhon\Crypto\RPC\RPClient;
 
 class OldWalletCreator extends RPClient
 {

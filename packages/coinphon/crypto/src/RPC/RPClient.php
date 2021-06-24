@@ -1,16 +1,16 @@
 <?php
 
-namespace CoinPhon\Bitcoin\RPC;
+namespace CoinPhon\Crypto\RPC;
 
 use App\Models\Server;
-use CoinPhon\Bitcoin\RPC\Exceptions\MethodEmptyException;
-use CoinPhon\Bitcoin\RPC\RPClientResponse;
+use CoinPhon\Crypto\RPC\Exceptions\MethodEmptyException;
+use CoinPhon\Crypto\RPC\RPClientResponse;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use App\Models\RPCLog;
 use App\Models\RPCMessages;
 use App\Models\Wallet;
-use CoinPhon\Bitcoin\RPC\Exceptions\ForbiddenException;
+use CoinPhon\Crypto\RPC\Exceptions\ForbiddenException;
 use GuzzleHttp\Exception\RequestException;
 
 class RPClient{
@@ -93,14 +93,20 @@ class RPClient{
             $this->url = $this->server->host.":".$port."/";
         }
 
-        $request = $this->client->post($this->url, [
+        $request = $this->client->postAsync($this->url, [
             'body' => json_encode($body),
             'http_errors' => false,
-        ]);
+        ])->then(
+            function (\GuzzleHttp\Psr7\Response $res){
+                return $res;
+            },
+        );
         
+        $body = $request->wait();
+
         $fullCommand = "{$this->method} ".implode(" ", $this->params);
 
-        $response = new RPClientResponse($request);
+        $response = new RPClientResponse($body);
 
         $log = RPCLog::create([
             'method' => $this->method,

@@ -1,5 +1,5 @@
 <?php
-namespace CoinPhon\Bitcoin\Exceptions;
+namespace CoinPhon\Crypto\Address\Exceptions;
 
 use Exception;
 

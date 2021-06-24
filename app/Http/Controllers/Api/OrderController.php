@@ -16,7 +16,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repository\OrderRepository;
 use App\Services\OrderService;
-use CoinPhon\Bitcoin\Wallet\WalletClient;
+use CoinPhon\Crypto\Wallet\WalletClient;
 
 class OrderController extends Controller
 {
