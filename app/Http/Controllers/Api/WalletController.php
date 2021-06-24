@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wallet\WalletCreate;
 use App\Http\Requests\Wallet\WalletAddressRequest;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
@@ -14,13 +12,9 @@ use App\Http\Requests\Wallet\WalletUpdateRequest;
 use App\Repository\WalletRepository;
 use App\Http\Resources\Wallet\WalletListResource;
 use App\Http\Resources\Wallet\WalletShowResource;
-use App\Models\Webhook;
 use App\Services\WalletService;
-use CoinPhon\Crypto\RPC\Exceptions\WalletException;
 use CoinPhon\Crypto\Wallet\Exceptions\WalletCreatorException;
 use CoinPhon\Crypto\Wallet\Exceptions\WalletDontExistException;
-use CoinPhon\Crypto\Wallet\WalletClient;
-use Illuminate\Support\Str;
 use Cache;
 
 class WalletController extends Controller

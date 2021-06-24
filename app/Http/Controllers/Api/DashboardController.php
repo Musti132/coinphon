@@ -14,7 +14,6 @@ use App\Models\WalletType;
 use App\Repository\DashboardRepository;
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
-use ConsoleTVs\Charts\BaseChart;
 use Twilio\Rest\Client;
 use Jenssegers\Agent\Agent;
 use Http;

@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "coinphon/coinphon",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -21,8 +21,7 @@
         "php": "^7.3|^8.0",
         "aws/aws-sdk-php": "^3.171",
         "bitwasp/bitcoin": "^1.0.4",
-        "composer/composer": "1.10.22",
-        "coinphon/bitcoin": "@dev",
+        "composer/composer": "^2.0",
         "consoletvs/charts": "7.*",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
@@ -45,9 +44,10 @@
         "fakerphp/faker": "^1.9.1",
         "knuckleswtf/scribe": "^2.5",
         "laravel/sail": "^0.0.5",
-        "laravel/telescope": "^4.4",
+        "laravel/telescope": "^4.5",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "nunomaduro/phpinsights": "^2.0",
         "phpunit/phpunit": "^9.3.3"
     },
     "config": {

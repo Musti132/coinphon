@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER', 'file'),
+    'default' => env('CACHE_DRIVER', 'redis'),
 
     /*
     |--------------------------------------------------------------------------
@@ -107,6 +107,6 @@ return [
      * Wallet balance cache time (seconds)
      */
 
-    'wallet_balance_ttl' => 60,
+    'wallet_balance_ttl' => 10,
 
 ];
