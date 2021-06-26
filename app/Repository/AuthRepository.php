@@ -107,6 +107,8 @@ class AuthRepository
             null,
             false,
             true,
+            false,
+            'none'
         );
 
         Cookie::queue(
@@ -117,6 +119,8 @@ class AuthRepository
             null,
             false,
             false,
+            false,
+            'none'
         );
 
         Cookie::queue(
@@ -127,6 +131,8 @@ class AuthRepository
             null,
             false,
             false,
+            false,
+            'none'
         );
     }
 
@@ -140,6 +146,8 @@ class AuthRepository
             null,
             false,
             true,
+            false,
+            'none'
         );
 
         Cookie::queue(
@@ -150,6 +158,8 @@ class AuthRepository
             null,
             false,
             false,
+            false,
+            'none'
         );
 
         Cookie::queue(
@@ -160,6 +170,8 @@ class AuthRepository
             null,
             false,
             false,
+            false,
+            'none'
         );
     }
 }
