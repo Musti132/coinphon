@@ -100,8 +100,8 @@ return [
     | Notice: If you set this to null you should remove 'exp' element from 'required_claims' list.
     |
     */
-
-    'ttl' => env('JWT_TTL', 4600),
+    // 60 minutes original.
+    'ttl' => env('JWT_TTL', 45000),
 
     /*
     |--------------------------------------------------------------------------
