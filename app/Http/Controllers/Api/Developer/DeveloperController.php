@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MonitoringIn;
 use App\Models\MonitoringOut;
 use App\Models\Wallet;
+use Carbon\Carbon;
 use Chartisan\PHP\Chartisan;
 use DB;
 use Illuminate\Http\Request;
@@ -18,30 +19,55 @@ class DeveloperController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $userWalletIds = auth()->user()->wallets()->pluck('id');
 
-        $failedIn = MonitoringIn::failedCount($userWalletIds)->select([
+        //dd(Carbon::createFromTimestamp($request->date)->subHours(4)->toDateTimeString());
+        $failedIn = MonitoringIn::failedCount($userWalletIds)
+        ->when($request->date, function($q) use ($request) {
+            $q->whereBetween('created_at', [Carbon::createFromTimestamp($request->date)->toDateTimeString(), Carbon::now()->toDateTimeString()]);
+        })
+        ->select([
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count'),
-        ])->groupBy('date')->get();
+        ])
+        ->groupBy('date')
+        ->get();
 
-        $successIn = MonitoringIn::successCount($userWalletIds)->select([
+        $successIn = MonitoringIn::successCount($userWalletIds)
+        ->when($request->date, function($q) use ($request) {
+            $q->whereBetween('created_at', [Carbon::createFromTimestamp($request->date)->toDateTimeString(), Carbon::now()->toDateTimeString()]);
+        })
+        ->select([
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count'),
-        ])->groupBy('date')->get();
+        ])
+        ->groupBy('date')
+        ->get();
 
-        $failedOut = MonitoringOut::failedCount($userWalletIds)->select([
+        $failedOut = MonitoringOut::failedCount($userWalletIds)
+        ->when($request->date, function($q) use ($request) {
+            $q->whereBetween('created_at', [Carbon::createFromTimestamp($request->date)->toDateTimeString(), Carbon::now()->toDateTimeString()]);
+        })
+        ->select([
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count'),
-        ])->groupBy('date')->get();
+        ])
+        ->groupBy('date')
+        ->get();
 
-        $successOut = MonitoringOut::successCount($userWalletIds)->select([
+        $successOut = MonitoringOut::successCount($userWalletIds)
+        ->when($request->date, function($q) use ($request) {
+            $q->whereBetween('created_at', [Carbon::createFromTimestamp($request->date)->toDateTimeString(), Carbon::now()->toDateTimeString()]);
+        })
+        ->select([
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count'),
-        ])->groupBy('date')->get();
+        ])
+        ->groupBy('date')
+        ->get();
+        
 
         return Response::success([
             'in' => [

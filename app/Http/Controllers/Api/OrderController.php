@@ -39,9 +39,11 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(Request $request)
     {
-        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(5));
+        $perPage = $request->per_page;
+
+        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate($perPage));
     }
 
     public function show(Order $order){

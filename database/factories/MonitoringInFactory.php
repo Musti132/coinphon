@@ -55,7 +55,7 @@ class MonitoringInFactory extends Factory
             'path' => $path,
             'wallet_id' => Wallet::all()->random(1)->first()->id,
             'log_id' => ApiLog::all()->random(1)->first()->id,
-            'created_at' => now()->addDay(mt_rand(1, 20)),
+            'created_at' => now()->subDay(mt_rand(0, 7)),
         ];
     }
 }

@@ -48,6 +48,8 @@ class MonitoringOutFactory extends Factory
         $path = $this->paths[array_rand($this->paths)];
         $type = $this->types[array_rand($this->types)];
 
+        echo now()->subDay(mt_rand(0, 3))."\n";
+
         return [
             'api_key' => ApiKey::all()->random(1)->first()->id,
             'code' => $code,
@@ -55,7 +57,7 @@ class MonitoringOutFactory extends Factory
             'path' => $path,
             'wallet_id' => Wallet::all()->random(1)->first()->id,
             'log_id' => ApiLog::all()->random(1)->first()->id,
-            'created_at' => now()->addDay(mt_rand(1, 20)),
+            'created_at' => now()->subDay(mt_rand(0, 7)),
         ];
     }
 }
