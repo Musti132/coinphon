@@ -28,8 +28,8 @@ class WebhookUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'endpoint' => ['string'],
-            'wallet_id' => [new UserOwnsWalletCheck],
+            'endpoint' => ['string', 'required_without_all:wallet_id'],
+            'wallet_id' => ['required_without_all:endpoint', new UserOwnsWalletCheck],
         ];
     }
 

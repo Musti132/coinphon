@@ -47,7 +47,7 @@ class WalletRepository
      */
     public function allByAuthUser()
     {
-        $wallets = Wallet::where('user_id', request()->user()->id);
+        $wallets = auth()->user()->wallets();
         
         return $wallets;
     }
@@ -75,6 +75,7 @@ class WalletRepository
             'label' => $label,
             'uuid' => (string) Str::uuid(),
             'type_id' => 1,
+            'status' => 1,
             'full_label' => $fullLabel,
             'server_id' => $serverId,
         ]);

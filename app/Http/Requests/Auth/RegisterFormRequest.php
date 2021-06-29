@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\Response;
 use App\Rules\CountryCheck;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -43,6 +44,6 @@ class RegisterFormRequest extends FormRequest
             'error' => $validator->errors()->all(),
         ];
 
-        throw new HttpResponseException(response()->json($message, 422));
+        throw new HttpResponseException(Response::validation($validator));
     }
 }
