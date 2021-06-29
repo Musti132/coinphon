@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Pagination;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wallet\WalletCreate;
 use App\Http\Requests\Wallet\WalletAddressRequest;
@@ -36,7 +37,7 @@ class WalletController extends Controller
     {
         $wallets = $this->walletRepository->allByAuthUser();
 
-        return WalletListResource::collection($wallets->paginate())->additional([
+        return WalletListResource::collection($wallets->paginate(Pagination::DEFAULT_PER_PAGE))->additional([
             'status' => 'success',
         ]);
     }
@@ -78,7 +79,7 @@ class WalletController extends Controller
     {
         try {
             $balance = $wallet->refreshBalance();
-            Cache::put('wallet_'.$wallet->uuid, $balance, now()->addSeconds(config('cache.wallet_balance_ttl')));
+            Cache::put('wallet_' . $wallet->uuid, $balance, now()->addSeconds(config('cache.wallet_balance_ttl')));
         } catch (Exception $ex) {
             return Response::error('Couldnt refresh balance');
         }
@@ -97,13 +98,13 @@ class WalletController extends Controller
 
     public function address(WalletAddressRequest $request, Wallet $wallet)
     {
-        if($wallet->status === Wallet::STATUS_DEACTIVATED){
+        if ($wallet->status === Wallet::STATUS_DEACTIVATED) {
             return Response::forbidden('Wallet is currently deactivated, to activate go to dashboard',);
         }
 
-        try{
+        try {
             $data = (new WalletService())->getAddress($request, $wallet);
-        } catch(WalletDontExistException $ex){
+        } catch (WalletDontExistException $ex) {
             return Response::error($ex->getMessage());
         }
 

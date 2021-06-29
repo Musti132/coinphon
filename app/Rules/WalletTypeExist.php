@@ -26,7 +26,7 @@ class WalletTypeExist implements Rule
      */
     public function passes($attribute, $value)
     {
-        return CryptoType::where('name', $value)->exists();
+        return CryptoType::where('id', $value)->exists();
     }
 
     /**

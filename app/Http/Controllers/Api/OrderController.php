@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Pagination;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\NewOrderRequest;
 use App\Http\Resources\Order\OrderAllResource;
@@ -39,11 +40,9 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function index()
     {
-        $perPage = $request->per_page;
-
-        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate($perPage));
+        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE));
     }
 
     public function show(Order $order){

@@ -8,8 +8,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class WalletListResource extends JsonResource
 {
 
-    public static $wrap = 'sdasd';
-
     /**
      * Transform the resource into an array.
      *
