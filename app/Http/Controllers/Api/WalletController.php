@@ -62,7 +62,9 @@ class WalletController extends Controller
 
             $user->wallets()->save($walletObject);
 
-            return Response::success(new WalletShowResource($walletObject), 'Your wallet will be created shortly');
+            return Response::success([
+                'wallet' => new WalletShowResource($walletObject)
+            ], 'Your wallet will be created shortly');
         } catch (WalletCreatorException $ex) {
             return Response::error('Unknown error happened, please contact support. ' . $ex->getMessage());
         }
