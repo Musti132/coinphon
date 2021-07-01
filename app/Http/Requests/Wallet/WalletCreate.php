@@ -32,7 +32,7 @@ class WalletCreate extends FormRequest
             'label' => ['required', 'max:64', 'min:4', 'string', new UserLabelExist],
             'type' => ['required', 'integer', new WalletTypeExist],
             'password' => ['string', 'min:8', 'max:255'],
-            'public_key' => ['required_if:wallet_type,external', 'string'],
+            'public_key' => ['required_if:wallet_type,external', 'string', 'min:64'],
             'wallet_type' => ['required', 'string', 'in:external,online']
 
         ];

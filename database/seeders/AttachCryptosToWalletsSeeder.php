@@ -19,8 +19,9 @@ class AttachCryptosToWalletsSeeder extends Seeder
         
         foreach($wallets as $wallet){
             $random = CryptoType::all()->random(1)->first()->id;
-            $wallet->types()->attach([
-                $random
+
+            $wallet->cryptos()->attach([
+                $random,
             ]);
         }
     }

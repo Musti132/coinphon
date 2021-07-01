@@ -54,8 +54,9 @@ class Wallet extends Model
 
     protected $guarded = [];
     protected $with = [
-        'types',
-        'server'
+        'type',
+        'server',
+        'cryptos'
     ];
 
     public const STATUS_DEACTIVATED = 0;
@@ -68,7 +69,7 @@ class Wallet extends Model
 
     public function publicKey()
     {
-        return $this->belongsTo(WalletPublicKey::class);
+        return $this->hasOne(WalletPublicKey::class);
     }
 
     public function orders()
@@ -86,9 +87,13 @@ class Wallet extends Model
         return $this->hasOne(Server::class, 'id', 'server_id');
     }
 
-    public function types()
+    public function type()
     {
-        return $this->belongsToMany(CryptoType::class, 'crypto_wallet', 'wallet_id', 'crypto_id');
+        return $this->hasOne(WalletType::class, 'id', 'type_id');
+    }
+
+    public function cryptos() {
+        return $this->belongsToMany(CryptoType::class, CryptoWallet::class, 'wallet_id', 'crypto_id');
     }
 
     public function webhooks(){
@@ -97,7 +102,7 @@ class Wallet extends Model
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->where('uuid', $value)->with('types')->firstOrFail();
+        return $this->where('uuid', $value)->with('type')->firstOrFail();
     }
 
     public function monitoringIn(){

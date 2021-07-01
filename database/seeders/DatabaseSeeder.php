@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AttachCryptosToWalletsSeeder::class);
         $this->call(EventSeeder::class);
         $this->call(DeveloperSeeder::class);
+        $this->call(WalletPubSeeder::class);
     }
 }

@@ -9,6 +9,11 @@ class WalletPublicKey extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'key',
+        'wallet_id',
+    ];
+
     public function wallet(){
         return $this->belongsTo(Wallet::class);
     }

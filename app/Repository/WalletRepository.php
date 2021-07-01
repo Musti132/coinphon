@@ -47,7 +47,7 @@ class WalletRepository
      */
     public function allByAuthUser()
     {
-        $wallets = auth()->user()->wallets();
+        $wallets = auth()->user()->wallets()->with('publicKey');
         
         return $wallets;
     }

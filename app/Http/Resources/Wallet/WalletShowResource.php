@@ -26,8 +26,10 @@ class WalletShowResource extends JsonResource
             'label' => $this->label,
             'status' => $this->status,
             'balance' => $balance,
-            'type' => new TypeResource($this->whenLoaded('type')),
-            'created_at' => $this->created_at->diffForHumans(),
+            'wallet_type' => $this->type->short,
+            'crypto_type' => CryptoTypeResource::collection($this->whenLoaded('cryptos')),
+            'pub_key' => optional($this->publicKey)->key,
+            'created' => $this->created_at->diffForHumans(),
         ];
     }
 }

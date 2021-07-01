@@ -10,4 +10,9 @@ class CryptoWallet extends Model
     use HasFactory;
 
     protected $table = 'crypto_wallet';
+
+    protected $fillable = [
+        'wallet_id',
+        'crypto_id'
+    ];
 }

@@ -18,7 +18,8 @@ class CreateWalletsTable extends Migration
             $table->uuid('uuid')->index();
             $table->string('label', 64);
             $table->string('full_label', 64);
-            $table->foreignId('type_id')->references('id')->on('wallet_types');
+            //$table->foreignId('crypto_id')->references('id')->on('crypto_types');
+            $table->foreignId('type_id')->nullable()->references('id')->on('wallet_types');
             $table->boolean('status')->default(1);
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->foreignId('server_id')->references('id')->on('servers');

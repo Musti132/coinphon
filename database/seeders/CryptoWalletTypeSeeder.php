@@ -41,9 +41,11 @@ class CryptoWalletTypeSeeder extends Seeder
         $walletTypes = [
             [
                 'name' => 'Online wallet',
+                'short' => 'online'
             ],
             [
-                'name' => 'Local wallet',
+                'name' => 'External wallet',
+                'short' => 'external'
             ],
         ];
 
