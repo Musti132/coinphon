@@ -117,8 +117,10 @@ class AuthRepository
             config('jwt.refresh_ttl'),
             null,
             null,
+            true,
             false,
             false,
+            'none',
         );
 
         Cookie::queue(
@@ -127,8 +129,10 @@ class AuthRepository
             config('jwt.refresh_ttl'),
             null,
             null,
+            true,
             false,
             false,
+            'none',
         );
     }
 
