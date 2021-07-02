@@ -115,7 +115,7 @@ class AuthRepository
             config('jwt.refresh_ttl'),
             null,
             null,
-            false,
+            true,
             false,
         );
 
@@ -125,7 +125,7 @@ class AuthRepository
             config('jwt.refresh_ttl'),
             null,
             null,
-            false,
+            true,
             false,
         );
     }
