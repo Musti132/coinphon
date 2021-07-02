@@ -44,7 +44,7 @@ class DashboardController extends Controller
             $ordersYesterday->count()
         );
 
-        $rate = CryptoType::find(1)->rates()->where('currency', 'USD')->first()->rate;
+        $rate = CryptoType::find(1)->rates()->where('currency', 'USD')->first()->rate ?? 33567.600;
 
         $cryptoBalance = "0.551223";
 
