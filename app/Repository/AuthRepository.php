@@ -105,8 +105,10 @@ class AuthRepository
             config('jwt.refresh_ttl'),
             null,
             null,
-            false,
             true,
+            true,
+            false,
+            'none',
         );
 
         Cookie::queue(
