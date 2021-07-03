@@ -27,7 +27,7 @@ class ApiCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:32', 'min:4'],
+            'label' => ['required', 'max:32', 'min:4'],
         ];
     }
 

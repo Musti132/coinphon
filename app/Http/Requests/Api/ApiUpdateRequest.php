@@ -28,7 +28,7 @@ class ApiUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:32', 'min:4', new ApiNameExists],
+            'label' => ['required', 'max:32', 'min:4', new ApiNameExists],
         ];
     }
 

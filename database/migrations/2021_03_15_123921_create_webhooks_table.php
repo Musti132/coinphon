@@ -17,7 +17,7 @@ class CreateWebhooksTable extends Migration
             $table->id();
             $table->string('name', 16);
             $table->string('endpoint');
-            $table->foreignId('wallet_id')->references('id')->on('wallets');
+            $table->foreignUuid('wallet_id')->references('uuid')->on('wallets');
             $table->softDeletes();
             $table->timestamps();
         });

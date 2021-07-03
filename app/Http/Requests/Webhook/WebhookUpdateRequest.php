@@ -29,7 +29,8 @@ class WebhookUpdateRequest extends FormRequest
     {
         return [
             'endpoint' => ['string', 'required_without_all:wallet_id'],
-            'wallet_id' => ['required_without_all:endpoint', new UserOwnsWalletCheck],
+            'name' => ['string', 'max:16'],
+            'wallet_id' => ['required', new UserOwnsWalletCheck],
         ];
     }
 

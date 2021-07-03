@@ -73,10 +73,12 @@ class ApiController extends Controller
      */
     public function update(ApiUpdateRequest $request, ApiKey $api)
     {
-        $api->label = $request->name;
+        $api->label = $request->label;
         $api->save();
 
-        return Response::successMessage('API Key updated');
+        return Response::success([
+            'api' => $api,
+        ], 'API Key updated');
     }
 
     /**

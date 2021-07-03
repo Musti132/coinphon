@@ -33,7 +33,7 @@ class WebhookFactory extends Factory
         return [
             'name' => 'My Key '.mt_rand(0, 10),
             'endpoint' => $endpoint,
-            'wallet_id' => Wallet::all()->random(1)->first()->id,
+            'wallet_id' => Wallet::all()->random(1)->first()->uuid,
         ];
     }
 }

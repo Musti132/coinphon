@@ -24,6 +24,6 @@ class Webhook extends Model
     }
 
     public function wallet(){
-        return $this->hasOne(Wallet::class, 'id', 'wallet_id');
+        return $this->hasOne(Wallet::class, 'uuid', 'wallet_id');
     }
 }

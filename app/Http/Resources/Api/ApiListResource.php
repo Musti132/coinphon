@@ -15,7 +15,8 @@ class ApiListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->label,
+            'id' => $this->id,
+            'label' => $this->label,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

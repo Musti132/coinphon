@@ -23,9 +23,10 @@ class WebhookController extends Controller
      */
     public function index()
     {
+        
         $data = auth()->user()->webhooks()->with(['wallet' => function ($q) {
             $q->select('label', 'uuid', 'id');
-        }, 'events'])->get();
+        }, 'events'])->orderBy('id', 'desc')->get();
 
         return WebhookResource::collection($data);
     }
@@ -71,14 +72,18 @@ class WebhookController extends Controller
     public function update(WebhookUpdateRequest $request, Webhook $webhook)
     {
         $endpoint = $request->filled('endpoint') ? $request->endpoint : $webhook->endpoint;
+        $name = $request->filled('name') ? $request->name : $webhook->name;
         $walletId = $request->filled('wallet_id') ? $request->wallet_id : $webhook->wallet_id;
 
         $webhook->update([
             'endpoint' => $endpoint,
+            'name' => $name,
             'wallet_id' => $walletId
         ]);
 
-        return Response::successMessage('Webhook updated');
+        return Response::success([
+            'webhook' => $webhook,
+        ], 'Webhook updated');
     }
 
     /**

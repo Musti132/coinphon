@@ -97,7 +97,7 @@ class Wallet extends Model
     }
 
     public function webhooks(){
-        return $this->hasMany(Webhook::class);
+        return $this->hasMany(Webhook::class, 'wallet_id', 'id');
     }
 
     public function resolveRouteBinding($value, $field = null)
