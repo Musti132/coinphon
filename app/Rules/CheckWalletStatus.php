@@ -26,7 +26,7 @@ class CheckWalletStatus implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wallet = Wallet::find($value);
+        $wallet = Wallet::where('uuid', $value)->first();
 
         if($wallet->status === Wallet::STATUS_DEACTIVATED){
             return false;

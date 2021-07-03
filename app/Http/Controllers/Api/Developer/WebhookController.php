@@ -38,7 +38,7 @@ class WebhookController extends Controller
      */
     public function store(WebhookCreateRequest $request)
     {
-        $wallet = Wallet::with('webhooks')->find($request->wallet_id);
+        $wallet = Wallet::with('webhooks')->where('uuid', $request->wallet_id)->first();
 
         $webhook = new Webhook([
             'name' => $request->name,

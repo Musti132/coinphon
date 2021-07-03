@@ -27,7 +27,7 @@ class UserOwnsWalletCheck implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wallet = Wallet::find($value);
+        $wallet = Wallet::where('uuid', $value)->first();
 
         if(!$wallet){
             return false;

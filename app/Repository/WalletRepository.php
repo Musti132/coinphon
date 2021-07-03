@@ -108,8 +108,6 @@ class WalletRepository
             $wallet->publicKey()->save($publicKey);
         }
 
-        
-
         return $wallet;
 
     }
