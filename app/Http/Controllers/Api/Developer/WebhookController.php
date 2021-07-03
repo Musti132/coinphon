@@ -48,7 +48,9 @@ class WebhookController extends Controller
 
         $wallet->webhooks()->save($webhook);
 
-        return Response::successMessage('Created new webhook');
+        return Response::success([
+            'webhook' => $webhook,
+        ], 'Created new webhook');
     }
 
     /**

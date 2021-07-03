@@ -77,7 +77,7 @@ class ApiController extends Controller
         $api->save();
 
         return Response::success([
-            'api' => $api,
+            new ApiShowResource($api)
         ], 'API Key updated');
     }
 
