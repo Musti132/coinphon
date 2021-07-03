@@ -58,12 +58,12 @@ class WalletController extends Controller
         try {
             $wallet = $user->createWallet($server, $label);
 
-            $walletObject = $this->walletRepository->createWallet($label, $wallet->name, $server->id);
+            $walletObject = $this->walletRepository->createWallet($label, $wallet->name, $server->id, $request);
 
-            $user->wallets()->save($walletObject);
+            //$user->wallets()->save($walletObject);
 
             return Response::success([
-                'wallet' => new WalletShowResource($walletObject)
+                'wallet' => new WalletShowResource($walletObject->load('cryptos'))
             ], 'Your wallet will be created shortly');
         } catch (WalletCreatorException $ex) {
             return Response::error('Unknown error happened, please contact support. ' . $ex->getMessage());

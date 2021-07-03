@@ -36,6 +36,6 @@ class WalletTypeExist implements Rule
      */
     public function message()
     {
-        return 'Wallet type doesnt exist';
+        return 'Crypto type doesnt exist';
     }
 }

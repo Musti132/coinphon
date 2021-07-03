@@ -29,7 +29,7 @@ class WalletUpdateRequest extends FormRequest
     {
         return [
             'label' => ['string', 'max:64', 'min:4', new UserLabelExist],
-            'pub_key' => ['string', 'min:64'],
+            'public_key' => ['string', 'min:64'],
             'status' => ['integer'],
         ];
     }

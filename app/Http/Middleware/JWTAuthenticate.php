@@ -41,7 +41,7 @@ class JWTAuthenticate
             ($method == "PUT" ? true : 
             ($method == "DELETE" ? true : 
             ($method == "PATCH" ? true : false)));
-
+            /*
             if ($needToCheckForCSRF && env('APP_DEBUG') !== true) {
 
                 //Make sure user has CSRF token in headers
@@ -53,7 +53,7 @@ class JWTAuthenticate
 
                 //Check if CSRF token matches the CSRF token set for user after login
                 if ($payload[$claimName] != $request->header("X-XSRF-TOKEN")) throw new TokenMismatchException();
-            }
+            }*/
 
             //Authenticate user
             
