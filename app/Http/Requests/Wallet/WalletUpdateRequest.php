@@ -28,7 +28,7 @@ class WalletUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'label' => ['string', 'max:64', 'min:4', new UserLabelExist],
+            'label' => ['string', 'max:64', 'min:4', 'nullable', new UserLabelExist],
             'public_key' => ['string', 'min:64'],
             'status' => ['integer'],
         ];
