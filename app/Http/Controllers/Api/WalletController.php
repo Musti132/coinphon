@@ -134,6 +134,15 @@ class WalletController extends Controller
             'status' => $status
         ]);
 
+        /*
+        if($wallet->publicKey()->exists()) {
+            $publicKey = $request->filled('public_key') ? $request->public_key : $wallet->public_key()->key;
+
+            $wallet->publicKey()->update([
+                'key' => $publicKey,
+            ]);
+        }*/
+
         return Response::successMessage('Wallet updated');
     }
 
