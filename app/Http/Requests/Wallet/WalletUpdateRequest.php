@@ -17,7 +17,7 @@ class WalletUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return (request()->user()->id === $this->wallet->user_id);;
+        return (request()->user()->id === $this->wallet->user_id);
     }
 
     /**

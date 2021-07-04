@@ -46,7 +46,7 @@ class WalletRepository
     /**
      * Returns all wallets related to the currently logged in user.
      *
-     * @return Wallet.
+     * @return App\Model\Wallet.
      */
     public function allByAuthUser()
     {

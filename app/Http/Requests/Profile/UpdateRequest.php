@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
         return [
             'email' => ['string', new EmailCheck],
             'password' => ['string', 'min:8', 'confirmed'],
-            'current_password' => ['string', 'min:8', 'required', 'required_if:password,true', new CurrentPasswordCheck]
+            'current_password' => ['string', 'min:8', 'required', new CurrentPasswordCheck]
         ];
     }
 
