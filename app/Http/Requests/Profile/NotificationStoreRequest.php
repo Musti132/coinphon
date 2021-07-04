@@ -31,6 +31,7 @@ class NotificationStoreRequest extends FormRequest
             'notification.order_new' => ['required', 'boolean'],
             'notification.withdraw' => ['required', 'boolean'],
             'notification.order_completed' => ['required', 'boolean'],
+            'notification.order_confirmation' => ['required', 'boolean'],
         ];
     }
 

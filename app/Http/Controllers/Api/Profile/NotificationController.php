@@ -25,10 +25,15 @@ class NotificationController extends Controller
             ? $request->input('notification.withdraw')
             : $userSettings->get('withdraw');
 
+        $order_confirmation = $request->filled('notification.order_confirmation')
+            ? $request->input('notification.order_confirmation')
+            : $userSettings->get('order_confirmation');
+
         $userSettings->setMultiple([
             'withdraw' => $withdraw,
             'order_completed' => $order_completed,
             'order_new' => $order_new,
+            'order_confirmation' => $order_confirmation,
         ]);
 
         return Response::successMessage('Notifications updated');

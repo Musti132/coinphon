@@ -16,7 +16,6 @@ class ProfileController extends Controller
 {
     public function update(User $profile, UpdateRequest $request)
     {
-
         $profile->email = $request->filled('email') ? $request->email : $profile->email;
         $profile->password = $request->filled('password') ? Hash::make($request->password) : $profile->password;
 
@@ -32,7 +31,6 @@ class ProfileController extends Controller
 
     public function logout(DeviceLogoutRequest $request, UserLogin $device)
     {
-        dd($device->id);
         $device->active = 0;
         $device->save();
 
