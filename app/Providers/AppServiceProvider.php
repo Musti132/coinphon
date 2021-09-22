@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if(config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
+        
         //
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
