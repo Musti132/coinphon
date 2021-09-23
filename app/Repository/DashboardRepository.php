@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Models\Order;
 use App\Models\Wallet;
 use Illuminate\Support\Carbon;
 use Str;
@@ -15,8 +16,12 @@ class DashboardRepository
      * 
      * @return App\Models\Order;
      */
-    public function getOrdersByDate(Carbon $date){
-        return auth()->user()->orders()->whereDate('orders.created_at', $date);
+    public function getOrdersByDate(Carbon $date)
+    {
+        $query = Order::whereIn('wallet_id', auth()->user()->wallets()->pluck('id'))
+            ->whereDate('created_at', $date);
+
+        return $query;
     }
 
 
@@ -26,7 +31,7 @@ class DashboardRepository
      * 
      * @return int
      */
-    function calculatePercentageChange(int $newNumber, int $oldNumber) : int
+    function calculatePercentageChange(int $newNumber, int $oldNumber): int
     {
         if ($oldNumber == 0) {
             $oldNumber++;

@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Wallet\WalletController;
 use App\Http\Controllers\Api\Developer\WebhookController;
 use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
 use App\Http\Controllers\Api\Order\OrderDetailController;
+use App\Http\Controllers\Api\Overview\SalesStatistics;
 use App\Http\Controllers\Api\Profile\DeviceController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\ProfileController;
@@ -168,6 +169,7 @@ Route::group([
             'as' => 'dashboard.'
         ], function () {
             Route::get('', [DashboardController::class, 'index'])->name('home');
+            Route::get('sales', [SalesStatistics::class, 'index'])->name('home');
         });
 
         /**

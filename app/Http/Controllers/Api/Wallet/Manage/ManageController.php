@@ -26,11 +26,11 @@ class ManageController extends Controller
         return Response::success([
             'revenue_today' => number_format($statsToday->sum('amount'), 8),
             'revenue_today_fiat' => number_format($revenueToday, 2),
-            'balance_change' => $change."%",
+            'balance_change' => $change,
             'revenue' => Chartisan::build()
                 ->labels(['revenue_change'])
                 ->extra([
-                    'change24h' => $change."%",
+                    'change24h' => $change,
                     'total_yesterday_fiat' => number_format($revenueYesterday, 2),
                     'total_yesterday' => number_format($statsYesterday->sum('amount'), 8),
                 ])

@@ -9,14 +9,9 @@ use App\Models\CryptoRate;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\UserLogin;
-use App\Models\Wallet;
-use App\Models\WalletType;
 use App\Repository\DashboardRepository;
 use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
-use Twilio\Rest\Client;
-use Jenssegers\Agent\Agent;
-use Http;
 
 class DashboardController extends Controller
 {
