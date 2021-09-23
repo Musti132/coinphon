@@ -53,8 +53,8 @@ class DashboardController extends Controller
             'revenue' => Chartisan::build()
                 ->labels(['total_revenue'])
                 ->extra(['change24h' => $changeAmount])
-                    ->dataset("today", [$amountToday])
-                    ->dataset("yesterday", [$amountYesterday])
+                    ->dataset("today", [number_format($amountToday, 2)])
+                    ->dataset("yesterday", [number_format($amountYesterday, 2)])
                     ->toObject(),
             'order_volume' => Chartisan::build()
                 ->labels(['total_volume'])
