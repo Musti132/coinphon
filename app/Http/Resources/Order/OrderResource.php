@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'status' => $this->status,
             'note' => 'Hello',
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('D, M Y, m:h'),
             'wallet' => new WalletShowResource($this->wallet),
             'transaction' => new TransactionResource($this->whenLoaded('transaction')),
         ];

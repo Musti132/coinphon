@@ -17,7 +17,9 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('message');
-            $table->foreignId('type')->references('id')->on('notification_types');
+            $table->foreignUuid('user_id');
+            $table->foreignId('type_id')->references('id')->on('notification_types');
+            $table->boolean('read')->default(0);
             $table->timestamps();
         });
     }

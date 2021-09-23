@@ -103,7 +103,8 @@ class User extends Authenticatable implements JWTSubject
     protected $appends = ['country_name'];
     public $incrementing = false;
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::creating(function ($post) {
             $post->{$post->getKeyName()} = (string)Str::uuid();
@@ -116,7 +117,8 @@ class User extends Authenticatable implements JWTSubject
         });
     }
 
-    public function devices(){
+    public function devices()
+    {
         return $this->hasMany(UserLogin::class);
     }
 
@@ -130,7 +132,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasManyThrough(Order::class, Wallet::class);
     }
 
-    public function webhooks(){
+    public function webhooks()
+    {
         return $this->hasManyThrough(Webhook::class, Wallet::class, 'user_id', 'wallet_id', 'id', 'uuid');
     }
 
@@ -149,7 +152,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserRefreshToken::class);
     }
 
-    public function apiKeys(){
+    public function apiKeys()
+    {
         return $this->hasMany(ApiKey::class);
     }
 
@@ -157,18 +161,24 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Country::class, 'id', 'country_id');
     }
-    
+
     public function getCountryNameAttribute()
     {
         return $this->country->name;
     }
 
-    public function phones()
+    public function phone()
     {
-        return $this->hasMany(PhoneNumber::class, 'user_id', 'id');
+        return $this->hasOne(PhoneNumber::class, 'id', 'phone_id');
     }
 
-    public function business(){
+    public function business()
+    {
         return $this->hasOne(Business::class, 'id', 'business_id');
+    }
+
+    public function isBusiness()
+    {
+        return (bool) $this->is_business;
     }
 }

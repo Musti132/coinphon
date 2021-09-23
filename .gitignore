@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/config/clockwork.php
 /storage/*.key
 /daemon
 /vendor
@@ -12,3 +13,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+countries.json

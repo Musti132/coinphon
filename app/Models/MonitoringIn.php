@@ -12,7 +12,11 @@ class MonitoringIn extends Model
     protected $table = 'api_monitoring_in';
 
     public function log(){
-        return $this->hasOne(ApiLog::class);
+        return $this->hasOne(ApiLog::class, 'id', 'log_id');
+    }
+
+    public function wallet() {
+        return $this->hasOne(Wallet::class, 'id', 'wallet_id');
     }
 
     public static function failedCount($walletIds){

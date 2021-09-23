@@ -18,32 +18,8 @@ class AuthRepository
      * 
      * @return App\Model\UserLogin
      */
-    public function saveUserLogin(Request $request)
+    public function saveUserLogin(Agent $agent, Request $request, string $hashedDevice, $expires_at)
     {
-
-        //Grab UA and parse it
-        $userAgent = $request->header('User-Agent');
-        $agent = new Agent($request->header(), $userAgent);
-
-        $device = $this->userDeviceExists($userAgent)->first();
-
-        //If device exists, just return that instead.
-        if ($device) {
-            return $device;
-        }
-
-        if ($agent->isRobot()) {
-            return false;
-        }
-
-        $hashedDevice = md5($userAgent);
-
-        $expires_at = null;
-
-        if ($request->remember) {
-            $expires_at = now()->addDays(30);
-        }
-
         $userLog = new UserLogin([
             'device_hash' => $hashedDevice,
             'browser' => $agent->browser(),
@@ -97,7 +73,48 @@ class AuthRepository
 
     public function createLoginCookies($token)
     {
+        $httpOnly = $this->shouldBeHttpOnly();
+        $secure = $this->shouldBeSecure();
+        $sameSite = $this->shouldbeSameSite();
+        //Create required cookies to authorize user.
+        Cookie::queue(
+            "token",
+            $token,
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            $secure,
+            $httpOnly,
+            false,
+        );
 
+        Cookie::queue(
+            "csrf_tkn",
+            auth()->payload()->get(config('jwt.name') . 'csrf_claim'),
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            $secure,
+            false,
+            false,
+            $sameSite,
+        );
+
+        Cookie::queue(
+            "logged_in",
+            1,
+            config('jwt.refresh_ttl'),
+            null,
+            null,
+            $secure,
+            false,
+            false,
+            $sameSite,
+        );
+    }
+
+    public function createRegisterCookies($token)
+    {
         //Create required cookies to authorize user.
         Cookie::queue(
             "token",
@@ -136,36 +153,23 @@ class AuthRepository
         );
     }
 
-    public function createRegisterCookies($token)
-    {
-        Cookie::queue(
-            "token",
-            $token,
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            true,
-        );
+    private function shouldBeHttpOnly() {
+        if(env('APP_ENV') === "local") {
+            return false;
+        }
 
-        Cookie::queue(
-            "csrf_tkn",
-            auth()->payload()->get(config('jwt.name') . 'csrf_claim'),
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            false,
-        );
+        return true;
+    }
 
-        Cookie::queue(
-            "logged_in",
-            1,
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            false,
-        );
+    private function shouldBeSecure() {
+        if(env('APP_ENV') === "local") {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function shouldBeSameSite() {
+        return "";
     }
 }

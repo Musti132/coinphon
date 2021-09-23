@@ -9,6 +9,7 @@ use App\Http\Resources\Order\OrderAllResource;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
 use App\Http\Requests\Order\MarkOrderRequest;
+use App\Http\Requests\Order\OrderExportRequest;
 use App\Http\Resources\Order\OrderListResource;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\User;
@@ -17,6 +18,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repository\OrderRepository;
 use App\Services\OrderService;
+use PDF;
 use CoinPhon\Crypto\Wallet\WalletClient;
 
 class OrderController extends Controller
@@ -40,20 +42,49 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(Request $request)
     {
-        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE));
+        $page = $request->filled('page') ? $request->page : 0;
+
+        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $page));
     }
 
-    public function show(Order $order){
+    /**
+     * Export orders to pdf
+     * 
+     * @param OrderExportRequest $request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function export(OrderExportRequest $request)
+    {
+        $orders = $this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $request->page_number);
+
+        view()->share('orders', $orders);
+
+        $pdf = PDF::loadView('invoice.pdf', $orders);
+
+        return $pdf->download('order-'.now().'.pdf');
+    }
+
+    public function show(Order $order)
+    {
         return new OrderResource($order);
     }
 
+    /**
+     * Store new order in storage
+     * 
+     * @param NewOrderRequest $request
+     * @param App\Models\Wallet $wallet
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function newOrder(NewOrderRequest $request, Wallet $wallet)
     {
         $type = WalletClient::LEGACY;
 
-        if($request->filled('type')){
+        if ($request->filled('type')) {
             $type = $this->types[$request->type];
         }
 
@@ -81,7 +112,16 @@ class OrderController extends Controller
         return Response::successMessage('Order created');
     }
 
-    public function mark(MarkOrderRequest $request, Order $order){
+    /**
+     * Change status of a order
+     * 
+     * @param MarkOrderRequest $request
+     * @param Order $order
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function mark(MarkOrderRequest $request, Order $order)
+    {
 
         $order->status = 1;
         $order->save();

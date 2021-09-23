@@ -9,13 +9,21 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Developer\ApiController;
 use App\Http\Controllers\Api\Developer\DeveloperController;
 use App\Http\Controllers\Api\Developer\EventController;
+use App\Http\Controllers\Api\Developer\LogController;
 use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\Wallet\WalletController;
 use App\Http\Controllers\Api\Developer\WebhookController;
+use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
+use App\Http\Controllers\Api\Order\OrderDetailController;
 use App\Http\Controllers\Api\Profile\DeviceController;
 use App\Http\Controllers\Api\Profile\NotificationController;
 use App\Http\Controllers\Api\Profile\ProfileController;
+use App\Http\Controllers\Api\Profile\TwoFactorController;
+use App\Http\Controllers\Api\Wallet\HistoryController;
+use App\Http\Controllers\Api\Wallet\Manage\ActivationController;
 use App\Http\Controllers\Api\Wallet\Manage\CryptoController;
+use App\Http\Controllers\Api\Wallet\Manage\ManageController;
+use App\Http\Controllers\Api\Wallet\Manage\WithdrawController;
 use App\Models\UserLogin;
 
 /*
@@ -79,7 +87,7 @@ Route::group([
              */
 
             Route::get('refresh', [AuthController::class, 'refresh'])->name('refresh');
-            
+
 
             /**
              * Logout route
@@ -102,6 +110,13 @@ Route::group([
         ], function () {
             Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
             Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
+            Route::get('{wallet}/status', [WalletController::class, 'status'])->name('status');
+            Route::get('{wallet}/history', [HistoryController::class, 'history'])->name('history');
+            Route::get('{wallet}/statistics', [ManageController::class, 'statistics'])->name('statistics');
+
+            Route::post('{wallet}/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
+            Route::post('status/{wallet}/activate', [ActivationController::class, 'activate'])->name('activate');
+            Route::post('status/{wallet}/deactivate', [ActivationController::class, 'deactivate'])->name('deactivate');
 
             Route::group([
                 'prefix' => 'create',
@@ -121,22 +136,29 @@ Route::group([
             Route::post('notification/update', [NotificationController::class, 'update'])->name('update');
             Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
             Route::get('devices', [DeviceController::class, 'devices'])->name('devices');
+            Route::put('/', [ProfileController::class, 'update'])->name('update');
+            Route::post('2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa_enable');
+            Route::post('2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa_disable');
         });
 
-        Route::apiResource('profile', ProfileController::class);
+        Route::apiResource('profile', ProfileController::class)->except([
+            'update', 'destroy'
+        ]);
 
         /**
          * Order routes
          */
-        Route::apiResource('order', OrderController::class);
-
         Route::group([
             'prefix' => 'order',
             'as' => 'order.'
         ], function () {
+            Route::get('export', [OrderController::class, 'export'])->name('export');
             Route::post('{wallet}/new', [OrderController::class, 'newOrder'])->name('new');
-            Route::post('{order}/mark', [OrderController::class, 'mark'])->name('markOrder');
+            Route::post('{order}/mark', [OrderController::class, 'mark'])->name('mark');
+            Route::get('{order}/details', [OrderDetailController::class, 'details'])->name('details');
         });
+
+        Route::apiResource('order', OrderController::class);
 
         /**
          * Dashboard routes
@@ -171,14 +193,27 @@ Route::group([
         });
 
         /**
-         * Webhook routes
+         * Notification routes
          */
-        Route::apiResource('api', ApiController::class);
+        Route::group([
+            'prefix' => 'notification',
+            'as' => 'notification.',
+        ], function () {
+            Route::get('', [ApiNotificationController::class, 'index'])->name('index');
+            Route::get('read', [ApiNotificationController::class, 'read'])->name('read');
+        });
 
+        /**
+         * Api routes
+         */
         Route::group([
             'prefix' => 'api',
             'as' => 'api.',
         ], function () {
+            Route::get('logs/server', [LogController::class, 'server'])->name('logs_server');
+            Route::get('logs/user', [LogController::class, 'user'])->name('logs_user');
         });
+
+        Route::apiResource('api', ApiController::class);
     });
 });

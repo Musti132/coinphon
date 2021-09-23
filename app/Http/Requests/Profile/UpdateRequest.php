@@ -5,6 +5,7 @@ namespace App\Http\Requests\Profile;
 use App\Helpers\Response;
 use App\Rules\Profile\CurrentPasswordCheck;
 use App\Rules\Profile\EmailCheck;
+use App\Rules\Profile\IsBusinessProfile;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -31,7 +32,8 @@ class UpdateRequest extends FormRequest
         return [
             'email' => ['string', new EmailCheck],
             'password' => ['string', 'min:8', 'confirmed'],
-            'current_password' => ['string', 'min:8', 'required', new CurrentPasswordCheck]
+            'current_password' => ['string', 'min:8', 'required', new CurrentPasswordCheck],
+            'business_name' => ['string', 'min:6', new IsBusinessProfile]
         ];
     }
 

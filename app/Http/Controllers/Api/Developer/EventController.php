@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    /**
+     * Attach events for webhooks to listen for.
+     * 
+     * @param AttachEventRequest $request
+     * @param Webhook $webhook
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function attach(AttachEventRequest $request, Webhook $webhook){
         $webhook->events()->sync($request->event_id);
 

@@ -21,7 +21,7 @@ class DeviceResource extends JsonResource
             'browser' => $this->browser,
             'os' => $this->os,
             'ip' => $this->ip,
-            'logged_in' => $this->updated_at,
+            'logged_in' => $this->updated_at->diffForHumans(),
             'active' => (bool) $this->active,
         ];
     }

@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Business;
 use App\Models\PhoneNumber;
 use App\Helpers\Response as HelperResponse;
+use App\Http\Resources\Wallet\WalletHistoryResource;
 use App\Repository\AuthRepository;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -26,35 +27,28 @@ use App\Services\AuthService;
 class AuthController extends Controller
 {
     public $authRepository;
+    public $authService;
 
-    public function __construct(AuthRepository $authRepository)
+    /**
+     * @param AuthRepository $authRepository
+     * @param AuthService $authService
+     */
+    public function __construct(AuthRepository $authRepository, AuthService $authService)
     {
         $this->authRepository = $authRepository;
+        $this->authService = $authService;
     }
 
+    /**
+     * Register user
+     * 
+     * @param RegisterFormRequest $request
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function register(RegisterFormRequest $request)
     {
-        $country_id = $request->country;
-
-        $data = [
-            'first' => $request->first,
-            'last' => $request->last,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'country_id' => $country_id,
-        ];
-
-        if ($request->filled('business_name')) {
-
-            $business = Business::create([
-                'name' => $request->business_name,
-            ]);
-
-            $data['is_business'] = true;
-            $data['business_id'] = $business->id;
-        }
-
-        $user = User::create($data);
+        $user = $this->authService->createUser($request);
 
         $token = auth()->claims([
             config('jwt.name') . "csrf_claim" => Str::random(64),
@@ -65,6 +59,13 @@ class AuthController extends Controller
         return HelperResponse::successMessage('Successfully registered.');
     }
 
+    /**
+     * Set csrf claim, check for 2FA, create cookies, then login user
+     * 
+     * @param LoginRequest $request
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -73,10 +74,10 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->attempt($credentials)) {
 
-            $info = $this->authRepository->saveUserLogin($request);
+            $info = $this->authService->saveLogin($request);
 
-            if($this->authRepository->requiresSmsAuth($request)){
-                if(!(new AuthService())->dispatchSms(auth()->user(), $info)){
+            if ($this->authRepository->requiresSmsAuth($request)) {
+                if (!(new AuthService())->dispatchSms(auth()->user(), $info)) {
                     return HelperResponse::error('Failed sending sms', 'sms_failed');
                 }
 
@@ -90,7 +91,7 @@ class AuthController extends Controller
                 'message' => 'Authentication successful',
                 'data' => new UserAuthResource($user),
             ]);
-            
+
             $this->authRepository->createLoginCookies($token);
 
             return $response;
@@ -99,7 +100,12 @@ class AuthController extends Controller
         return HelperResponse::forbidden('Username/Password not found.');
     }
 
-    public function logout()
+    /**
+     * Invalidate token & remove cookies to logout user.
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function logout() 
     {
         $this->guard()->logout();
         JWTAuth::invalidate(JWTAuth::parseToken());
@@ -119,6 +125,13 @@ class AuthController extends Controller
             ->withCookie(Cookie::forget('csrf_tkn'));
     }
 
+    /**
+     * Return user oject
+     * 
+     * @param Request $request
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function user(Request $request)
     {
 
@@ -135,6 +148,11 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Refresh JWT Token (currently not in use)
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function refresh()
     {
         $currentToken = JWTAuth::getToken();

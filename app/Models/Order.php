@@ -47,6 +47,8 @@ class Order extends Model
     public const CONFIRMING = 2;
     public const IN_PROCESS = 0;
 
+    public const FEE_AMOUNT = 1.00;
+
     protected $fillable = [
         'wallet_id',
         'amount',
@@ -70,6 +72,14 @@ class Order extends Model
         return $this->belongsTo(Wallet::class, 'wallet_id');
     }
 
+    public function getFeeAttribute() {
+        return $this->calculateFee();
+    }
+
+    public function calculateFee() {
+        return number_format((self::FEE_AMOUNT / 100) * $this->amount_fiat, 2);
+    }
+
     public function getStatusMessageAttribute()
     {
         $status = "Unknown";
@@ -77,19 +87,19 @@ class Order extends Model
         $value = $this->attributes['status'];
 
         switch ($value) {
-            case 3:
+            case self::CANCELLED:
                 $status = "Cancelled";
                 break;
-            case 4:
+            case self::REFUNDED:
                 $status = "Refunded";
                 break;
-            case 1:
+            case self::COMPLETED:
                 $status = "Completed";
                 break;
-            case 2:
+            case self::CONFIRMING:
                 $status = "Confirming";
                 break;
-            case 0:
+            case self::IN_PROCESS:
                 $status = "In Process";
                 break;
             default:

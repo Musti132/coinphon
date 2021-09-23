@@ -7,8 +7,6 @@ use App\Models\Order;
 
 class OrderRepository
 {
-    
-
     /**
      * @param int $id
      * 
@@ -55,7 +53,7 @@ class OrderRepository
      */
     public function allByAuthUser(bool $withTransaction = false, bool $withType = false)
     {
-        $wallets = $this->getAllOrdersById(\Auth::id())
+        $orders = $this->getAllOrdersById(\Auth::id())
         ->when($withTransaction, function($q) use($withTransaction){
             return $q->with(['transaction']);
         })->when($withType, function ($q) use($withType){
@@ -64,7 +62,7 @@ class OrderRepository
             }]);
         });
 
-        return $wallets;
+        return $this->sort($orders, 'created_at', 'DESC');
     }
     
     /**
@@ -82,6 +80,6 @@ class OrderRepository
             return $q->orderBy($orderBy, $sort);
         })->when($columns, function ($q) use ($columns) {
             return $q->select($columns);
-        })->get();
+        });
     }
 }

@@ -3,7 +3,8 @@
     "description": "Multi bitcoin library made by and for CoinPhon",
     "type": "library",
     "require": {
-        "bitwasp/bitcoin": "1.0.4"
+        "bitwasp/bitcoin": "1.0.4",
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "license": "proprietary",
     "authors": [{

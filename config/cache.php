@@ -107,6 +107,6 @@ return [
      * Wallet balance cache time (seconds)
      */
 
-    'wallet_balance_ttl' => 10,
+    'wallet_balance_ttl' => 60,
 
 ];

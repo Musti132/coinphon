@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Api;
+namespace App\Http\Resources\Notification;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ApiListResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,9 @@ class ApiListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'label' => $this->label,
-            'created_at' => $this->created_at->diffForHumans(),
+            'title' => $this->title,
+            'message' => $this->message,
+            'type' => $this->type->name,
         ];
     }
 }

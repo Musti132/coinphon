@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Api;
+namespace App\Http\Resources\Developer\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ApiShowResource extends JsonResource
+class ApiListResource extends JsonResource
 {
-    public $apiKey;
-
     /**
      * Transform the resource into an array.
      *
@@ -19,14 +17,7 @@ class ApiShowResource extends JsonResource
         return [
             'id' => $this->id,
             'label' => $this->label,
-            'key' => $this->apiKey,
             'created_at' => $this->created_at->diffForHumans(),
         ];
-    }
-
-    public function key(string $key) {
-        $this->apiKey = $key;
-
-        return $this;
     }
 }

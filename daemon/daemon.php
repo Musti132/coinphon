@@ -1,28 +1,84 @@
 <?php
-function bubblesort(array $array) {
-    $length = count($array);
 
-    for($i = 0; $i < $length; $i++) {
+const TOTAL_FIBO = 20;
 
-        for($j = 0; $j < $length - $i - 1; $j++) {
 
-            echo $length - $i - 1 ."\n";
+function fibonacci(int $totalFibo)
+{
+    $f1 = 0;
+    $f2 = 1;
 
-            $value = $array[$j];
+    echo $f1 . " " . $f2 . " ";
 
-            if($value > $array[$j + 1]){
-                $array[$j] = $array[$j + 1];
-                $array[$j + 1] = $value;
-            }
-        }
+    for ($i = 0; $i <= $totalFibo; $i++) {
+
+        $f3 = $f1 + $f2;
+
+        echo $f3 . " ";
+
+        $f1 = $f2;
+        $f2 = $f3;
     }
-
-    print_r($array);
 }
 
-$array = [5, 2 , 3, 1];
+function reverseFibonacci(int $totalFibo)
+{
+    $f1 = 17711;
+    $f2 = 10946;
 
-bubblesort($array);
+    echo $f1 . " " . $f2 . " ";
+
+    for ($i = $totalFibo; $i >= 0; $i--) {
+
+        $f3 = $f1 - $f2;
+
+        echo $f3 . " ";
+
+        $f1 = $f2;
+        $f2 = $f3;
+    }
+}
+
+function lucas()
+{
+    $l1 = 2;
+    $l2 = 1;
+
+    echo "{$l1} {$l2} ";
+
+    for ($i = 0; $i <= 20; $i++) {
+        $l3 = $l1 + $l2;
+
+        $l1 = $l2;
+        $l2 = $l3;
+
+        echo $l3 . " ";
+    }
+}
+
+function padovan()
+{
+    $p[0] = 1;
+    $p[1] = 1;
+    $p[2] = 1;
+
+    echo $p[0] . " " . $p[1] . " " . $p[2] . " ";
+
+    for ($i = 3; $i <= 27; $i++) {
+        $p[$i] = $p[$i - 2] + $p[$i - 3];
+        
+        echo $p[$i] . " ";
+    }
+}
+
+fibonacci(TOTAL_FIBO);
+
+echo "\n##########REVERSE FIBONACCI#################\n";
+reverseFibonacci(TOTAL_FIBO);
+echo "\n##########LUCAS#############################\n";
+lucas();
+echo "\n##########PADOVAN###########################\n";
+padovan();
 
 /*
 Class Foo {

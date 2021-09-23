@@ -17,7 +17,6 @@ class CreatePhoneNumbersTable extends Migration
             $table->id();
             $table->char('number', 16);
             $table->foreignId('country_id')->references('id')->on('countries');
-            $table->foreignUuid('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -52,7 +52,7 @@ class WalletRepository
     {
         $wallets = auth()->user()->wallets()->with('publicKey');
         
-        return $wallets;
+        return $this->sort($wallets, 'id', 'DESC');
     }
     
     /**
@@ -70,7 +70,7 @@ class WalletRepository
             return $q->orderBy($orderBy, $sort);
         })->when($columns, function ($q) use ($columns) {
             return $q->select($columns);
-        })->get();
+        });
     }
 
     public function createWallet(string $label, string $fullLabel, $serverId, $request){

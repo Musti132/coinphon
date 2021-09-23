@@ -12,9 +12,14 @@ use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
-    public function store()
+    /**
+     * Store new sms code to be validated later on.
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
     {
-        (new AuthService)->deviceExists($_SERVER['HTTP_USER_AGENT']);
+        (new AuthService)->deviceExists($request->server('HTTP_USER_AGENT'));
 
         $phone = PhoneNumber::all()->first();
 
@@ -35,6 +40,13 @@ class SmsController extends Controller
         );
     }
 
+    /**
+     * Validate sms code
+     * 
+     * @param SmsVerifyRequest $request
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
     public function verify(SmsVerifyRequest $request)
     {
         $code = $request->code;

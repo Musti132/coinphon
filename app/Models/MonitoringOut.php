@@ -12,7 +12,7 @@ class MonitoringOut extends Model
     protected $table = 'api_monitoring_out';
 
     public function log(){
-        return $this->hasOne(ApiLog::class);
+        return $this->hasOne(ApiLog::class, 'id', 'log_id');
     }
 
     public static function failedCount($walletIds){

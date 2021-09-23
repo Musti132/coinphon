@@ -10,6 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Log;
+use Throwable;
 use Twilio\Rest\Client;
 
 class SendVerificationSms implements ShouldQueue
@@ -56,7 +58,7 @@ class SendVerificationSms implements ShouldQueue
             '+4552112257',
             [
                 // A Twilio phone number you purchased at twilio.com/console
-                'from' => '+18438859382',
+                'from' => '+14055628584',
                 // the body of the text message you'd like to send
                 'body' => 'Activation code: '.$sms->code,
             ]

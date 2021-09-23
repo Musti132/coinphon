@@ -1,1 +1,13 @@
-Fix RequestException RPClient.php when loading wallet with a label not found
+- Notifications - DONE 
+- Order export - DONE
+- Order payment details - DONE (Remove net value & valid calculation of fee in btc)
+- Wallet account status/balance - DONE but why?
+- Wallet stats - DONE
+- Wallet withdraw - DONE (Add controller functionallity & 2FA Check)
+- Wallet history - DONE
+- API logs - DONE
+- All search/sorts/filters - Added to necesarry pages, charts still need date selections. Why search?
+- Dummy data for all charts 
+- Avatar upload - REMOVE 
+- Edit profile name - DONE (only update business name)
+- Make a test route for enable/disable 2fa - DONE

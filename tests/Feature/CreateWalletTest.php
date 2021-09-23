@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\CryptoType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -27,17 +28,14 @@ class CreateWalletTest extends TestCase
     
             $response = $this->call('POST', 'api/v1/wallet/', [
                 'label' => 'HelloWallet'.Str::random(2),
-                'type' => 'Bitcoin',
+                'crypto_type' => CryptoType::all()->random(1)->first()->id,
+                'wallet_type' => 'online'
             ], [
                 'token' => $auth,
             ]);
     
             $response
-                ->assertStatus(200)
-                ->assertJson([
-                    'status' => 'success',
-                ]
-            );
+                ->assertStatus(200);
         }
     }
 }

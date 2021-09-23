@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use CoinPhon\Crypto\Wallet\Traits\Wallet as WalletTrait;
@@ -74,7 +75,7 @@ class Wallet extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'wallet_id', 'id');
+        return $this->hasMany(Order::class);
     }
 
     public function owner()
@@ -92,12 +93,19 @@ class Wallet extends Model
         return $this->hasOne(WalletType::class, 'id', 'type_id');
     }
 
-    public function cryptos() {
+    public function cryptos()
+    {
         return $this->belongsToMany(CryptoType::class, CryptoWallet::class, 'wallet_id', 'crypto_id');
     }
 
-    public function webhooks(){
+    public function webhooks()
+    {
         return $this->hasMany(Webhook::class, 'wallet_id', 'uuid');
+    }
+
+    public function history()
+    {
+        return $this->hasMany(WalletHistory::class, 'wallet_id', 'uuid');
     }
 
     public function resolveRouteBinding($value, $field = null)
@@ -105,31 +113,46 @@ class Wallet extends Model
         return $this->where('uuid', $value)->with('type')->firstOrFail();
     }
 
-    public function monitoringIn(){
+    public function monitoringIn()
+    {
         return $this->hasMany(MonitoringIn::class);
     }
 
-    public function monitoringOut(){
+    public function monitoringOut()
+    {
         return $this->hasMany(MonitoringOut::class);
     }
 
-    public function getSuccessMonitoringIn(){
+    public function revenueByDate($date)
+    {
+        return $this->orders()->whereDate('created_at', '=', $date)->where(function ($q) {
+            $q->where('status', Order::COMPLETED)
+                ->orWhere('status', Order::CONFIRMING);
+        });
+    }
+
+    public function getSuccessMonitoringIn()
+    {
         return $this->monitoringIn()->where('code', 200);
     }
 
-    public function getSuccessMonitoringOut(){
+    public function getSuccessMonitoringOut()
+    {
         return $this->monitoringOut()->where('code', 200);
     }
 
-    public function getFailedMonitoringIn(){
+    public function getFailedMonitoringIn()
+    {
         return $this->monitoringIn()->where('code', '!=', 200);
     }
 
-    public function getFailedMonitoringOut(){
+    public function getFailedMonitoringOut()
+    {
         return $this->monitoringOut()->where('code', '!=', 200);
     }
 
-    public function active(){
+    public function active()
+    {
         return $this->where('status', 1);
     }
 }

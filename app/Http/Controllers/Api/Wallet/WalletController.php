@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Wallet;
 
 use App\Helpers\Pagination;
 use App\Http\Controllers\Controller;
@@ -17,6 +17,7 @@ use App\Services\WalletService;
 use CoinPhon\Crypto\Wallet\Exceptions\WalletCreatorException;
 use CoinPhon\Crypto\Wallet\Exceptions\WalletDontExistException;
 use Cache;
+use Illuminate\Http\Request as Request;
 
 class WalletController extends Controller
 {
@@ -28,24 +29,29 @@ class WalletController extends Controller
     }
 
     /**
-     * index
+     * Return a list of wallets for user
+     * 
+     * @param Request $request
      * 
      * @return Illuminate\Http\JsonResponse
      */
 
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->filled('page') ? $request->page : 0;
+
         $wallets = $this->walletRepository->allByAuthUser();
 
-        return WalletListResource::collection($wallets->paginate(Pagination::DEFAULT_PER_PAGE))->additional([
+        return WalletListResource::collection($wallets->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $page))->additional([
             'status' => 'success',
         ]);
     }
 
     /**
-     * store
+     * Store new object in storage
      *
-     * @param  mixed $request
+     * @param  WalletCreate $request
+     * 
      * @return Illuminate\Http\JsonResponse
      */
 
@@ -71,10 +77,11 @@ class WalletController extends Controller
     }
 
     /**
-     * balance
+     * Grab wallet balance and return it
      *
-     * @param  mixed $wallet
-     * @return void
+     * @param  App\Models\Wallet $wallet
+     * 
+     * @return Illuminate\Http\JsonResponse
      */
 
     public function balance(Wallet $wallet)
@@ -83,7 +90,7 @@ class WalletController extends Controller
             $balance = $wallet->refreshBalance();
             Cache::put('wallet_' . $wallet->uuid, $balance, now()->addSeconds(config('cache.wallet_balance_ttl')));
         } catch (Exception $ex) {
-            return Response::error('Couldnt refresh balance');
+            return Response::error('Couldnt get balance');
         }
 
         return Response::success([
@@ -92,10 +99,32 @@ class WalletController extends Controller
     }
 
     /**
-     * address
+     * Return wallet status and balance
+     * 
+     * @param App\Models\Wallet $wallet
+     * 
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function status(Wallet $wallet){
+        try {
+            $balance = $wallet->refreshBalance();
+            Cache::put('wallet_' . $wallet->uuid, $balance, now()->addSeconds(config('cache.wallet_balance_ttl')));
+        } catch (Exception $ex) {
+            return Response::error('Couldnt get balance');
+        }
+        
+        return Response::success([
+            'status' => $wallet->status,
+            'balance' => $balance,
+        ]);
+    }
+
+    /**
+     * Generate an address for wallet
      *
-     * @param  mixed $wallet
-     * @return void
+     * @param  App\Models\Wallet $wallet
+     * 
+     * @return Illuminate\Http\JsonResponse
      */
 
     public function address(WalletAddressRequest $request, Wallet $wallet)
@@ -121,7 +150,8 @@ class WalletController extends Controller
      *
      * @param  App\Http\Requests\Wallet\WalletUpdateRequest  $request
      * @param  App\Models\Wallet  $wallet
-     * @return \Illuminate\Http\Response
+     * 
+     * @return Illuminate\Http\JsonResponse
      */
 
     public function update(WalletUpdateRequest $request, Wallet $wallet)
@@ -147,9 +177,10 @@ class WalletController extends Controller
     }
 
     /**
-     * show
+     * Return wallet object
      *
-     * @param  mixed $wallet
+     * @param  App\Models\Wallet $wallet
+     * 
      * @return Illuminate\Http\JsonResponse
      */
 
@@ -159,9 +190,10 @@ class WalletController extends Controller
     }
 
     /**
-     * destroy
+     * Soft delete wallet from storage 
      * 
-     * @param Wallet $wallet
+     * @param App\Models\Wallet $wallet
+     * 
      * @return Illuminate\Http\JsonResponse
      */
 
