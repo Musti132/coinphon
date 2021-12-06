@@ -67,6 +67,20 @@ class OrderController extends Controller
         return $pdf->download('order-'.now().'.pdf');
     }
 
+    /**
+     * Export orders to pdf
+     * 
+     * @param OrderExportRequest $request
+     * 
+     * @return Illuminate\Http\Response
+     */
+    public function exportOrder(OrderExportRequest $request)
+    {
+        return Response::success([
+            'url' => route('order.export_order'),
+        ]);
+    }
+
     public function show(Order $order)
     {
         return new OrderResource($order);

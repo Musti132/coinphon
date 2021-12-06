@@ -4,6 +4,7 @@ namespace App\Http\Resources\Wallet;
 
 use Cache;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Laravel\Octane\Facades\Octane;
 
 class WalletListResource extends JsonResource
 {

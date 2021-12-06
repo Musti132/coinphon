@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Chartisan\PHP\Chartisan;
 use DB;
 
-class SalesStatistics extends Controller
+class SalesStatisticsController extends Controller
 {
     public $dashboardRepository;
 
@@ -35,9 +35,13 @@ class SalesStatistics extends Controller
         ->groupBy('created_at')
         ->get();
 
+        $ordersTodayCount = (empty($ordersToday->pluck('order_count'))) ? $ordersToday->pluck('order_count')[0] : 0;
+
+        $ordersYesterdayCount = (empty($ordersYesterday->pluck('order_count'))) ? $ordersYesterday->pluck('order_count')[0] : 0;
+
         $changeVolume = $this->dashboardRepository->calculatePercentageChange(
-            $ordersToday->pluck('order_count')[0],
-            $ordersYesterday->pluck('order_count')[0]
+            $ordersTodayCount,
+            $ordersYesterdayCount
         );
 
         $rate = CryptoType::find(1)->rates()->where('currency', 'USD')->first()->rate ?? 33567.600;
@@ -47,8 +51,8 @@ class SalesStatistics extends Controller
         $fiatBalance = number_format($cryptoBalance * $rate, 2);
 
         return Response::success([
-            'today' => $ordersToday->pluck('order_count')[0],
-            'yesterday' => $ordersYesterday->pluck('order_count')[0],
+            'today' => $ordersTodayCount,
+            'yesterday' => $ordersYesterdayCount,
             'total_balance_fiat' => $fiatBalance,
             'sales_change' => $changeVolume,
             'order_volume' => Chartisan::build()

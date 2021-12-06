@@ -7,7 +7,18 @@
 - Wallet history - DONE
 - API logs - DONE
 - All search/sorts/filters - Added to necesarry pages, charts still need date selections. Why search?
-- Dummy data for all charts 
+- Dummy data for all charts - DONE
 - Avatar upload - REMOVE 
 - Edit profile name - DONE (only update business name)
 - Make a test route for enable/disable 2fa - DONE
+
+----
+
+Notifications - Added to postman
+Order export - I cannot open the pdf returned, please return an URL to the pdf. And it should be POST.
+Order payment details - Added to postman
+Wallet account status/balance - Wallet server was down, up now.
+Wallet stats - Is there any params for all the new wallet POST? query params (date_start, date_end) data has to be in unix timestamp
+Wallet withdraw -
+Wallet history -
+All search/sorts/filters - What’s the params to do so? Also let me know in which page, which search/sort/filter you want to put

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Wallet\Manage;
 use App\Helpers\Miscellaneous;
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wallet\Manage\StatisticsRequest;
 use App\Http\Resources\Wallet\Manage\StatisticsResource;
 use App\Models\Wallet;
 use Carbon\Carbon;
@@ -13,29 +14,32 @@ use Illuminate\Http\Request;
 
 class ManageController extends Controller
 {
-    public function statistics(Request $request, Wallet $wallet)
+    public function statistics(StatisticsRequest $request, Wallet $wallet)
     {
-        $statsToday = $wallet->revenueByDate(today());
-        $statsYesterday = $wallet->revenueByDate(now()->subDay(1))->get();
+        $startDate = ($request->filled('date_start')) ? Carbon::createFromTimestamp($request->date_start) : today();
+        $endDate = ($request->filled('date_end')) ? Carbon::createFromTimestamp($request->date_end) : now()->subDay(1);
+        
+        $statsFromDate = $wallet->revenueByDate($startDate);
+        $statsToDate = $wallet->revenueByDate($endDate);
 
-        $revenueToday = $statsToday->sum('amount_fiat');
-        $revenueYesterday = $statsYesterday->sum('amount_fiat');
+        $revenueFromDate = $statsFromDate->sum('amount_fiat');
+        $revenueToDate = $statsToDate->sum('amount_fiat');
 
-        $change = (new Miscellaneous)->calculatePercentageChange($revenueToday, $revenueYesterday);
+        $change = (new Miscellaneous)->calculatePercentageChange($revenueFromDate, $revenueToDate);
 
         return Response::success([
-            'revenue_today' => number_format($statsToday->sum('amount'), 8),
-            'revenue_today_fiat' => number_format($revenueToday, 2),
+            'revenue_today' => number_format($statsFromDate->sum('amount'), 8),
+            'revenue_today_fiat' => number_format($revenueFromDate, 2),
             'balance_change' => $change,
             'revenue' => Chartisan::build()
                 ->labels(['revenue_change'])
                 ->extra([
                     'change24h' => $change,
-                    'total_yesterday_fiat' => number_format($revenueYesterday, 2),
-                    'total_yesterday' => number_format($statsYesterday->sum('amount'), 8),
+                    'total_yesterday_fiat' => number_format($revenueToDate, 2),
+                    'total_yesterday' => number_format($statsToDate->sum('amount'), 8),
                 ])
-                ->dataset("today", [$statsToday->pluck('amount_fiat', 'created_at')])
-                ->dataset("yesterday", [$statsYesterday->pluck('amount_fiat', 'created_at')])
+                ->dataset("today", [$statsFromDate->pluck('amount_fiat', 'created_at')])
+                ->dataset("yesterday", [$statsToDate->pluck('amount_fiat', 'created_at')])
                 ->toObject(),
         ]);
     }

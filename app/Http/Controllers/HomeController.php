@@ -13,7 +13,6 @@ use App\Models\Wallet;
 use App\Models\ServerRegion;
 use App\Models\Server;
 
-
 class HomeController extends Controller
 {
     /**

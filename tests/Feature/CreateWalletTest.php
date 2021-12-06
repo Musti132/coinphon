@@ -19,7 +19,7 @@ class CreateWalletTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function test_create_wallet()
     {   
         for($i = 0; $i < $this->wallets; $i++){
             $user = $this->fakeUser();

@@ -25,7 +25,7 @@
             <tbody>
                 @foreach($orders as $order)
                 <tr>
-                    <th scope="row">{{ $order->id }}</th>
+                    <th scope="row">{{ $order->order_id }}</th>
                     <th>{{ $order->amount_fiat}} ({{$order->amount}})</th>
                     <th>{{ $order->address }}</th>
                     <th>{{ $order->status_message }}</th>

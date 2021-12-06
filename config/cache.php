@@ -73,6 +73,10 @@ return [
             ],
         ],
 
+        'octane' => [
+            'driver' => 'octane',
+        ],
+
         'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
@@ -101,7 +105,7 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache'),
 
     /**
      * Wallet balance cache time (seconds)
