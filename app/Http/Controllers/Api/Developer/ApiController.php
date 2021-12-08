@@ -22,7 +22,7 @@ class ApiController extends Controller
      */
     public function index()
     {
-        $keys = auth()->user()->apiKeys;
+        $keys = auth()->user()->apiKeys()->orderBy('created_at', 'DESC')->get();
         
         return ApiListResource::collection($keys);
     }

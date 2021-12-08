@@ -9,6 +9,8 @@ use App\Http\Requests\Wallet\WalletAddressRequest;
 use App\Models\Wallet;
 use App\Models\Server;
 use App\Helpers\Response;
+use App\Http\Requests\IndexRequest;
+use App\Http\Requests\Wallet\WalletIndexRequest;
 use App\Http\Requests\Wallet\WalletUpdateRequest;
 use App\Repository\WalletRepository;
 use App\Http\Resources\Wallet\WalletListResource;
@@ -36,11 +38,14 @@ class WalletController extends Controller
      * @return Illuminate\Http\JsonResponse
      */
 
-    public function index(Request $request)
+    public function index(WalletIndexRequest $request)
     {
         $page = $request->filled('page') ? $request->page : 0;
+        
+        $sort_order = $request->filled('sort_order') ? $request->input('sort_order', 'DESC') : 'desc';
+        $sort_by = $request->filled('sort_by') ? $request->input('sort_by', 'id') : 'created_at';
 
-        $wallets = $this->walletRepository->allByAuthUser();
+        $wallets = $this->walletRepository->allByAuthUser($sort_order, $sort_by);
 
         return WalletListResource::collection($wallets->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $page))->additional([
             'status' => 'success',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Wallet;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wallet\WalletHistorRequest;
 use App\Http\Resources\Wallet\WalletHistoryResource;
 use App\Models\Wallet;
 use Illuminate\Http\Request;

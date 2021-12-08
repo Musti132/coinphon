@@ -24,9 +24,7 @@ class OrderRepository
      */
     public function getAllOrdersById(string $id)
     {
-        $orders = Order::whereHas('wallet', function($q) {
-            $q->where('user_id', \Auth::id());
-        });
+        $orders = auth()->user()->orders();
 
         return $orders;
     }
@@ -51,7 +49,7 @@ class OrderRepository
      * 
      * @return Wallet.
      */
-    public function allByAuthUser(bool $withTransaction = false, bool $withType = false)
+    public function allByAuthUser(bool $withTransaction = false, bool $withType = false, $sort = 'asc', $column = "created_at")
     {
         $orders = $this->getAllOrdersById(\Auth::id())
         ->when($withTransaction, function($q) use($withTransaction){
@@ -62,7 +60,7 @@ class OrderRepository
             }]);
         });
 
-        return $this->sort($orders, 'created_at', 'DESC');
+        return $this->sort($orders, $column, $sort);
     }
     
     /**

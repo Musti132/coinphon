@@ -48,11 +48,11 @@ class WalletRepository
      *
      * @return App\Model\Wallet.
      */
-    public function allByAuthUser()
+    public function allByAuthUser($sort = 'asc', $column = 'created_at')
     {
         $wallets = auth()->user()->wallets()->with('publicKey');
         
-        return $this->sort($wallets, 'id', 'DESC');
+        return $this->sort($wallets, $column, $sort);
     }
     
     /**

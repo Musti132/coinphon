@@ -8,8 +8,10 @@ use App\Http\Requests\Order\NewOrderRequest;
 use App\Http\Resources\Order\OrderAllResource;
 use Illuminate\Http\Request;
 use App\Helpers\Response;
+use App\Http\Requests\IndexRequest;
 use App\Http\Requests\Order\MarkOrderRequest;
 use App\Http\Requests\Order\OrderExportRequest;
+use App\Http\Requests\Order\OrderIndexRequest;
 use App\Http\Resources\Order\OrderListResource;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\User;
@@ -42,11 +44,17 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function index(OrderIndexRequest $request)
     {
         $page = $request->filled('page') ? $request->page : 0;
 
-        return OrderListResource::collection($this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $page));
+        $sort_order = $request->filled('sort_order') ? $request->input('sort_order', 'DESC') : 'desc';
+        $sort_by = $request->filled('sort_by') ? $request->input('sort_by', 'id') : 'created_at';
+
+        return OrderListResource::collection($this->orderRepository->allByAuthUser(
+            column: $sort_by,
+            sort: $sort_order
+        )->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $page));
     }
 
     /**

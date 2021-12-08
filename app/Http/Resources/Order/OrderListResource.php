@@ -23,6 +23,7 @@ class OrderListResource extends JsonResource
             'status' => $this->status_message,
             'status_code' => $this->status,
             'name' => Str::random(6),
+            'date' => $this->created_at,
         ];
     }
 }
