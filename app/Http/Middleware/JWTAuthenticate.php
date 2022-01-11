@@ -93,7 +93,18 @@ class JWTAuthenticate
         } catch (TokenInvalidException $ex) {
 
             if(Cookie::get('token') !== null) {
-                return Response::forbidden('You have been logged out')
+                
+                Cookie::queue(
+                    "logged_in",
+                    0,
+                    config('jwt.refresh_ttl'),
+                    null,
+                    null,
+                    false,
+                    false,
+                );
+
+                return Response::forbidden('Access token invalid, you have been logged out')
                 ->withCookie(Cookie::forget('token'))
                 ->withCookie(Cookie::forget('csrf_tkn'));
             }
