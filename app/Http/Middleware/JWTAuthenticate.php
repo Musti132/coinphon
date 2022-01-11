@@ -36,12 +36,9 @@ class JWTAuthenticate
             $method = $request->method();
 
             //Do we actually need to check for csrf dude?
-            $needToCheckForCSRF = 
-            $method == "POST" ? true : 
-            ($method == "PUT" ? true : 
-            ($method == "DELETE" ? true : 
-            ($method == "PATCH" ? true : false)));
-            
+            $needToCheckForCSRF =
+                $method == "POST" ? true : ($method == "PUT" ? true : ($method == "DELETE" ? true : ($method == "PATCH" ? true : false)));
+
             if ($needToCheckForCSRF && env('APP_DEBUG') !== true) {
 
                 //Make sure user has CSRF token in headers
@@ -56,15 +53,14 @@ class JWTAuthenticate
             }
 
             //Authenticate user
-            
-            if(!Auth::onceUsingId($payload['sub'], true)){
+
+            if (!Auth::onceUsingId($payload['sub'], true)) {
                 return Response::forbidden('Permission denied');
             }
-            
         } catch (TokenExpiredException $ex) {
             // Get current token
             $currentToken = JWTAuth::getToken();
-        
+
             // Refresh it
             if ($token = JWTAuth::refresh($currentToken)) {
 
@@ -78,12 +74,12 @@ class JWTAuthenticate
                     false,
                     true,
                 );
-                
+
                 $id = JWTAuth::setToken($token)->payload()->get('sub');
 
                 //Authenticate user
                 Auth::onceUsingId($id, true);
-            } else{
+            } else {
                 return Response::error('Couldnt refresh token, please login again');
             }
         } catch (TokenMismatchException $ex) {
@@ -91,22 +87,10 @@ class JWTAuthenticate
         } catch (TokenBlacklistedException $ex) {
             return Response::forbidden("Access token is blacklisted, please login again");
         } catch (TokenInvalidException $ex) {
-
-            if(Cookie::get('token') !== null) {
-                
-                Cookie::queue(
-                    "logged_in",
-                    0,
-                    config('jwt.refresh_ttl'),
-                    null,
-                    null,
-                    false,
-                    false,
-                );
-
-                return Response::forbidden('Access token invalid, you have been logged out')
-                ->withCookie(Cookie::forget('token'))
-                ->withCookie(Cookie::forget('csrf_tkn'));
+            if ($request->route()->action['as'] == "auth.logout") {
+                if (Cookie::get('token') !== null) {
+                    return $next($request);
+                }
             }
 
             return Response::forbidden("Access token invalid/not found, please login");

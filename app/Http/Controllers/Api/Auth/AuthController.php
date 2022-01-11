@@ -23,6 +23,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
 use App\Services\AuthService;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthController extends Controller
 {
@@ -107,22 +108,41 @@ class AuthController extends Controller
      */
     public function logout() 
     {
-        $this->guard()->logout();
-        JWTAuth::invalidate(JWTAuth::parseToken());
 
-        Cookie::queue(
-            "logged_in",
-            0,
-            config('jwt.refresh_ttl'),
-            null,
-            null,
-            false,
-            false,
-        );
+        try{
+            $this->guard()->logout();
+            JWTAuth::invalidate(JWTAuth::parseToken());
 
-        return HelperResponse::successMessage('Logged out successfully.')
-            ->withCookie(Cookie::forget('token'))
-            ->withCookie(Cookie::forget('csrf_tkn'));
+            Cookie::queue(
+                "logged_in",
+                0,
+                config('jwt.refresh_ttl'),
+                null,
+                null,
+                false,
+                false,
+            );
+    
+            return HelperResponse::successMessage('Logged out successfully.')
+                ->withCookie(Cookie::forget('token'))
+                ->withCookie(Cookie::forget('csrf_tkn'));
+                
+        } catch(TokenInvalidException $ex) {
+            Cookie::queue(
+                "logged_in",
+                0,
+                config('jwt.refresh_ttl'),
+                null,
+                null,
+                false,
+                false,
+            );
+    
+            return HelperResponse::successMessage('Logged out successfully.')
+                ->withCookie(Cookie::forget('token'))
+                ->withCookie(Cookie::forget('csrf_tkn'));
+        }
+
     }
 
     /**
