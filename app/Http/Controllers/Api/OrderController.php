@@ -13,15 +13,19 @@ use App\Http\Requests\Order\MarkOrderRequest;
 use App\Http\Requests\Order\OrderExportRequest;
 use App\Http\Requests\Order\OrderIndexRequest;
 use App\Http\Resources\Order\OrderListResource;
-use App\Http\Resources\Order\OrderResource;
+use App\Http\Resources\Order\OrderDetailResource;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\OrderExport;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repository\OrderRepository;
 use App\Services\OrderService;
+use Carbon\Carbon;
 use PDF;
 use CoinPhon\Crypto\Wallet\WalletClient;
+use Storage;
+use Str;
 
 class OrderController extends Controller
 {
@@ -64,15 +68,11 @@ class OrderController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function export(OrderExportRequest $request)
+    public function downloadOrders(OrderExport $order)
     {
-        $orders = $this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $request->page_number);
+        $content = Storage::get($order->path);
 
-        view()->share('orders', $orders);
-
-        $pdf = PDF::loadView('invoice.pdf', $orders);
-
-        return $pdf->download('order-'.now().'.pdf');
+        return Storage::download($order->path, $order->name.".pdf");
     }
 
     /**
@@ -82,16 +82,35 @@ class OrderController extends Controller
      * 
      * @return Illuminate\Http\Response
      */
-    public function exportOrder(OrderExportRequest $request)
+    public function export(OrderExportRequest $request)
     {
+        $orders = $this->orderRepository->allByAuthUser()->paginate(Pagination::DEFAULT_PER_PAGE, ['*'], 'page', $request->page_number);
+
+        view()->share('orders', $orders);
+
+        $pdf = PDF::loadView('invoice.pdf', $orders);
+
+        $pdfName = 'orders-'.Str::upper(Str::random(10)).'-'.Carbon::now()->format('Y-m-d');
+
+        $path = 'public/orders-pdf/'.$pdfName;
+
+        $order = OrderExport::create([
+            'name' => $pdfName,
+            'path' => $path,
+        ]);
+        
+        Storage::put($path, $pdf->download()->getOriginalContent());
+
         return Response::success([
-            'url' => route('order.export_order'),
+            'url' => route('order.download_orders', [
+                'order_export' => $order->id,
+            ]),
         ]);
     }
 
     public function show(Order $order)
     {
-        return new OrderResource($order);
+        return new OrderDetailResource($order);
     }
 
     /**

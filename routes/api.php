@@ -179,8 +179,8 @@ Route::group([
             'prefix' => 'order',
             'as' => 'order.'
         ], function () {
-            Route::get('export', [OrderController::class, 'export'])->name('export');
-            Route::post('export', [OrderController::class, 'exportOrder'])->name('export_order');
+            Route::get('export/download/{order_export}', [OrderController::class, 'downloadOrders'])->name('download_orders');
+            Route::post('export', [OrderController::class, 'export'])->name('export_order');
             Route::post('{wallet}/new', [OrderController::class, 'newOrder'])->name('new');
             Route::post('{order}/mark', [OrderController::class, 'mark'])->name('mark');
             Route::get('{order}/details', [OrderDetailController::class, 'details'])->name('details');
@@ -229,7 +229,7 @@ Route::group([
             'as' => 'notification.',
         ], function () {
             Route::get('', [ApiNotificationController::class, 'index'])->name('index');
-            Route::get('read', [ApiNotificationController::class, 'read'])->name('read');
+            Route::put('read', [ApiNotificationController::class, 'read'])->name('read');
         });
 
         /**
