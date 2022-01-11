@@ -93,7 +93,7 @@ class JWTAuthenticate
         } catch (TokenInvalidException $ex) {
 
             if(Cookie::get('token') !== null) {
-                return Response::success('You have been logged out')
+                return Response::forbidden('You have been logged out')
                 ->withCookie(Cookie::forget('token'))
                 ->withCookie(Cookie::forget('csrf_tkn'));
             }
