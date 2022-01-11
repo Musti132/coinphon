@@ -91,6 +91,13 @@ class JWTAuthenticate
         } catch (TokenBlacklistedException $ex) {
             return Response::forbidden("Access token is blacklisted, please login again");
         } catch (TokenInvalidException $ex) {
+
+            if(Cookie::get('token') !== null) {
+                return Response::success('You have been logged out')
+                ->withCookie(Cookie::forget('token'))
+                ->withCookie(Cookie::forget('csrf_tkn'));
+            }
+
             return Response::forbidden("Access token invalid/not found, please login");
         } catch (Exception $ex) {
             return Response::error($ex->getMessage());
