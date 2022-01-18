@@ -50,7 +50,7 @@ class ApiController extends Controller
 
         auth()->user()->apiKeys()->save($api);
 
-        return (new ApiApiShowResource($api))->key($key);
+        return (new ApiShowResource($api))->key($key);
     }
 
     /**
