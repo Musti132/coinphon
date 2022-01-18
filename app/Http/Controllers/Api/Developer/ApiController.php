@@ -6,8 +6,8 @@ use App\Helpers\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiCreateRequest;
 use App\Http\Requests\Api\ApiUpdateRequest;
-use App\Http\Resources\Api\ApiShowResource;
 use App\Http\Resources\Developer\Api\ApiListResource;
+use App\Http\Resources\Developer\Api\ApiShowResource;
 use App\Models\ApiKey;
 use Illuminate\Http\Request;
 use RandomLib\Factory;
@@ -50,7 +50,7 @@ class ApiController extends Controller
 
         auth()->user()->apiKeys()->save($api);
 
-        return (new ApiShowResource($api))->key($key);
+        return (new ApiApiShowResource($api))->key($key);
     }
 
     /**

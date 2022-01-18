@@ -29,6 +29,8 @@ class WithdrawRequest extends FormRequest
     {
         return [
             'address' => ['string', 'required', 'min:16', new AddressValidationRule],
+            'amount' => ['string', 'required'],
+            'note' => ['string', 'max:30'],
         ];
     }
 

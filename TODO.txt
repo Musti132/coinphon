@@ -2,6 +2,9 @@
 
 General
     1. Notification icon color should be white in dark mode
+    2. If charts have no data just show green line
+    3. Alert colors for example when creating a new wallet doesn't match dark theme
+    4. Most colors on buttons, alerts, icons and actions on tables, doesn't match dark theme
 
 Overview
     1. Text on third chart "Current Order Volumn" should be "Today's Order Volume"
@@ -13,3 +16,33 @@ Sales Statistics
 
 Wallets
     1. Colors on wallet actions like "Edit" is incorrect, should be white to match dark theme (only on dark theme)
+    Wallet Manage
+        1. 24H balance change not showing
+        2. Color for changing wallet status doesn't match theme
+        3. Color for when wallet is inactive is green, should be grey
+        4. Statistics not working
+        5. Instead of current balance being in USD, it should be match the corresponding crypto. Only show USD on right card
+        Wallet Creation
+            1. Instead of showing validation errors under the fields, show validation errors attached to their own fields.
+        Wallet withdraw
+            1. No front end validation on withdraw, for example if send to field is empty doesnt say anything. 
+            Should validate if address input is a address corresponding to the wallet crypto
+            2. No placeholder on withdraw
+            3. Button should be disabled/grey when input is wrong
+            4. Can't input any withdrawal amount.
+            5. Can't switch between USD/BTC
+            6. Can't add any note
+            7. Colors when buttons are blue should be white to match dark theme
+            8. To field should open link to blockchain explorer with address. Example: https://www.blockchain.com/btc/address/1Hfs87Y7puhtmJronqy7WPmPxfH6SoTrxX
+            9. Not shown in Figma design, but add back button to maybe change address
+            10. To get transaction fee make post request to /api/v1/wallet/fee
+
+Developer
+    1. Remove text "Current API Version" and "Active version" and change to just "Developer dashboard"
+    2. Charts showing numbers, but no actual chart.
+    API Keys
+        1. Table is still shown when there is no API Keys https://prnt.sc/26f25rs
+        2. When creating API Key it says "Create HTTP Endpoint"
+    Developer
+        2.
+
