@@ -1,24 +1,15 @@
-- Notifications - DONE 
-- Order export - DONE
-- Order payment details - DONE (Remove net value & valid calculation of fee in btc)
-- Wallet account status/balance - DONE but why?
-- Wallet stats - DONE
-- Wallet withdraw - DONE (Add controller functionallity & 2FA Check)
-- Wallet history - DONE
-- API logs - DONE
-- All search/sorts/filters - Added to necesarry pages, charts still need date selections. Why search?
-- Dummy data for all charts - DONE
-- Avatar upload - REMOVE 
-- Edit profile name - DONE (only update business name)
-- Make a test route for enable/disable 2fa - DONE
+- Add real balance change in 24H to wallet show route
 
-----
+General
+    1. Notification icon color should be white in dark mode
 
-Notifications - Added to postman
-Order export - I cannot open the pdf returned, please return an URL to the pdf. And it should be POST.
-Order payment details - Added to postman
-Wallet account status/balance - Wallet server was down, up now.
-Wallet stats - Is there any params for all the new wallet POST? query params (date_start, date_end) data has to be in unix timestamp
-Wallet withdraw -
-Wallet history -
-All search/sorts/filters - What’s the params to do so? Also let me know in which page, which search/sort/filter you want to put
+Overview
+    1. Text on third chart "Current Order Volumn" should be "Today's Order Volume"
+
+Sales Statistics
+    1. Sales chart not working?
+    2. Allow all orders to have options to mark as complete or refunded even if order is success
+    3. Colors on order actions like "Mark as complete" is incorrect, should be white to match dark theme (only on dark theme)
+
+Wallets
+    1. Colors on wallet actions like "Edit" is incorrect, should be white to match dark theme (only on dark theme)

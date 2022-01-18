@@ -26,6 +26,7 @@ class WalletShowResource extends JsonResource
             'label' => $this->label,
             'status' => $this->status,
             'balance' => $balance,
+            'balance_change_24h' => '0',
             'wallet_type' => $this->type->short,
             'crypto_type' => CryptoTypeResource::collection($this->whenLoaded('cryptos')),
             'public_key' => optional($this->publicKey)->key,
