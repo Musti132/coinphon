@@ -167,6 +167,8 @@ Route::group([
             Route::put('/', [ProfileController::class, 'update'])->name('update');
             Route::post('2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa_enable');
             Route::post('2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa_disable');
+            Route::post('2fa/verify', [TwoFactorController::class, 'validateCode'])->name('2fa_verify')
+            ->middleware('throttle:5,1');
         });
 
         Route::apiResource('profile', ProfileController::class)->except([

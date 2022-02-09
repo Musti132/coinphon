@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Profile;
 
 use App\Helpers\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Profile\TwoAuthVerifyRequest;
 use App\Jobs\SendVerificationSms;
 use App\Models\PhoneNumber;
 use App\Models\SmsCode;
@@ -51,19 +52,34 @@ class TwoFactorController extends Controller
         return Response::successMessage('2FA Disabled');
     }
 
-    public function validateCode(Request $request)
+    public function validateCode(TwoAuthVerifyRequest $request)
     {
-        auth()->user()->settings()->set('2fa_enabled', true);
+        $code = $request->code;
 
+        $smsCode = SmsCode::where('code', $code)->firstOrFail();
+
+        if($smsCode->user_id =! auth()->id()) {
+            return Response::notFound();
+        }
+
+        if($smsCode->used == 1) {
+            return Response::error('Code has already been verifiedd');
+        }
+ 
+        //Set used to true in db
+        $smsCode->update([
+            'used' => 1,
+        ]);
+
+        auth()->user()->settings()->set('2fa_enabled', true);
 
         $phone = auth()->user()->phone()->update([
             'number' => $request->phone,
             'country_id' => $request->country_id,
         ]);
 
-        /*return Response::successMessage(
-            'Code has been sent to phone number provided, ending in ' . $ending
-                . '. Code is valid for ' . SmsCode::EXPIRATION_TIME . ' minutes'
-        );*/
+        return Response::successMessage(
+            'Code verified, 2FA has been enabled.'
+        );
     }
 }

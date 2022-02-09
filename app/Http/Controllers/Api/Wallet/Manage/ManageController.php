@@ -38,8 +38,8 @@ class ManageController extends Controller
                     'total_yesterday_fiat' => number_format($revenueToDate, 2),
                     'total_yesterday' => number_format($statsToDate->sum('amount'), 8),
                 ])
-                ->dataset("today", [$statsFromDate->pluck('amount_fiat', 'created_at')])
-                ->dataset("yesterday", [$statsToDate->pluck('amount_fiat', 'created_at')])
+                ->dataset("today", $statsFromDate->pluck('amount_fiat', 'created_at')->toArray())
+                ->dataset("yesterday", $statsToDate->pluck('amount_fiat', 'created_at')->toArray())
                 ->toObject(),
         ]);
     }
