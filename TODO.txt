@@ -1,10 +1,14 @@
 - Add real balance change in 24H to wallet show route
 
+
+Dark theme has alot off issues when comparing it to Figma design, 
+please note that both Light and Dark theme should be 1:1 for Figma design when it comes to colors, forms, etc.
 General
     1. Notification icon color should be white in dark mode
     2. If charts have no data just show green line
     3. Alert colors for example when creating a new wallet doesn't match dark theme
     4. Most colors on buttons, alerts, icons and actions on tables, doesn't match dark theme
+    5. Most placeholders are not showing in dark theme
 
 Overview
     1. Text on third chart "Current Order Volumn" should be "Today's Order Volume"
@@ -43,6 +47,38 @@ Developer
     API Keys
         1. Table is still shown when there is no API Keys https://prnt.sc/26f25rs
         2. When creating API Key it says "Create HTTP Endpoint"
-    Developer
-        2.
+        3. When API key is created it should also say something like "Store your API key somewhere safe, we can't show it again"
+        4. When API key is created it still shows API Key Name field, should just be a close button
+    Webhooks
+        1. Table is still shown when there is no Webhooks, same as API Keys
+        2. Clicking on a wallet takes user to wallet edit page, should take to wallet manage page
+    Logs
+        1. Nothing is working here, why?
+Settings
+    1. "Edit" text right to profile pic should be removed
+    2. Remove option to change name.
+    3. No way of adding two step authentication
 
+
+If charts have no data just show green line
+The datasets array should have 0 items, at now it has 2 items so I can’t know if it has data or not.
+Allow all orders to have options to mark as complete or refunded even if order is success
+OK for complete, what’s refund api?
+24H balance change not showing
+What field/api route for it?
+Wallet Manage: Statistics not working
+Are you sure it has data? I coded it already for /wallet/${id}/statistics
+Wallet withdraw: Can’t input any withdrawal amount, Can’t switch between USD/BTC, Can’t add any note
+I see in postman the only field for /wallet/2eecc9a3-e963-4683-b742-231142448436/withdraw is address, what’s the field for the others? I also didn’t see them in design
+To get transaction fee make post request to /api/v1/wallet/fee
+I don’t see it in postman, so what’s the params to send?
+Developer: Charts showing numbers, but no actual chart
+Are you sure it has data? I coded it already for /developer
+Logs
+Hmm I think we don’t have api for logs in postman?
+2FA
+What’s the flow to enable this? what to do after user add 2fa (phone)? and after that how to login with 2fa?
+And what’s the test route for 2fa?
+
+Wallet withdraw: Can’t input any withdrawal amount, Can’t switch between USD/BTC, Can’t add any note
+I see in postman the only field for /wallet/2eecc9a3-e963-4683-b742-231142448436/withdraw is address, what’s the field for the others? I also didn’t see them in design

@@ -39,13 +39,15 @@ class SendVerificationSms implements ShouldQueue
      */
     public function handle()
     {
-        $phone = $this->phone;
+        $phoneNumber = $this->phone->number;
+
+        $callingCode = $this->phone->country->calling_code;
         
         $sms = $this->sms;
 
-        $length = strlen($phone->number);
+        $length = strlen($phoneNumber);
 
-        $ending = substr($phone->number, $length - 2, $length);
+        $ending = substr($phoneNumber, $length - 2, $length);
         
         // Your Account SID and Auth Token from twilio.com/console
         $sid = env('TWILIO_SID');
@@ -55,10 +57,10 @@ class SendVerificationSms implements ShouldQueue
         // Use the client to do fun stuff like send text messages!
         return $client->messages->create(
             // the number you'd like to send the message to
-            '+4552112257',
+            '+'.$callingCode.$phoneNumber,
             [
                 // A Twilio phone number you purchased at twilio.com/console
-                'from' => '+14055628584',
+                'from' => '+19125138618',
                 // the body of the text message you'd like to send
                 'body' => 'Activation code: '.$sms->code,
             ]

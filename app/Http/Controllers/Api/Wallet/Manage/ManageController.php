@@ -43,4 +43,11 @@ class ManageController extends Controller
                 ->toObject(),
         ]);
     }
+
+    public function transactionFee() {
+        // Calculate network transaction fee...
+        return Response::success([
+            'fee' => '0.00002',
+        ]);
+    }
 }

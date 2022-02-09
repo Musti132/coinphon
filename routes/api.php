@@ -135,6 +135,7 @@ Route::group([
             'prefix' => 'wallet',
             'as' => 'wallet.'
         ], function () {
+            Route::post('transaction/fee', [ManageController::class, 'transactionFee'])->name('transaction_fee');
             Route::get('{wallet}/balance', [WalletController::class, 'balance'])->name('balance');
             Route::get('{wallet}/address', [WalletController::class, 'address'])->name('address');
             Route::get('{wallet}/status', [WalletController::class, 'status'])->name('status');

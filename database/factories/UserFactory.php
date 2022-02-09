@@ -26,7 +26,6 @@ class UserFactory extends Factory
     {
         
         return [
-            'phone_id' => PhoneNumber::inRandomOrder()->first()->id,
             'first' => $this->faker->name,
             'last' => $this->faker->name,
             'country_id' => Country::all()->random(1)->first()->id,

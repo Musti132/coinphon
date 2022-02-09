@@ -72,12 +72,12 @@ class DeveloperController extends Controller
         return Response::success([
             'in' => [
                 'success' => Chartisan::build()
-                ->labels([$successIn->pluck('date')])
+                ->labels($successIn->pluck('date')->toArray())
                 ->extra(['success_dataset' => $successIn->sum('count')])
                     ->dataset("success_dataset", [$successIn->pluck('count', 'date')])
                     ->toObject(),
                 'failed' => Chartisan::build()
-                ->labels([$failedIn->pluck('date')])
+                ->labels($failedIn->pluck('date')->toArray())
                 ->extra(['failed_dataset' => $failedIn->sum('count')])
                     ->dataset("failed_dataset", [$failedIn->pluck('count', 'date')])
                     ->toObject(),
@@ -85,12 +85,12 @@ class DeveloperController extends Controller
             ],
             'out' => [
                 'success' => Chartisan::build()
-                ->labels([$successOut->pluck('date')])
+                ->labels($successOut->pluck('date')->toArray())
                 ->extra(['total_count' => $successOut->sum('count')])
                     ->dataset("success_dataset", [$successOut->pluck('count', 'date')])
                     ->toObject(),
                 'failed' => Chartisan::build()
-                ->labels([$failedOut->pluck('date')])
+                ->labels($failedOut->pluck('date')->toArray())
                 ->extra(['total_count' => $failedOut->sum('count')])
                     ->dataset("failed_dataset", [$failedOut->pluck('count', 'date')])
                     ->toObject(),

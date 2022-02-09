@@ -54,13 +54,11 @@ class SmsController extends Controller
         $smsCode = SmsCode::where('code', $code);
 
         //Set used to true in db
-
         $smsCode->update([
             'used' => 1,
         ]);
 
         //Authorize device to login;
-
         $smsCode->first()->device()->update([
             'active' => 1,
         ]);
