@@ -33,6 +33,7 @@ class DeveloperController extends Controller
             DB::raw('COUNT(*) as count'),
         ])
         ->groupBy('date')
+        ->orderBy('date', 'ASC')
         ->get();
 
         $successIn = MonitoringIn::successCount($userWalletIds)
@@ -44,6 +45,7 @@ class DeveloperController extends Controller
             DB::raw('COUNT(*) as count'),
         ])
         ->groupBy('date')
+        ->orderBy('date', 'ASC')
         ->get();
 
         $failedOut = MonitoringOut::failedCount($userWalletIds)
@@ -55,6 +57,7 @@ class DeveloperController extends Controller
             DB::raw('COUNT(*) as count'),
         ])
         ->groupBy('date')
+        ->orderBy('date', 'ASC')
         ->get();
 
         $successOut = MonitoringOut::successCount($userWalletIds)
