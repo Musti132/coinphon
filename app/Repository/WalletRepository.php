@@ -59,10 +59,10 @@ class WalletRepository
      * Sort query
      *
      * @param  Model $q
-     * @param  String $orderBy
-     * @param  String $sort
-     * @param  Array $columns
-     * @return Collection
+     * @param  string $orderBy
+     * @param  string $sort
+     * @param  array $columns
+     * @return Illuminate\Database\Eloquent\Collection
      */
     public function sort($q, string $orderBy = null, string $sort = "asc", array $columns = [])
     {

@@ -12,6 +12,8 @@ class DashboardRepository
 
 
     /**
+     * Return users orders for a specific date
+     * 
      * @param Carbon $date
      * 
      * @return App\Models\Order;
