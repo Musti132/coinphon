@@ -61,24 +61,31 @@ Settings
 
 
 If charts have no data just show green line
-The datasets array should have 0 items, at now it has 2 items so I can’t know if it has data or not.
+The datasets object will always have another object inside of it, to know if the data set is null, read the values element inside the datasets object.
 Allow all orders to have options to mark as complete or refunded even if order is success
-OK for complete, what’s refund api?
+All status codes are in postman
 24H balance change not showing
 What field/api route for it?
+{{URL}}api/v1/wallet/{{wallet}}/balance - Also in postman
 Wallet Manage: Statistics not working
-Are you sure it has data? I coded it already for /wallet/${id}/statistics
+Most elements has been moved around in the wallet stats array, please update the site to show the values correctly.
 Wallet withdraw: Can’t input any withdrawal amount, Can’t switch between USD/BTC, Can’t add any note
-I see in postman the only field for /wallet/2eecc9a3-e963-4683-b742-231142448436/withdraw is address, what’s the field for the others? I also didn’t see them in design
+Wallet withdraw endpoint has been updated on postman to show the parameters it accepts now. As for the fields for the other values it does show in the design where to put them
 To get transaction fee make post request to /api/v1/wallet/fee
-I don’t see it in postman, so what’s the params to send?
+Postman has been updated and it now includes a endpoint for this
 Developer: Charts showing numbers, but no actual chart
-Are you sure it has data? I coded it already for /developer
+Problem was on my end, and it has been fixed now
 Logs
-Hmm I think we don’t have api for logs in postman?
+There is routes for this under Developer > API > Logs
 2FA
-What’s the flow to enable this? what to do after user add 2fa (phone)? and after that how to login with 2fa?
-And what’s the test route for 2fa?
+Save this for last, when you will work on this let me know. Also the routes are already ready on Postman.
 
 Wallet withdraw: Can’t input any withdrawal amount, Can’t switch between USD/BTC, Can’t add any note
 I see in postman the only field for /wallet/2eecc9a3-e963-4683-b742-231142448436/withdraw is address, what’s the field for the others? I also didn’t see them in design
+
+
+New login 0Auth
+    - Register page
+    - Login page
+    - Route middleware
+    

@@ -23,6 +23,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
 use App\Services\AuthService;
+use Exception;
+use Flare;
+use Log;
+use Symfony\Component\ErrorHandler\Debug;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthController extends Controller
@@ -55,9 +59,20 @@ class AuthController extends Controller
             config('jwt.name') . "csrf_claim" => Str::random(64),
         ])->login($user);
 
-        $this->authRepository->createRegisterCookies($token);
+        $response = new Response([
+            'status' => 'success',
+            'message' => 'Authentication successful',
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'user' => $user
+            ],
+        ]);
 
-        return HelperResponse::successMessage('Successfully registered.');
+        $response->header('Authorization', 'Bearer ' . $token);
+
+        return $response;
     }
 
     /**
@@ -90,10 +105,17 @@ class AuthController extends Controller
             $response = new Response([
                 'status' => 'success',
                 'message' => 'Authentication successful',
-                'data' => new UserAuthResource($user),
+                'data' => [
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => auth()->factory()->getTTL() * 60,
+                    'user' => $user
+                ],
             ]);
 
-            $this->authRepository->createLoginCookies($token);
+            $response->header('Authorization', 'Bearer ' . $token);
+
+            //$this->authRepository->createLoginCookies($token);
 
             return $response;
         }
@@ -106,43 +128,31 @@ class AuthController extends Controller
      * 
      * @return Illuminate\Http\JsonResponse
      */
-    public function logout() 
+    public function logout(Request $request)
     {
+        $rawToken = $request->header('Authorization') ?? $request->header('Authorization');
 
-        try{
+        $rawToken = str_replace('Bearer ', '', $rawToken);
+
+        $token = new Token($rawToken);
+        $payload = JWTAuth::decode($token);
+
+        try {
+            $payload = auth()->payload();
+            auth()->invalidate(true);
+            $currentToken = JWTAuth::getToken();
             $this->guard()->logout();
-            JWTAuth::invalidate(JWTAuth::parseToken());
+            auth()->logout(true);
+            JWTAuth::invalidate(JWTAuth::getToken());
+            JWTAuth::invalidate($currentToken, true);
+            $token = $request->bearerToken();
+            \Illuminate\Support\Facades\Auth::setToken($token)->invalidate();
 
-            Cookie::queue(
-                "logged_in",
-                0,
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                false,
-            );
-    
-            return HelperResponse::successMessage('Logged out successfully.')
-                ->withCookie(Cookie::forget('token'))
-                ->withCookie(Cookie::forget('csrf_tkn'));
-                
-        } catch(TokenInvalidException $ex) {
-            Cookie::queue(
-                "logged_in",
-                0,
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                false,
-            );
-    
-            return HelperResponse::successMessage('Logged out successfully.')
-                ->withCookie(Cookie::forget('token'))
-                ->withCookie(Cookie::forget('csrf_tkn'));
+            return HelperResponse::successMessage('Logged out successfully.');
+        } catch (TokenInvalidException $ex) {
+
+            return HelperResponse::successMessage(' out successfully.');
         }
-
     }
 
     /**
@@ -154,7 +164,6 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-
         if (!$request->user()) {
             return response()->json([
                 'status' => 'failed',
@@ -179,22 +188,15 @@ class AuthController extends Controller
 
         if ($token = JWTAuth::refresh($currentToken)) {
 
-            $response = new Response(['status' => 'success']);
-
-            Cookie::queue(
-                "token",
-                $token,
-                config('jwt.refresh_ttl'),
-                null,
-                null,
-                false,
-                true,
-            );
-
-            return $response;
+            return HelperResponse::success([
+                'data' => [
+                    'access_token' => $token,
+                    'expires_in' => auth()->factory()->getTTL() * 60,
+                ],
+            ]);
         }
 
-        return response()->json(['error' => 'refresh_token_error'], 401);
+        return HelperResponse::error(['error' => 'refresh_token_error']);
     }
 
     private function guard()

@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['flare'],
             'ignore_exceptions' => false,
         ],
 
@@ -61,6 +61,7 @@ return [
             'emoji' => ':boom:',
             'level' => env('LOG_LEVEL', 'critical'),
         ],
+        
 
         'papertrail' => [
             'driver' => 'monolog',
@@ -99,6 +100,10 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'flare' => [
+            'driver' => 'flare',
+        ],
+        
     ],
 
 ];

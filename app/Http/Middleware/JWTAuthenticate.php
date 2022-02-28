@@ -29,7 +29,9 @@ class JWTAuthenticate
     {
         try {
             //Grab token from cookie and decode
-            $rawToken = $request->cookie('refresh_token') ?? $request->cookie('token');
+            $rawToken = $request->header('Authorization') ?? $request->header('Authorization');
+
+            $rawToken = str_replace('Bearer ', '', $rawToken);
 
             $token = new Token($rawToken);
             $payload = JWTAuth::decode($token);
@@ -58,45 +60,17 @@ class JWTAuthenticate
                 return Response::forbidden('Permission denied');
             }
         } catch (TokenExpiredException $ex) {
-            // Get current token
-            $currentToken = JWTAuth::getToken();
-
-            // Refresh it
-            if ($token = JWTAuth::refresh($currentToken)) {
-
-                // Return back a cookie with the new token
-                Cookie::queue(
-                    "token",
-                    $token,
-                    config('jwt.refresh_ttl'),
-                    null,
-                    null,
-                    false,
-                    true,
-                );
-
-                $id = JWTAuth::setToken($token)->payload()->get('sub');
-
-                //Authenticate user
-                Auth::onceUsingId($id, true);
-            } else {
-                return Response::error('Couldnt refresh token, please login again');
-            }
+            return Response::forbidden('Token expired', 'token_expired');
         } catch (TokenMismatchException $ex) {
             return Response::forbidden("CSRF/Access token doesnt match, please login");
         } catch (TokenBlacklistedException $ex) {
             return Response::forbidden("Access token is blacklisted, please login again");
         } catch (TokenInvalidException $ex) {
-            if ($request->route()->action['as'] == "auth.logout") {
-                if (Cookie::get('token') !== null) {
-                    return $next($request);
-                }
-            }
-
             return Response::forbidden("Access token invalid/not found, please login");
         } catch (Exception $ex) {
             return Response::error($ex->getMessage());
         }
+
 
         return $next($request);
     }
