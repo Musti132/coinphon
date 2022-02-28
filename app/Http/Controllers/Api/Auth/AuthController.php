@@ -138,15 +138,10 @@ class AuthController extends Controller
         $payload = JWTAuth::decode($token);
 
         try {
-            $payload = auth()->payload();
-            auth()->invalidate(true);
+
             $currentToken = JWTAuth::getToken();
             $this->guard()->logout();
-            auth()->logout(true);
-            JWTAuth::invalidate(JWTAuth::getToken());
             JWTAuth::invalidate($currentToken, true);
-            $token = $request->bearerToken();
-            \Illuminate\Support\Facades\Auth::setToken($token)->invalidate();
 
             return HelperResponse::successMessage('Logged out successfully.');
         } catch (TokenInvalidException $ex) {
