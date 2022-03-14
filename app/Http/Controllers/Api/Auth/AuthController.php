@@ -184,10 +184,8 @@ class AuthController extends Controller
         if ($token = JWTAuth::refresh($currentToken)) {
 
             return HelperResponse::success([
-                'data' => [
-                    'access_token' => $token,
-                    'expires_in' => auth()->factory()->getTTL() * 60,
-                ],
+                'access_token' => $token,
+                'expires_in' => auth()->factory()->getTTL() * 60,
             ]);
         }
 
