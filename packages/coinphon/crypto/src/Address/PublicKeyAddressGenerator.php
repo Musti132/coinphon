@@ -33,7 +33,7 @@ class PublicKeyAddressGenerator implements AddressInterface {
         $this->slip132 = new Slip132(new KeyToScriptHelper($this->adapter));
         $this->prefix = new BitcoinRegistry();
 
-        //Check public key format
+        //Check public key prefix
         $this->key = $this->checkPrefix($key);
 
         return $this;

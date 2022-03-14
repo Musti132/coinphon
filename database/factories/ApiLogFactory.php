@@ -50,8 +50,9 @@ class ApiLogFactory extends Factory
     public function definition()
     {
 
-        $request = json_encode($this->requests[array_rand($this->requests)]);
-        $response = json_encode($this->responses[array_rand($this->responses)]);
+        $request = json_encode($this->requests[array_rand($this->requests)], JSON_PRETTY_PRINT);
+        $response = json_encode($this->responses[array_rand($this->responses)], JSON_PRETTY_PRINT);
+        
 
         return [
             'host' => '127.0.0.1',
