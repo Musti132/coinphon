@@ -98,7 +98,7 @@ class AuthController extends Controller
                     return HelperResponse::error('Failed sending sms', 'sms_failed');
                 }
 
-                return HelperResponse::forbidden('Sms auth required', 'sms_required');
+                return HelperResponse::error('Sms auth required', 'sms_required');
             }
 
             $user = User::with('country', 'business')->where('email', $request->email)->first();
