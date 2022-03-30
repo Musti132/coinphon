@@ -15,6 +15,9 @@ use JWTAuth;
 
 class SmsController extends Controller
 {
+    public function listCodes() {
+        return SmsCode::select('code', 'device_id', 'created_at')->orderBy('created_at', 'DESC')->get();
+    }
     /**
      * Store new sms code to be validated later on.
      * 

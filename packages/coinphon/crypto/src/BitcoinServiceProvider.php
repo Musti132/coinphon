@@ -1,5 +1,5 @@
 <?php
-namespace CoinPhon\Bitcoin;
+namespace CoinPhon\Crypto;
 
 use Illuminate\Support\ServiceProvider;
 

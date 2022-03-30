@@ -79,6 +79,11 @@ Route::group([
         Route::post('register', [AuthController::class, 'register'])->name('register');
 
         /**
+         * Test route to get all sms codes, should be deleted at prod.
+         */
+        Route::get('codes', [SmsController::class, 'listCodes'])->name('listCodes');
+
+        /**
          * Login route
          */
 

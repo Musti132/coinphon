@@ -93,6 +93,7 @@ class AuthController extends Controller
             $info = $this->authService->saveLogin($request);
 
             if ($this->authRepository->requiresSmsAuth($request)) {
+                
                 if (!(new AuthService())->dispatchSms(auth()->user(), $info)) {
                     return HelperResponse::error('Failed sending sms', 'sms_failed');
                 }

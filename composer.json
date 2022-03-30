@@ -6,16 +6,7 @@
         "framework",
         "laravel"
     ],
-    "repositories": {
-        "bitcoin": {
-            "type": "path",
-            "url": "packages/coinphon/crypto/src",
-            "options": {
-                "symlink": true
-            }
 
-        }
-    },
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",

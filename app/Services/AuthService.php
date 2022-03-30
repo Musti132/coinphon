@@ -22,6 +22,7 @@ class AuthService extends AuthRepository
 
         $sms = $this->createSms($phone, $device);
 
+        return true;
         return SendVerificationSms::dispatch($sms, $phone);
     }
 
