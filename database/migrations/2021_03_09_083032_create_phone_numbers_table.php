@@ -16,6 +16,7 @@ class CreatePhoneNumbersTable extends Migration
         Schema::create('phone_numbers', function (Blueprint $table) {
             $table->id();
             $table->char('number', 16);
+            $table->foreignUuid('user_id')->references('id')->on('users');
             $table->foreignId('country_id')->references('id')->on('countries');
             $table->timestamps();
         });

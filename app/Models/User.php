@@ -169,7 +169,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function phone()
     {
-        return $this->hasOne(PhoneNumber::class, 'id', 'phone_id');
+        return $this->hasOne(PhoneNumber::class, 'user_id', 'id');
     }
 
     public function business()

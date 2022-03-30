@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CryptoWalletTypeSeeder::class);
         \App\Models\ServerRegion::factory(1)->create();
         \App\Models\Server::factory(1)->create();
-        \App\Models\PhoneNumber::factory(1)->create();
         \App\Models\User::factory(1)->create();
+        $this->call(PhoneUserSeeder::class);
         //$this->call(AttachSettingsSeeder::class);
         \App\Models\Wallet::factory(10)->create();
         //\App\Models\WalletType::factory(10)->create();

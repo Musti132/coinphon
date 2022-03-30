@@ -34,6 +34,7 @@ class PhoneNumberFactory extends Factory
 
         return [
             'number' => $number,
+            'user_id' => User::first()->id,
             'country_id' => Country::all()->random(1)->first()->id,
         ];
     }
