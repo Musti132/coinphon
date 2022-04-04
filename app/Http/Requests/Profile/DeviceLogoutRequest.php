@@ -18,7 +18,7 @@ class DeviceLogoutRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return ($this->device->user_id === auth()->id());
     }
 
     /**
@@ -29,7 +29,7 @@ class DeviceLogoutRequest extends FormRequest
     public function rules()
     {
         return [
-            'device' => ['required', 'string', new UserOwnsDevice],
+            'device_id' => ['integer', new UserOwnsDevice],
         ];
     }
 

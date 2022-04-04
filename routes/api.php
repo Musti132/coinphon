@@ -167,7 +167,7 @@ Route::group([
             'as' => 'profile.'
         ], function () {
             Route::post('notification/update', [NotificationController::class, 'update'])->name('update');
-            Route::post('logout', [ProfileController::class, 'logout'])->name('logout');
+            Route::post('logout/{device}', [ProfileController::class, 'logout'])->name('logout');
             Route::get('devices', [DeviceController::class, 'devices'])->name('devices');
             Route::put('/', [ProfileController::class, 'update'])->name('update');
             Route::post('2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa_enable');

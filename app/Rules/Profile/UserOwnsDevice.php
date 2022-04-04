@@ -26,6 +26,7 @@ class UserOwnsDevice implements Rule
      */
     public function passes($attribute, $value)
     {
+        dd(auth()->user()->devices);
         return auth()->user()->devices()->where('id', $value)->where('user_id', auth()->id())->exists();
     }
 
