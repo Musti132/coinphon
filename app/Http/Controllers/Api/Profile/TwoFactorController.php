@@ -22,7 +22,7 @@ class TwoFactorController extends Controller
 
     public function enable(Request $request)
     {
-        auth()->user()->settings()->set('2fa_enabled', true);
+        //auth()->user()->settings()->set('2fa_enabled', true);
 
         /*
         $phone = PhoneNumber::create([

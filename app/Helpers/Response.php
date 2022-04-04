@@ -49,11 +49,11 @@ class Response extends HttpResponse
         ], $code, $headers);
     }
 
-    public static function notFound()
+    public static function notFound($message = "Requested page not found", $status = "not_found")
     {
         return response()->json([
-            'status' => "not_found",
-            'message' => "Requested page not found",
+            'status' => $status,
+            'message' => $message,
         ], 404, []);
     }
 
