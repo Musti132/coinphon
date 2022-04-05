@@ -40,8 +40,7 @@ class ProfileController extends Controller
 
     public function logout(DeviceLogoutRequest $request, UserLogin $device)
     {
-        $device->active = 0;
-        $device->save();
+        $device->delete();
 
         return Response::successMessage('Device has been logged out');
     }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserLogin extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'device_hash',

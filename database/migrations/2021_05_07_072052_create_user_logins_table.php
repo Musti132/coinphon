@@ -23,6 +23,7 @@ class CreateUserLoginsTable extends Migration
             $table->foreignUuid('user_id')->references('id')->on('users');
             $table->boolean('active')->default(0);
             $table->date('expires_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
