@@ -51,7 +51,7 @@ class JWTAuthenticate
                 $claimName = config('jwt.name') . 'csrf_claim';
 
                 //Check if CSRF token matches the CSRF token set for user after login
-                if ($payload[$claimName] != $request->header("X-XSRF-TOKEN")) throw new TokenMismatchException();
+                if ($payload[$claimName] != $request->header("X-XSRF-TOKEN")) throw new TokenMismatchException("Invalid CSRF-TOKEN");
             }
 
             //Authenticate user
@@ -60,7 +60,11 @@ class JWTAuthenticate
                 return Response::forbidden('Permission denied');
             }
         } catch (TokenExpiredException $ex) {
-            return Response::forbidden('Token expired', 'token_expired');
+            if($request->route()->getAction('as') == "auth.refresh") {
+                return $next($request);
+            }
+            
+            return Response::forbidden('Token has expired', 'token_expired');
         } catch (TokenMismatchException $ex) {
             return Response::forbidden("CSRF/Access token doesnt match, please login");
         } catch (TokenBlacklistedException $ex) {
