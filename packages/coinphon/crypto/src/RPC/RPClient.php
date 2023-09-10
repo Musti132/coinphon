@@ -22,8 +22,8 @@ class RPClient{
      */
     private array $config = [
         'auth' => [
-            'rpcuser',
-            'RPC123',
+            'test',
+            'test',
         ],
     ];
 

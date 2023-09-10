@@ -23,7 +23,7 @@ class ServerFactory extends Factory
     {
         return [
             'label' => "EU Server 1",
-            'host' => "52.214.96.107",
+            'host' => "127.0.0.1",
             'port' => 8332,
             'region_id' => 1,
         ];
